@@ -204,18 +204,18 @@
       tableHtml += '</tr></thead><tbody>';
 
       let displayedRows = 0;
-      for (let r = 1; r < targetRows.length; r++) {
+      for (let r = 0; r < targetRows.length; r++) {
         const row = targetRows[r];
-        if (!row || row.join("").trim() === "") continue;
+        if (!row || row.length === 0 || row.join("").trim() === "") continue;
 
         // Formats section separators nicely (e.g., ",,,Day 2,,,,")
         const rowText = row.join("").replace(/\?/g, "").trim();
-        if (rowText.includes("Day 2") || (row[3] && String(row[3]).trim().includes("Day"))) {
+        if (rowText.includes("Day 2") || rowText.toLowerCase().includes("day2")) {
           tableHtml += `<tr><td colspan="5" class="day-row center">Day 2</td></tr>`;
           continue;
         }
 
-        // Map spreadsheet text columns (A=Time, B=Pitch, D=Team A, E=Score A, F=Score B, G=Team B)
+        // FIXED: Pulls direct explicit array column indexes matching your spreadsheet row data layout array strings
         let timeCell  = row[0] ? String(row[0]).replace(/\?/g, "").trim() : '';
         let pitchCell = row[1] ? String(row[1]).replace(/\?/g, "").trim() : '';
         let teamA     = row[3] ? String(row[3]).replace(/\?/g, "").trim() : '';
@@ -223,8 +223,8 @@
         let scoreB    = row[5] ? String(row[5]).replace(/\?/g, "").trim() : '';
         let teamB     = row[6] ? String(row[6]).replace(/\?/g, "").trim() : '';
 
-        // Skips data configuration headers inside the sheet
-        if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a" || !teamA) continue;
+        // Skips data configuration headers or template labels inside the sheet text strings
+        if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a" || !teamA || teamA === "-") continue;
 
         const badgeA = cleanBadgeRouter(teamA);
         const badgeB = cleanBadgeRouter(teamB);
@@ -292,10 +292,6 @@
 
         if (!csvText.trim()) {
           throw new Error("Google Sheets returned an empty CSV.");
-        }
-
-        if (/^\s*<(?:!doctype|html)\b/i.test(csvText)) {
-          throw new Error("Google returned HTML instead of CSV data.");
         }
 
         if (typeof Papa === "undefined") {
