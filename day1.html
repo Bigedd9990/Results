@@ -142,7 +142,15 @@ main {
   width: 100%;
   border-collapse: collapse;
   table-layout: auto;
-  font-size: clamp(10px, 0.85vw, 13px);
+  font-size: clamp(12px, 1.05vw, 16px);
+}
+
+.pitch-table td:nth-child(4),
+.pitch-table td:nth-child(7) {
+  font-weight: bold;
+  font-size: 1.05em;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .pitch-table th,
@@ -167,12 +175,6 @@ main {
 
 .pitch-table tbody tr:hover {
   background: #d8f0f8;
-}
-
-.pitch-table td:nth-child(4),
-.pitch-table td:nth-child(7) {
-  text-align: left;
-  white-space: nowrap;
 }
 
 .team-badge {
