@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,130 +15,212 @@
   --bg: #f3f6f9;
   --text: #283443;
 }
+
 * { box-sizing: border-box; }
-body {
+
+html, body {
   margin: 0;
+  width: 100%;
+  min-height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
+
 header {
   background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
   color: white;
   text-align: center;
-  padding: 24px 12px;
-  border-bottom: 5px solid var(--blue);
+  padding: 10px;
+  border-bottom: 4px solid var(--blue);
 }
+
 .club {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 12px;
 }
-.badge {
-  width: 88px;
-  height: 88px;
+
+.club-badge {
+  width: 58px;
+  height: 58px;
   object-fit: contain;
 }
+
 h1 {
   margin: 0;
-  font-size: clamp(23px, 4vw, 36px);
+  font-size: clamp(21px, 2.2vw, 32px);
   letter-spacing: 1px;
 }
+
 .subtitle {
-  margin: 8px 0;
+  margin: 4px 0;
   color: var(--blue);
   font-weight: bold;
+  font-size: clamp(12px, 1.2vw, 17px);
   letter-spacing: 1px;
 }
+
+.tournament {
+  font-size: 13px;
+}
+
 .day {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 7px;
   background: var(--blue);
   color: var(--maroon-dark);
-  padding: 8px 22px;
-  border-radius: 25px;
+  padding: 5px 20px;
+  border-radius: 20px;
   font-weight: bold;
+  font-size: 13px;
 }
+
 nav {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  padding: 16px 8px;
-  flex-wrap: wrap;
+  gap: 8px;
+  padding: 7px;
 }
+
 nav a {
   text-decoration: none;
-  padding: 11px 22px;
-  border-radius: 8px;
+  padding: 7px 20px;
+  border-radius: 7px;
   background: white;
   color: var(--maroon);
   border: 2px solid var(--maroon);
   font-weight: bold;
+  font-size: 13px;
 }
+
 nav a.active {
   background: var(--maroon);
   color: white;
 }
+
 main {
-  max-width: 1500px;
+  width: 100%;
+  max-width: 1900px;
   margin: 0 auto;
-  padding: 0 14px 24px;
+  padding: 0 12px 10px;
 }
-.panel {
+
+.pitch-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.pitch-panel {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px #0000000d;
-  padding: 14px;
+  border-radius: 9px;
+  box-shadow: 0 3px 10px #00000012;
+  padding: 7px;
+  min-width: 0;
+  overflow: hidden;
 }
-.panel h2 {
-  color: var(--maroon);
-  margin: 4px 0 14px;
+
+.pitch-panel h2 {
+  margin: 0 0 7px;
+  padding: 7px;
+  background: var(--maroon);
+  color: var(--blue);
+  text-align: center;
+  border-radius: 5px;
+  font-size: clamp(16px, 1.5vw, 23px);
 }
-#results-container {
-  overflow: auto;
-  max-height: 72vh;
+
+.pitch-three {
+  width: 70%;
+  margin: 12px auto 0;
 }
-table {
+
+.pitch-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  font-size: 14px;
+  table-layout: auto;
+  font-size: clamp(10px, 0.85vw, 13px);
 }
-td, th {
+
+.pitch-table th,
+.pitch-table td {
   border: 1px solid #dce2e8;
-  padding: 10px;
+  padding: 4px 5px;
+  text-align: center;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.pitch-table th {
+  background: #e8eaf0;
+  color: var(--maroon-dark);
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.pitch-table tbody tr:nth-child(even) {
+  background: #edf8fc;
+}
+
+.pitch-table tbody tr:hover {
+  background: #d8f0f8;
+}
+
+.pitch-table td:nth-child(4),
+.pitch-table td:nth-child(7) {
   text-align: left;
-  white-space: pre-wrap;
+  white-space: nowrap;
 }
-th {
-  background: var(--maroon);
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+
+.team-badge {
+  width: clamp(17px, 1.6vw, 25px);
+  height: clamp(17px, 1.6vw, 25px);
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 4px;
 }
-tbody tr:nth-child(even) { background: #edf8fc; }
-tbody tr:hover { background: #d8f0f8; }
+
 .status {
   text-align: center;
   color: #64748b;
   padding: 14px;
+  font-size: 14px;
 }
+
 footer {
   text-align: center;
-  padding: 18px;
+  padding: 7px;
   background: var(--maroon-dark);
   color: var(--blue);
-  font-size: 13px;
+  font-size: 11px;
+  margin-top: 10px;
 }
-@media(max-width:600px) {
-  header { padding: 18px 8px; }
-  .badge { width: 65px; height: 65px; }
-  .panel { padding: 7px; }
-  td, th { padding: 8px 6px; font-size: 12px; }
-  main { padding: 0 6px 16px; }
+
+@media (min-width: 1000px) {
+  body { overflow-x: hidden; }
+
+  .pitch-panel { padding: 8px; }
+
+  .pitch-table th,
+  .pitch-table td { padding: 4px; }
+}
+
+@media (max-width: 700px) {
+  .club-badge { width: 42px; height: 42px; }
+
+  .pitch-row { grid-template-columns: 1fr; }
+
+  .pitch-three { width: 100%; }
+
+  .pitch-table { font-size: 11px; }
+
+  .pitch-table th,
+  .pitch-table td { padding: 5px 3px; }
+
+  main { padding: 0 5px 8px; }
 }
 </style>
 </head>
@@ -145,15 +228,15 @@ footer {
 <body>
 <header>
   <div class="club">
-    <img class="badge" src="esquina-badge.png"
+    <img class="club-badge" src="esquina-badge.png"
          alt="Esquina Park Rangers badge">
     <div>
       <h1>ESQUINA PARK RANGERS</h1>
       <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-      <div>5th Annual International Tournament</div>
+      <div class="tournament">5th Annual International Tournament</div>
     </div>
   </div>
-  <div class="day">DAY 1 · MATCH RESULTS</div>
+  <div class="day">DAY 1 · LIVE MATCH RESULTS</div>
 </header>
 
 <nav>
@@ -162,25 +245,38 @@ footer {
 </nav>
 
 <main>
-  <section class="panel">
-    <h2>Day 1 Scoreboard</h2>
-    <div id="results-container" class="status">
-      Loading Day 1 results...
-    </div>
+  <div class="pitch-row">
+    <section class="pitch-panel">
+      <h2>PITCH 1</h2>
+      <div id="pitch-1" class="status">Loading fixtures...</div>
+    </section>
+
+    <section class="pitch-panel">
+      <h2>PITCH 2</h2>
+      <div id="pitch-2" class="status">Loading fixtures...</div>
+    </section>
+  </div>
+
+  <section class="pitch-panel pitch-three">
+    <h2>PITCH 3</h2>
+    <div id="pitch-3" class="status">Loading fixtures...</div>
   </section>
 </main>
 
 <footer>
-  ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE
+  ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE · AUTO-REFRESHES EVERY 30 SECONDS
 </footer>
 
-```html
 <script>
 (async function loadResults() {
-  const container = document.getElementById("results-container");
-
   const csvUrl =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+
+  const containers = {
+    "1": document.getElementById("pitch-1"),
+    "2": document.getElementById("pitch-2"),
+    "3": document.getElementById("pitch-3")
+  };
 
   function parseCSV(text) {
     const rows = [];
@@ -214,36 +310,23 @@ footer {
       row.push(cell);
       rows.push(row);
     }
-    return rows;
-  }
 
-  // Make team names and filenames easier to match.
-  function normaliseName(name) {
-    return name
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/\.png$/i, "")
-      .replace(/[^a-z0-9]/g, "");
+    return rows;
   }
 
   function addTeamBadge(cell, teamName) {
     const name = teamName.trim();
-    if (!name) return;
+    if (!name) {
+      cell.textContent = "";
+      return;
+    }
 
     const img = document.createElement("img");
     img.className = "team-badge";
     img.alt = "";
-    img.width = 30;
-    img.height = 30;
-    img.style.cssText =
-      "width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:8px;";
-
-    // The filename must correspond to the team's name.
     img.src = "badges/" + name + ".png";
 
     img.onerror = function () {
-      // Try a lowercase filename if the exact filename didn't work.
       if (!this.dataset.triedLowercase) {
         this.dataset.triedLowercase = "yes";
         this.src = "badges/" + name.toLowerCase() + ".png";
@@ -253,40 +336,47 @@ footer {
     };
 
     cell.textContent = "";
-    cell.style.whiteSpace = "nowrap";
     cell.appendChild(img);
     cell.appendChild(document.createTextNode(name));
   }
 
-  try {
-    const response = await fetch(csvUrl, { cache: "no-store" });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-
-    const csv = await response.text();
-    if (csv.trimStart().startsWith("<!DOCTYPE")) {
-      throw new Error("Google did not return CSV data");
+  function renderPitch(container, headers, fixtures) {
+    if (!fixtures.length) {
+      container.className = "status";
+      container.textContent = "No fixtures listed for this pitch.";
+      return;
     }
 
-    // Day 1: sheet rows 2–61, columns A–G.
-    const rows = parseCSV(csv).slice(1, 61)
-      .map(row => row.slice(0, 7));
-
     const table = document.createElement("table");
+    table.className = "pitch-table";
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+
+    headers.forEach(value => {
+      const th = document.createElement("th");
+      th.textContent = value;
+      headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
     const tbody = document.createElement("tbody");
 
-    rows.forEach((cells, index) => {
+    fixtures.forEach(cells => {
       const tr = document.createElement("tr");
 
       cells.forEach((value, columnIndex) => {
-        const cell = document.createElement(index === 0 ? "th" : "td");
+        const td = document.createElement("td");
 
-        if (index !== 0 && (columnIndex === 3 || columnIndex === 6)) {
-          addTeamBadge(cell, value);
+        if (columnIndex === 3 || columnIndex === 6) {
+          addTeamBadge(td, value);
         } else {
-          cell.textContent = value;
+          td.textContent = value;
         }
 
-        tr.appendChild(cell);
+        tr.appendChild(td);
       });
 
       tbody.appendChild(tr);
@@ -295,15 +385,56 @@ footer {
     table.appendChild(tbody);
     container.className = "";
     container.replaceChildren(table);
+  }
+
+  try {
+    const response = await fetch(csvUrl, { cache: "no-store" });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const csv = await response.text();
+
+    if (csv.trimStart().startsWith("<!DOCTYPE")) {
+      throw new Error("Google did not return CSV data");
+    }
+
+    // Day 1: keep the existing sheet range and columns A–G.
+    const rows = parseCSV(csv)
+      .slice(1, 61)
+      .map(row => row.slice(0, 7));
+
+    if (rows.length < 2) {
+      throw new Error("No fixture data found");
+    }
+
+    // First row in the selected range contains the column headings.
+    const headers = rows[0];
+    const fixtures = rows.slice(1);
+
+    // Column B (index 1) identifies the pitch.
+    const byPitch = { "1": [], "2": [], "3": [] };
+
+    fixtures.forEach(cells => {
+      const pitch = (cells[1] || "").trim();
+
+      if (byPitch[pitch]) {
+        byPitch[pitch].push(cells);
+      }
+    });
+
+    Object.keys(containers).forEach(pitch => {
+      renderPitch(containers[pitch], headers, byPitch[pitch]);
+    });
 
   } catch (error) {
-    container.className = "status";
-    container.textContent =
-      "Unable to load results. Please check the published Google Sheet.";
+    Object.values(containers).forEach(container => {
+      container.className = "status";
+      container.textContent =
+        "Unable to load results. Check the published Google Sheet.";
+    });
+
     console.error(error);
   }
 })();
 </script>
-```
 </body>
 </html>
