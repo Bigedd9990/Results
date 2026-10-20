@@ -148,12 +148,142 @@
   <main>
     <div class="card">
       <div class="dashboard-window">
-        <iframe
-  title="Esquina Park Rangers Live Match Results"
-  src="https://docs.google.com/spreadsheets/d/1z9-WN-5GVVAyV47wT7rG_-MgGpD_iAypltRiHFHUt4M/pubhtml?gid=1887191572&amp;range=A2%3AG124&amp;single=true&amp;widget=true&amp;headers=false"
-  style="width:100%; height:100%; border:0;"
-  loading="eager">
-</iframe>
+        <div id="results-container">Loading tournament results...</div>
+
+<style>
+  #results-container {
+    overflow-x: auto;
+    max-height: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  #results-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 14px;
+  }
+
+  #results-container td,
+  #results-container th {
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  #results-container tr:nth-child(even) {
+    background: #f2f6f3;
+  }
+
+  #results-container tr:first-child {
+    font-weight: bold;
+    background: #1b4332;
+    color: white;
+  }
+
+  #results-container .error {
+    padding: 20px;
+    color: #a61b1b;
+  }
+</style>
+
+<script>
+(async function loadResults() {
+  const container = document.getElementById("results-container");
+
+  const csvUrl =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+
+  try {
+    const response = await fetch(csvUrl, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Google Sheets returned HTTP " + response.status);
+    }
+
+    const csv = await response.text();
+
+    if (!csv.trim() || csv.trimStart().startsWith("<!DOCTYPE")) {
+      throw new Error("The published spreadsheet did not return CSV data.");
+    }
+
+    // Parse CSV, including quoted cells containing commas or line breaks.
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let quoted = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+
+        if (ch === '"') {
+          if (quoted && text[i + 1] === '"') {
+            cell += '"';
+            i++;
+          } else {
+            quoted = !quoted;
+          }
+        } else if (ch === "," && !quoted) {
+          row.push(cell);
+          cell = "";
+        } else if ((ch === "\n" || ch === "\r") && !quoted) {
+          if (ch === "\r" && text[i + 1] === "\n") i++;
+          row.push(cell);
+          rows.push(row);
+          row = [];
+          cell = "";
+        } else {
+          cell += ch;
+        }
+      }
+
+      if (cell.length || row.length) {
+        row.push(cell);
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
+    // Published CSV begins at A1, so take A2:G124.
+    const rows = parseCSV(csv).slice(1, 124).map(row =>
+      row.slice(0, 7)
+    );
+
+    const table = document.createElement("table");
+
+    rows.forEach((cells, index) => {
+      const tr = document.createElement("tr");
+
+      cells.forEach(value => {
+        const cell = document.createElement(index === 0 ? "th" : "td");
+        cell.textContent = value;
+        tr.appendChild(cell);
+      });
+
+      table.appendChild(tr);
+    });
+
+    container.replaceChildren(table);
+
+  } catch (error) {
+    container.innerHTML = "";
+    const message = document.createElement("div");
+    message.className = "error";
+    message.textContent =
+      "Unable to load results: " + error.message +
+      ". Check that the sheet is published and accessible.";
+    container.appendChild(message);
+    console.error(error);
+  }
+})();
+</script>
+
+
+
+What this changes
       </div>
     </div>
   </main>
