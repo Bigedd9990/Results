@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esquina Park Rangers Live Match Results</title>
+
+  <script src="https://cloudflare.com"></script>
+
   <style>
     :root {
       --primary: #1b4332;
@@ -87,8 +90,8 @@
       gap: 8px;
     }
     .badge-icon-img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       object-fit: contain;
       flex-shrink: 0;
     }
@@ -110,7 +113,7 @@
       font-size: 0.9rem;
       letter-spacing: 0.5px;
     }
-.team-name { font-weight: 600; color: #1a202c; }
+    .team-name { font-weight: 600; color: #1a202c; }
     .center { text-align: center; }
     .loading, .error-msg, .empty-msg { text-align: center; padding: 3rem 1rem; }
     .loading, .empty-msg { font-style: italic; color: var(--muted); }
@@ -140,16 +143,14 @@
   </main>
 
   <script>
-    // Points explicitly to your Match Results spreadsheet tab address link (gid=1887191572)
+    // Points directly to your operational script macro engine URL
     const csvSourceUrl = "https://google.com";
 
     const REFRESH_INTERVAL_MS = 15000;
-    const MAX_ROWS = 125;       
+    const MAX_ROWS = 125;       // Header plus up to rows A2 to G124
+    const MAX_COLUMNS = 15;    
 
-    const destination = document.getElementById("table-destination");
-    const liveIndicator = document.getElementById("live-indicator");
-    const statusText = document.getElementById("status-text");
-    const lastUpdated = document.getElementById("last-updated");
+    const BADGE_FOLDER_PATH = "badges/"; 
 
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>"']/g, character => ({
@@ -165,7 +166,7 @@
       if (!teamStringName) return "";
       const cleanText = teamStringName.replace(/\?/g, "").trim();
       const generatedFile = cleanText.toLowerCase().replace(/[^a-z0-9]/g, "_") + ".png";
-      return "badges/" + generatedFile;
+      return BADGE_FOLDER_PATH + generatedFile;
     }
 
     function setStatus(state, message) {
@@ -185,41 +186,13 @@
         </div>`;
       document.getElementById("retry-button").addEventListener("click", loadTournamentData);
     }
-// Native line parser engine copied directly from your working dashboard mechanics
-    function parseCSVTextRows(textData) {
-      let lines = [];
-      let currentRow = [];
-      let currentField = '';
-      let insideQuotes = false;
-
-      for (let i = 0; i < textData.length; i++) {
-        let char = textData[i];
-        if (char === '"') {
-          insideQuotes = !insideQuotes;
-        } else if (char === ',' && !insideQuotes) {
-          currentRow.push(currentField);
-          currentField = '';
-        } else if (char === '\n' && !insideQuotes) {
-          currentRow.push(currentField);
-          lines.push(currentRow);
-          currentRow = [];
-          currentField = '';
-        } else if (char \(!== '\r'\)) {
-          currentField += char;
-        }
-      }
-      if (currentField || currentRow.length > 0) {
-        currentRow.push(currentField);
-        lines.push(currentRow);
-      }
-      return lines;
-    }
-
     function renderTable(rows) {
-      if (!Array.isArray(rows) || rows.length === 0) {
-        throw new Error("The published CSV returned no rows.");
+      if (!Array.isArray(rows) || rows.length === 0 ||
+          rows.every(row => !Array.isArray(row) || row.join("").trim() === "")) {
+        throw new Error("The published CSV returned no rows. Check that the correct worksheet is published to the web.");
       }
 
+      // Restricts limits exactly to rows A2 to G124
       const targetRows = rows.slice(0, MAX_ROWS);
       
       let tableHtml = '<div class="table-wrap"><table><thead><tr>';
@@ -233,24 +206,24 @@
       let displayedRows = 0;
       for (let r = 1; r < targetRows.length; r++) {
         const row = targetRows[r];
-        if (!row || row.length === 0 || row.join("").trim() === "") continue;
+        if (!row || row.join("").trim() === "") continue;
 
+        // Formats section separators nicely (e.g., ",,,Day 2,,,,")
         const rowText = row.join("").replace(/\?/g, "").trim();
-        
-        // Formats the Day 2 separator row cleanly using your style grid rules
-        if (rowText.includes("Day 2") || (row[0] && row[0].trim().includes("Day"))) {
+        if (rowText.includes("Day 2") || (row[3] && String(row[3]).trim().includes("Day"))) {
           tableHtml += `<tr><td colspan="5" class="day-row center">Day 2</td></tr>`;
           continue;
         }
 
-        // Map spreadsheet text fields cleanly (A=Time, B=Pitch, D=Team A, E=Score A, F=Score B, G=Team B)
+        // Map spreadsheet text columns (A=Time, B=Pitch, D=Team A, E=Score A, F=Score B, G=Team B)
         let timeCell  = row[0] ? String(row[0]).replace(/\?/g, "").trim() : '';
         let pitchCell = row[1] ? String(row[1]).replace(/\?/g, "").trim() : '';
         let teamA     = row[3] ? String(row[3]).replace(/\?/g, "").trim() : '';
         let scoreA    = row[4] ? String(row[4]).replace(/\?/g, "").trim() : '';
         let scoreB    = row[5] ? String(row[5]).replace(/\?/g, "").trim() : '';
-        let teamB     = row[7] ? String(row[7]).replace(/\?/g, "").trim() : '';
+        let teamB     = row[6] ? String(row[6]).replace(/\?/g, "").trim() : '';
 
+        // Skips data configuration headers inside the sheet
         if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a" || !teamA) continue;
 
         const badgeA = cleanBadgeRouter(teamA);
@@ -260,7 +233,7 @@
         tableHtml += `<td class="center">${escapeHtml(timeCell || "-")}</td>`;
         tableHtml += `<td class="center">${escapeHtml(pitchCell || "-")}</td>`;
         
-        // Team A Slot with Badge
+        // Team A Column Slot with Badge
         tableHtml += `<td>
           <div class="team-flex">
             <img class="badge-icon-img" src="${badgeA}" onerror="this.style.display='none';" alt="" />
@@ -268,11 +241,11 @@
           </div>
         </td>`;
         
-        // Centralized Clean Score Box
+        // Central Combined Clean Score Box
         const scoreDisplay = (scoreA || scoreB) ? `${scoreA} - ${scoreB}` : "vs";
         tableHtml += `<td class="center"><span class="score-badge">${escapeHtml(scoreDisplay)}</span></td>`;
         
-        // Team B Slot with Badge
+        // Team B Column Slot with Badge
         tableHtml += `<td>
           <div class="team-flex">
             <img class="badge-icon-img" src="${badgeB}" onerror="this.style.display='none';" alt="" />
@@ -312,27 +285,41 @@
         });
 
         if (!response.ok) {
-          throw new Error("Handshake failed. HTTP " + response.status);
+          throw new Error("Google Sheets returned HTTP " + response.status);
         }
 
         const csvText = await response.text();
 
         if (!csvText.trim()) {
-          throw new Error("Spreadsheet returned blank text data.");
+          throw new Error("Google Sheets returned an empty CSV.");
         }
 
-        // Use the native parser built from your working template mechanics
-        const parsedRows = parseCSVTextRows(csvText);
-        renderTable(parsedRows);
+        if (/^\s*<(?:!doctype|html)\b/i.test(csvText)) {
+          throw new Error("Google returned HTML instead of CSV data.");
+        }
+
+        if (typeof Papa === "undefined") {
+          throw new Error("Papa Parse library did not load.");
+        }
+
+        const results = Papa.parse(csvText, {
+          skipEmptyLines: true
+        });
+
+        if (results.errors && results.errors.length) {
+          console.warn("CSV parsing warnings:", results.errors);
+        }
+
+        renderTable(results.data);
 
         setStatus("connected", "Live Center Active — refreshes every 15s");
         lastUpdated.textContent = "Last updated: " + new Date().toLocaleTimeString();
 
       } catch (error) {
-        console.error("Match center failed to connect:", error);
+        console.error("Tournament data loading failed:", error);
         const message = error.name === "AbortError"
-          ? "Connection timeout. Retrying."
-          : error.message || "Unable to sync match schedule.";
+          ? "Google Sheets took too long to respond. Please retry."
+          : error.message || "Unable to load tournament data.";
         showError(message);
       } finally {
         clearTimeout(timeoutId);
