@@ -1,3 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="30">
+<title>Esquina Park Rangers | Day 2</title>
+
+<style>
+:root {
+  --maroon: #572638;
+  --maroon-dark: #351724;
+  --blue: #B9E6F5;
+  --bg: #f3f6f9;
+  --text: #283443;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
+  color: white;
+  text-align: center;
+  padding: 24px 12px;
+  border-bottom: 5px solid var(--blue);
+}
+.club {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.badge {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(23px, 4vw, 36px);
+  letter-spacing: 1px;
+}
+.subtitle {
+  margin: 8px 0;
+  color: var(--blue);
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.day {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--blue);
+  color: var(--maroon-dark);
+  padding: 8px 22px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 8px;
+  flex-wrap: wrap;
+}
+nav a {
+  text-decoration: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  background: white;
+  color: var(--maroon);
+  border: 2px solid var(--maroon);
+  font-weight: bold;
+}
+nav a.active {
+  background: var(--maroon);
+  color: white;
+}
+main {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 14px 24px;
+}
+.panel {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px #0000000d;
+  padding: 14px;
+}
+.panel h2 {
+  color: var(--maroon);
+  margin: 4px 0 14px;
+}
+#results-container {
+  overflow: auto;
+  max-height: 72vh;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 14px;
+}
+td, th {
+  border: 1px solid #dce2e8;
+  padding: 10px;
+  text-align: left;
+  white-space: pre-wrap;
+}
+th {
+  background: var(--maroon);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+tbody tr:nth-child(even) { background: #edf8fc; }
+tbody tr:hover { background: #d8f0f8; }
+.status {
+  text-align: center;
+  color: #64748b;
+  padding: 14px;
+}
+footer {
+  text-align: center;
+  padding: 18px;
+  background: var(--maroon-dark);
+  color: var(--blue);
+  font-size: 13px;
+}
+@media(max-width:600px) {
+  header { padding: 18px 8px; }
+  .badge { width: 65px; height: 65px; }
+  .panel { padding: 7px; }
+  td, th { padding: 8px 6px; font-size: 12px; }
+  main { padding: 0 6px 16px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="club">
+    <img class="badge" src="esquina-badge.png"
+         alt="Esquina Park Rangers badge">
+    <div>
+      <h1>ESQUINA PARK RANGERS</h1>
+      <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+      <div>5th Annual International Tournament</div>
+    </div>
+  </div>
+  <div class="day">DAY 2 · MATCH RESULTS</div>
+</header>
+
+<nav>
+  <a href="day1.html">DAY 1</a>
+  <a class="active" href="day2.html">DAY 2</a>
+</nav>
+
+<main>
+  <section class="panel">
+    <h2>Day 2 Scoreboard</h2>
+    <div id="results-container" class="status">
+      Loading Day 2 results...
+    </div>
+  </section>
+</main>
+
+<footer>
+  ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE
+</footer>
+
 ```html
 <script>
 (async function loadResults() {
@@ -121,3 +298,5 @@
 })();
 </script>
 ```
+</body>
+</html>
