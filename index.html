@@ -1,103 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="30">
-  <title>Esquina Park Rangers Live Match Results</title>
-  <style>
-    :root {
-      --primary: #1b4332;
-      --accent: #40916c;
-      --bg: #f4f6f9;
-      --card: #ffffff;
-      --text: #2d3748;
-      --success: #52b788;
+// Native line parser engine copied directly from your working dashboard mechanics
+    function parseCSVTextRows(textData) {
+      let lines = [];
+      let currentRow = [];
+      let currentField = '';
+      let insideQuotes = false;
+
+      for (let i = 0; i < textData.length; i++) {
+        let char = textData[i];
+        if (char === '"') {
+          insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+          currentRow.push(currentField);
+          currentField = '';
+        } else if (char === '\n' && !insideQuotes) {
+          currentRow.push(currentField);
+          lines.push(currentRow);
+          currentRow = [];
+          currentField = '';
+        } else if (char \(!== '\r'\)) {
+          currentField += char;
+        }
+      }
+      if (currentField || currentRow.length > 0) {
+        currentRow.push(currentField);
+        lines.push(currentRow);
+      }
+      return lines;
     }
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
+
+    function renderTable(rows) {
+      if (!Array.isArray(rows) || rows.length === 0) {
+        throw new Error("The published CSV returned no rows.");
+      }
+
+      const targetRows = rows.slice(0, MAX_ROWS);
+      
+      let tableHtml = '<div class="table-wrap"><table><thead><tr>';
+      tableHtml += '<th class="center">Time</th>';
+      tableHtml += '<th class="center">Pitch</th>';
+      tableHtml += '<th>Team A</th>';
+      tableHtml += '<th class="center">Score</th>';
+      tableHtml += '<th>Team B</th>';
+      tableHtml += '</tr></thead><tbody>';
+
+      let displayedRows = 0;
+      for (let r = 1; r < targetRows.length; r++) {
+        const row = targetRows[r];
+        if (!row || row.length === 0 || row.join("").trim() === "") continue;
+
+        const rowText = row.join("").replace(/\?/g, "").trim();
+        
+        // Formats the Day 2 separator row cleanly using your style grid rules
+        if (rowText.includes("Day 2") || (row[0] && row[0].trim().includes("Day"))) {
+          tableHtml += `<tr><td colspan="5" class="day-row center">Day 2</td></tr>`;
+          continue;
+        }
+
+        // Map spreadsheet text fields cleanly (A=Time, B=Pitch, D=Team A, E=Score A, F=Score B, G=Team B)
+        let timeCell  = row[0] ? String(row[0]).replace(/\?/g, "").trim() : '';
+        let pitchCell = row[1] ? String(row[1]).replace(/\?/g, "").trim() : '';
+        let teamA     = row[3] ? String(row[3]).replace(/\?/g, "").trim() : '';
+        let scoreA    = row[4] ? String(row[4]).replace(/\?/g, "").trim() : '';
+        let scoreB    = row[5] ? String(row[5]).replace(/\?/g, "").trim() : '';
+        let teamB     = row[7] ? String(row[7]).replace(/\?/g, "").trim() : '';
+
+        if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a" || !teamA) continue;
+
+        const badgeA = cleanBadgeRouter(teamA);
+        const badgeB = cleanBadgeRouter(teamB);
+
+        tableHtml += "<tr>";
+        tableHtml += `<td class="center">${escapeHtml(timeCell || "-")}</td>`;
+        tableHtml += `<td class="center">${escapeHtml(pitchCell || "-")}</td>`;
+        
+        // Team A Slot with Badge
+        tableHtml += `<td>
+          <div class="team-flex">
+            <img class="badge-icon-img" src="${badgeA}" onerror="this.style.display='none';" alt="" />
+            <span class="team-name">${escapeHtml(teamA || "-")}</span>
+          </div>
+        </td>`;
+        
+        // Centralized Clean Score Box
+        const scoreDisplay = (scoreA || scoreB) ? `${scoreA} - ${scoreB}` : "vs";
+        tableHtml += `<td class="center"><span class="score-badge">${escapeHtml(scoreDisplay)}</span></td>`;
+        
+        // Team B Slot with Badge
+        tableHtml += `<td>
+          <div class="team-flex">
+            <img class="badge-icon-img" src="${badgeB}" onerror="this.style.display='none';" alt="" />
+            <span class="team-name">${escapeHtml(teamB || "-")}</span>
+          </div>
+        </td>`;
+        
+        tableHtml += "</tr>";
+        displayedRows++;
+      }
+      tableHtml += "</tbody></table></div>";
+
+      if (displayedRows === 0) {
+        tableHtml += '<div class="empty-msg">No active match rows were found inside the requested layout block.</div>';
+      }
+      destination.innerHTML = tableHtml;
     }
-    header {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      text-align: center;
-      padding: 2.5rem 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,.1);
+
+    let isLoading = false;
+
+    async function loadTournamentData() {
+      if (isLoading) return;
+      isLoading = true;
+
+      setStatus("loading", "Syncing live matches…");
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const separator = csvSourceUrl.includes("?") ? "&" : "?";
+        const freshUrl = csvSourceUrl + separator + "_refresh=" + Date.now();
+
+        const response = await fetch(freshUrl, {
+          cache: "no-store",
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error("Handshake failed. HTTP " + response.status);
+        }
+
+        const csvText = await response.text();
+
+        if (!csvText.trim()) {
+          throw new Error("Spreadsheet returned blank text data.");
+        }
+
+        // Use the native parser built from your working template mechanics
+        const parsedRows = parseCSVTextRows(csvText);
+        renderTable(parsedRows);
+
+        setStatus("connected", "Live Center Active — refreshes every 15s");
+        lastUpdated.textContent = "Last updated: " + new Date().toLocaleTimeString();
+
+      } catch (error) {
+        console.error("Match center failed to connect:", error);
+        const message = error.name === "AbortError"
+          ? "Connection timeout. Retrying."
+          : error.message || "Unable to sync match schedule.";
+        showError(message);
+      } finally {
+        clearTimeout(timeoutId);
+        isLoading = false;
+      }
     }
-    header h1 {
-      margin: 0;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    header p { margin: .5rem 0 0; opacity: .9; font-size: 1.1rem; }
-    .live-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,.2);
-      padding: .45rem .85rem;
-      border-radius: 20px;
-      font-size: .85rem;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: var(--success);
-      border-radius: 50%;
-      flex: 0 0 8px;
-      animation: blink 1.5s infinite;
-    }
-    @keyframes blink { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
-    main { width: 95%; max-width: 1400px; margin: 2rem auto; }
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.05);
-      padding: 1rem;
-      overflow: hidden;
-    }
-    .dashboard-window {
-      position: relative;
-      width: 100%;
-      height: 700px; 
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      overflow: hidden;
-    }
-    iframe {
-      position: absolute;
-      top: -45px; 
-      left: 0;
-      width: 100%;
-      height: calc(100% + 45px);
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Esquina Park Rangers</h1>
-    <p>5th Annual International Tournament - Match Center</p>
-    <div class="live-indicator" id="live-indicator">
-      <span class="dot"></span>
-      <span>Live Center Active (Refreshes every 30s)</span>
-    </div>
-  </header>
-<main>
-    <div class="card">
-      <div class="dashboard-window">
-        <!-- Native Google HTML Stream: Targets gid=1887191572 and fits rows A2 to G124 cleanly -->
-        <iframe src="https://google.com"></iframe>
-      </div>
-    </div>
-  </main>
+
+    loadTournamentData();
+    setInterval(loadTournamentData, REFRESH_INTERVAL_MS);
+  </script>
 </body>
 </html>
