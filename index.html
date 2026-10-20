@@ -1,3 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esquina Park Rangers Live Match Results</title>
+  <style>
+    :root {
+      --primary: #1b4332;
+      --accent: #40916c;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #2d3748;
+      --muted: #718096;
+      --error: #c53030;
+      --success: #52b788;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    header p { margin: .5rem 0 0; opacity: .9; font-size: 1.1rem; }
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.2);
+      padding: .45rem .85rem;
+      border-radius: 20px;
+      font-size: .85rem;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: #cbd5e0;
+      border-radius: 50%;
+      flex: 0 0 8px;
+    }
+    .live-indicator.connected .dot { background: var(--success); animation: blink 1.5s infinite; }
+    .live-indicator.failed .dot { background: #ffb4a2; }
+    @keyframes blink { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+    main { width: 95%; max-width: 1400px; margin: 2rem auto; }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.05);
+      padding: clamp(1rem, 2vw, 1.5rem);
+      overflow-x: auto;
+      min-height: 165px;
+    }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 10px; }
+    th {
+      background: #edf2f7;
+      padding: 12px;
+      font-weight: 600;
+      color: #4a5568;
+      text-transform: uppercase;
+      font-size: .85rem;
+      white-space: nowrap;
+    }
+    td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: .95rem; white-space: nowrap; }
+    tbody tr:hover { background: #f8fafc; }
+    
+    .team-flex {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-icon-img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .score-badge {
+      font-weight: bold;
+      color: var(--primary);
+      background: #e8f5e9;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      min-width: 45px;
+      text-align: center;
+    }
+    .day-row {
+      background: #edf2f7 !important;
+      font-weight: bold;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+.team-name { font-weight: 600; color: #1a202c; }
+    .center { text-align: center; }
+    .loading, .error-msg, .empty-msg { text-align: center; padding: 3rem 1rem; }
+    .loading, .empty-msg { font-style: italic; color: var(--muted); }
+    .error-msg { color: var(--error); font-weight: bold; overflow-wrap: anywhere; }
+    .error-detail { display: block; margin-top: .6rem; font-size: .9rem; font-weight: normal; color: var(--muted); }
+    .footer { color: var(--muted); font-size: .8rem; text-align: right; margin-top: 1rem; }
+    .retry { margin-top: 1rem; border: 0; border-radius: 6px; padding: .65rem 1rem; cursor: pointer; background: var(--primary); color: white; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Esquina Park Rangers</h1>
+    <p>5th Annual International Tournament - Match Center</p>
+    <div class="live-indicator" id="live-indicator" aria-live="polite">
+      <span class="dot"></span>
+      <span id="status-text">Connecting to Match Center…</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div id="table-destination" aria-live="polite">
+        <div class="loading">Loading match data from Google Sheets…</div>
+      </div>
+      <div class="footer" id="last-updated"></div>
+    </div>
+  </main>
+
+  <script>
+    // Points explicitly to your Match Results spreadsheet tab address link (gid=1887191572)
+    const csvSourceUrl = "https://google.com";
+
+    const REFRESH_INTERVAL_MS = 15000;
+    const MAX_ROWS = 125;       
+
+    const destination = document.getElementById("table-destination");
+    const liveIndicator = document.getElementById("live-indicator");
+    const statusText = document.getElementById("status-text");
+    const lastUpdated = document.getElementById("last-updated");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function cleanBadgeRouter(teamStringName) {
+      if (!teamStringName) return "";
+      const cleanText = teamStringName.replace(/\?/g, "").trim();
+      const generatedFile = cleanText.toLowerCase().replace(/[^a-z0-9]/g, "_") + ".png";
+      return "badges/" + generatedFile;
+    }
+
+    function setStatus(state, message) {
+      liveIndicator.classList.remove("connected", "failed");
+      if (state === "connected") liveIndicator.classList.add("connected");
+      if (state === "failed") liveIndicator.classList.add("failed");
+      statusText.textContent = message;
+    }
+
+    function showError(message) {
+      setStatus("failed", "Connection problem — retrying every 15s");
+      destination.innerHTML = `
+        <div class="error-msg">
+          Match data could not be displayed.
+          <span class="error-detail">${escapeHtml(message)}</span>
+          <button class="retry" type="button" id="retry-button">Try again now</button>
+        </div>`;
+      document.getElementById("retry-button").addEventListener("click", loadTournamentData);
+    }
 // Native line parser engine copied directly from your working dashboard mechanics
     function parseCSVTextRows(textData) {
       let lines = [];
