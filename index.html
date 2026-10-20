@@ -4,10 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esquina Park Rangers Live Match Results</title>
-
-  <!-- FIXED: Explicitly loads the PapaParse engine into your webpage to resolve the loading block -->
-  <script src="https://cloudflare.com"></script>
-
   <style>
     :root {
       --primary: #1b4332;
@@ -144,11 +140,10 @@
   </main>
 
   <script>
-    // Points directly to your new Match Results sheet tab (gid=1887191572)
-    const csvSourceUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+    const csvSourceUrl = "https://google.com";
 
     const REFRESH_INTERVAL_MS = 15000;
-    const MAX_ROWS = 125;       // Header plus up to rows A2 to G124
+    const MAX_ROWS = 125;       
 
     const destination = document.getElementById("table-destination");
     const liveIndicator = document.getElementById("live-indicator");
@@ -189,13 +184,26 @@
         </div>`;
       document.getElementById("retry-button").addEventListener("click", loadTournamentData);
     }
-function renderTable(rows) {
-      if (!Array.isArray(rows) || rows.length === 0 ||
-          rows.every(row => !Array.isArray(row) || row.join("").trim() === "")) {
+// Native CSV line parser function completely bypassing third-party library dependencies
+    function parseCSVLine(text) {
+      let p = '', r = [];
+      let q = false;
+      for (let i = 0; i < text.length; i++) {
+        let c = text[i];
+        if (c === '"') { q = !q; }
+        else if (c === ',' && !q) { r.push(p); p = ''; }
+        else if ((c \(=== '\r' \vert{}\vert{}\) c === '\n') && !q) { }
+        else { p += c; }
+      }
+      r.push(p);
+      return r;
+    }
+
+    function renderTable(rows) {
+      if (!Array.isArray(rows) || rows.length === 0) {
         throw new Error("The published CSV returned no rows.");
       }
 
-      // Processes precisely rows A2 to G124
       const targetRows = rows.slice(0, MAX_ROWS);
       
       let tableHtml = '<div class="table-wrap"><table><thead><tr>';
@@ -209,16 +217,16 @@ function renderTable(rows) {
       let displayedRows = 0;
       for (let r = 1; r < targetRows.length; r++) {
         const row = targetRows[r];
-        if (!row || row.join("").trim() === "") continue;
+        if (!row || row.length === 0 || row.join("").trim() === "") continue;
 
-        // Check if this row is a Day header separator line (e.g. ",,,Day 2,,,,")
         const rowText = row.join("").replace(/\?/g, "").trim();
-        if (rowText.includes("Day 2") || (row[3] && String(row[3]).trim().includes("Day"))) {
-          tableHtml += `<tr><td colspan="5" class="day-row center">Day 2</td></tr>`;
+        
+        // Handles section separators natively
+        if (rowText.includes("Day 2") || row[0].includes("Day") || row[3].includes("Day")) {
+          tableHtml += `<tr><td colspan="5" class="day-row center">${escapeHtml(row[0] || row[3] || "Day 2")}</td></tr>`;
           continue;
         }
 
-        // Map data from precise column coordinates (A=Time, B=Pitch, D=Team A, E=Score A, F=Score B, G=Team B)
         let timeCell  = String(row[0] ?? "").replace(/\?/g, "").trim();
         let pitchCell = String(row[1] ?? "").replace(/\?/g, "").trim();
         let teamA     = String(row[3] ?? "").replace(/\?/g, "").trim();
@@ -226,8 +234,7 @@ function renderTable(rows) {
         let scoreB    = String(row[5] ?? "").replace(/\?/g, "").trim();
         let teamB     = String(row[6] ?? "").replace(/\?/g, "").trim();
 
-        // Skip layout formatting headers inside the sheet
-        if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a") continue;
+        if (timeCell.toLowerCase() === "time" || teamA.toLowerCase() === "team a" || !teamA) continue;
 
         const badgeA = cleanBadgeRouter(teamA);
         const badgeB = cleanBadgeRouter(teamB);
@@ -236,7 +243,6 @@ function renderTable(rows) {
         tableHtml += `<td class="center">${escapeHtml(timeCell || "-")}</td>`;
         tableHtml += `<td class="center">${escapeHtml(pitchCell || "-")}</td>`;
         
-        // Team A with Badge
         tableHtml += `<td>
           <div class="team-flex">
             <img class="badge-icon-img" src="${badgeA}" onerror="this.style.display='none';" alt="" />
@@ -244,11 +250,9 @@ function renderTable(rows) {
           </div>
         </td>`;
         
-        // Combined Clean Scoreboard Display
         const scoreDisplay = (scoreA || scoreB) ? `${scoreA} - ${scoreB}` : "vs";
         tableHtml += `<td class="center"><span class="score-badge">${escapeHtml(scoreDisplay)}</span></td>`;
         
-        // Team B with Badge
         tableHtml += `<td>
           <div class="team-flex">
             <img class="badge-icon-img" src="${badgeB}" onerror="this.style.display='none';" alt="" />
@@ -297,15 +301,11 @@ function renderTable(rows) {
           throw new Error("Spreadsheet returned blank text data.");
         }
 
-        if (typeof Papa === "undefined") {
-          throw new Error("Papa Parse library failed to load.");
-        }
+        // Native layout parser engine
+        const lines = csvText.split(\(/\r\)?\n/);
+        const parsedRows = lines.map(line => parseCSVLine(line));
 
-        const results = Papa.parse(csvText, {
-          skipEmptyLines: true
-        });
-
-        renderTable(results.data);
+        renderTable(parsedRows);
 
         setStatus("connected", "Live Center Active — refreshes every 15s");
         lastUpdated.textContent = "Last updated: " + new Date().toLocaleTimeString();
