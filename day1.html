@@ -406,9 +406,9 @@ footer {
       throw new Error("No fixture data found");
     }
 
-    // First row in the selected range contains the column headings.
-    const headers = rows[0];
-    const fixtures = rows.slice(1);
+    // Every row in this range is a fixture — don't discard the first one.
+const headers = ["Time", "Pitch", "Group", "Team 1", "Score", "Score", "Team 2"];
+const fixtures = rows;
 
     // Column B (index 1) identifies the pitch.
     const byPitch = { "1": [], "2": [], "3": [] };
