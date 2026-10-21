@@ -435,6 +435,24 @@ footer {
   color: #ffffff;
   text-align: right;
 } 
+ .header-clock {
+  display: block;
+  margin-bottom: 5px;
+  color: #B9E6F5;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keep the clock readable on smaller screens */
+@media (max-width: 760px) {
+  .header-clock {
+    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+    margin-bottom: 3px;
+  }
+} 
 </style>
 </head>
 
@@ -448,10 +466,11 @@ footer {
          onerror="this.style.visibility='hidden'">
 
     <div class="heading">
-      <h1>ESQUINA PARK RANGERS</h1>
-      <p>International Walking Football Cup</p>
-      <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
-    </div>
+     <div id="clock" class="header-clock">SPANISH TIME: --:--:--</div>
+  <h1>ESQUINA PARK RANGERS</h1>
+  <p>International Walking Football Cup</p>
+  <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
+</div>
 
     <img class="logo"
          src="badges/Rojales.png"
