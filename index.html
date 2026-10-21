@@ -882,7 +882,7 @@ const response = await fetch(freshURL, {
 
     const csvText = await response.text();
     const allRows = parseCSV(csvText);
-
+console.log("CSV received:", new Date().toLocaleTimeString(), allRows);
     /*
       CSV row 1 contains the headings.
       Day 1 is sheet rows 2–61.
@@ -910,9 +910,7 @@ const response = await fetch(freshURL, {
     renderPitch(2, pitches[2]);
     renderPitch(3, pitches[3]);
 
-    boardScroll.scrollTop = 0;
     startAutoScroll();
-boardScroll.scrollTop = 0;
     const time = new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Madrid",
       hour: "2-digit",
