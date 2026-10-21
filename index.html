@@ -174,13 +174,32 @@ header {
 .pitch-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(10px, 1.5vw, 20px);
+  gap: clamp(6px, 1vw, 16px);
   align-items: start;
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+/* Medium screens: two pitches side by side */
+@media (max-width: 1000px) {
+  .pitch-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pitch.pitch-3 {
+    grid-column: auto;
+    width: 100%;
+    max-width: none;
+  }
 }
 
+/* Small screens: one pitch per row */
+@media (max-width: 600px) {
+  .pitch-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 .pitch {
   min-width: 0;
   overflow: hidden;
