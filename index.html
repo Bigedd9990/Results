@@ -502,6 +502,84 @@ footer {
     margin-bottom: 3px;
   }
 } 
+  /* LARGE TV / DESKTOP DISPLAY */
+@media (min-width: 1200px) {
+  .page {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  header {
+    padding: 12px 30px;
+    grid-template-columns: 150px minmax(0, 1fr) 170px;
+  }
+
+  .logo-left {
+    width: 120px;
+    height: 120px;
+  }
+
+  .logo-right {
+    width: 160px;
+    height: 130px;
+  }
+
+  .heading h1 {
+    font-size: clamp(30px, 2.5vw, 48px);
+  }
+
+  .heading p {
+    font-size: clamp(18px, 1.4vw, 26px);
+  }
+
+  .header-clock {
+    font-size: clamp(24px, 1.8vw, 34px);
+  }
+
+  .day-label {
+    font-size: clamp(15px, 1.1vw, 21px);
+  }
+
+  .board-scroll {
+    padding: 16px 24px;
+    overflow-y: auto;
+  }
+
+  .pitch-grid {
+    max-width: 2200px;
+    gap: 20px;
+  }
+
+  .pitch-title {
+    padding: 12px;
+    font-size: clamp(22px, 1.5vw, 30px);
+  }
+
+  th {
+    font-size: clamp(13px, 0.9vw, 18px);
+    padding: 10px 5px;
+  }
+
+  td {
+    font-size: clamp(15px, 1vw, 21px);
+    padding: 10px 5px;
+  }
+
+  .team-badge {
+    width: clamp(28px, 2.2vw, 42px);
+    height: clamp(28px, 2.2vw, 42px);
+  }
+
+  .score {
+    font-size: clamp(17px, 1.2vw, 24px);
+  }
+
+  footer {
+    min-height: 46px;
+    font-size: 15px;
+  }
+}
 </style>
 </head>
 
