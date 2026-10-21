@@ -220,22 +220,28 @@ tbody tr:last-child td {
 .team {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: clamp(3px, 0.5vw, 7px);
+  justify-content: flex-start;
+  gap: 6px;
+  width: 100%;
   min-width: 0;
+  text-align: left;
   font-weight: bold;
 }
 
 .team-name {
+  flex: 1 1 auto;
   min-width: 0;
+  text-align: left;
   overflow-wrap: anywhere;
+  line-height: 1.15;
 }
 
 .team-badge {
-  flex: 0 0 auto;
-  width: clamp(20px, 2.5vw, 34px);
-  height: clamp(20px, 2.5vw, 34px);
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
+  margin: 0;
   background: transparent;
   filter:
     drop-shadow(1px 1px 0 #0005)
@@ -400,6 +406,35 @@ footer {
     padding-bottom: 4px;
   }
 }
+ footer {
+  flex: 0 0 auto;
+  min-height: 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  color: #ffffff;
+  background: #351724;
+  border-top: 3px solid #B9E6F5;
+  font-size: clamp(12px, 1vw, 16px);
+  position: relative;
+  z-index: 5;
+}
+
+#clock {
+  display: block !important;
+  visibility: visible !important;
+  color: #B9E6F5;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#status {
+  display: block;
+  color: #ffffff;
+  text-align: right;
+} 
 </style>
 </head>
 
@@ -467,7 +502,7 @@ let lastFrame = 0;
 /* Live clock in Spanish local time */
 function updateClock() {
   document.getElementById("clock").textContent =
-    "Spanish time: " +
+    "SPANISH TIME: " +
     new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Madrid",
       hour: "2-digit",
@@ -479,7 +514,6 @@ function updateClock() {
 
 updateClock();
 setInterval(updateClock, 1000);
-
 /* Parse CSV safely, including quoted fields and commas */
 function parseCSV(text) {
   const rows = [];
