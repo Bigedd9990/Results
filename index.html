@@ -875,7 +875,6 @@ async function loadResults() {
 const response = await fetch(freshURL, {
   cache: "no-store"
 });
-    });
 
     if (!response.ok) {
       throw new Error("Google Sheets returned HTTP " + response.status);
