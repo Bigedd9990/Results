@@ -74,7 +74,11 @@ header {
     drop-shadow(-1px -1px 0 #ffffffb3)
     drop-shadow(0 4px 4px #0007);
 }
-
+/* Make the Rojales Council badge larger */
+header .logo:last-child {
+  width: clamp(65px, 10vw, 140px);
+  height: clamp(65px, 10vw, 140px);
+}
 .heading {
   min-width: 0;
   text-align: center;
