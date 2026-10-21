@@ -461,7 +461,7 @@ footer {
 
   <header>
     <img class="logo"
-         src="esquina-badge.png"
+         src="Esquina Park Rangers.png"
          alt="Esquina Park Rangers badge"
          onerror="this.style.visibility='hidden'">
 
@@ -519,9 +519,9 @@ let pauseUntil = 0;
 let lastFrame = 0;
 
 /* Live clock in Spanish local time */
+
 function updateClock() {
   document.getElementById("clock").textContent =
-    "SPANISH TIME: " +
     new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Madrid",
       hour: "2-digit",
@@ -533,6 +533,7 @@ function updateClock() {
 
 updateClock();
 setInterval(updateClock, 1000);
+
 /* Parse CSV safely, including quoted fields and commas */
 function parseCSV(text) {
   const rows = [];
