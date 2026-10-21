@@ -870,8 +870,11 @@ async function loadResults() {
   try {
     statusEl.textContent = "Updating results…";
 
-    const response = await fetch(CSV_URL, {
-      cache: "no-store"
+    const freshURL = CSV_URL + "&_=" + Date.now();
+
+const response = await fetch(freshURL, {
+  cache: "no-store"
+});
     });
 
     if (!response.ok) {
