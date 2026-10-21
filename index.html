@@ -46,24 +46,22 @@ body {
 
 /* HEADER */
 
+
 header {
   flex: 0 0 auto;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 140px minmax(0, 1fr) 140px;
   align-items: center;
-  gap: clamp(8px, 2vw, 24px);
-  padding: clamp(8px, 1.5vh, 16px) clamp(10px, 2vw, 26px);
+  gap: 12px;
+  padding: 10px 20px;
   color: white;
-  background: linear-gradient(135deg, var(--maroon), var(--dark-maroon));
-  border-bottom: 4px solid var(--light-blue);
+  background: linear-gradient(135deg, #71364B, #351724);
+  border-bottom: 4px solid #B9E6F5;
   box-shadow: 0 4px 10px #0003;
-  z-index: 2;
 }
 
 .logo {
   display: block;
-  width: clamp(48px, 7vw, 100px);
-  height: clamp(48px, 7vw, 100px);
   object-fit: contain;
   background: transparent;
   border: 2px solid #fff9;
@@ -74,40 +72,91 @@ header {
     drop-shadow(-1px -1px 0 #ffffffb3)
     drop-shadow(0 4px 4px #0007);
 }
-/* Make the Rojales Council badge larger */
-header .logo:last-child {
-  width: clamp(65px, 10vw, 140px);
-  height: clamp(65px, 10vw, 140px);
+
+.logo-left {
+  width: 100px;
+  height: 100px;
+  justify-self: start;
 }
+
+.logo-right {
+  width: 140px;
+  height: 110px;
+  justify-self: end;
+}
+
 .heading {
   min-width: 0;
   text-align: center;
 }
 
+.header-clock {
+  margin-bottom: 4px;
+  color: #B9E6F5;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
+}
+
 .heading h1 {
   margin: 0;
-  font-size: clamp(1.05rem, 3vw, 2.5rem);
+  font-size: clamp(1.1rem, 2.6vw, 2.5rem);
   line-height: 1.12;
-  letter-spacing: 0.02em;
 }
 
 .heading p {
-  margin: 5px 0 0;
-  color: var(--light-blue);
-  font-size: clamp(0.72rem, 1.5vw, 1.2rem);
+  margin: 5px 0;
+  color: #B9E6F5;
+  font-size: clamp(0.75rem, 1.5vw, 1.2rem);
   font-weight: bold;
 }
 
 .day-label {
   display: inline-block;
-  margin-top: 5px;
+  margin-top: 4px;
   padding: 4px 12px;
-  color: var(--dark-maroon);
-  background: var(--light-blue);
+  color: #351724;
+  background: #B9E6F5;
   border-radius: 20px;
   font-size: clamp(0.7rem, 1.2vw, 1rem);
   font-weight: bold;
 }
+
+@media (max-width: 760px) {
+  header {
+    grid-template-columns: 55px minmax(0, 1fr) 65px;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .logo-left {
+    width: 52px;
+    height: 52px;
+  }
+
+  .logo-right {
+    width: 65px;
+    height: 65px;
+  }
+
+  .heading h1 {
+    font-size: clamp(0.85rem, 3.5vw, 1.4rem);
+  }
+
+  .heading p {
+    font-size: clamp(0.6rem, 2.2vw, 0.85rem);
+  }
+
+  .header-clock {
+    font-size: 0.95rem;
+  }
+
+  .day-label {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+  }
+}
+
 
 /* FIXTURE AREA */
 
@@ -459,24 +508,24 @@ footer {
 <body>
 <div class="page">
 
-  <header>
-    <img class="logo"
-     src="badges/Esquina%20Park%20Rangers.png"
-     alt="Esquina Park Rangers badge">
-         onerror="this.style.visibility='hidden'">
+  
+<header>
+  <img class="logo logo-left"
+       src="badges/Esquina%20Park%20Rangers.png"
+       alt="Esquina Park Rangers badge">
 
-    <div class="heading">
-     <div id="clock" class="header-clock">SPANISH TIME: --:--:--</div>
-  <h1>ESQUINA PARK RANGERS</h1>
-  <p>International Walking Football Cup</p>
-  <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
-</div>
+  <div class="heading">
+    <div id="clock" class="header-clock">--:--:--</div>
+    <h1>ESQUINA PARK RANGERS</h1>
+    <p>International Walking Football Cup</p>
+    <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
+  </div>
 
-    <img class="logo"
-         src="badges/Rojales.png"
-         alt="Rojales Council badge"
-         onerror="this.style.visibility='hidden'">
-  </header>
+  <img class="logo logo-right"
+       src="badges/Rojales.png"
+       alt="Rojales Council badge">
+</header>
+
 
   <main class="board-scroll" id="boardScroll">
     <div class="pitch-grid">
