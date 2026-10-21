@@ -832,7 +832,7 @@ async function loadResults() {
 
     boardScroll.scrollTop = 0;
     startAutoScroll();
-
+boardScroll.scrollTop = 0;
     const time = new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Madrid",
       hour: "2-digit",
@@ -858,7 +858,8 @@ setInterval(loadResults, 30000);
 
 /* Recheck the scroll after screen size or orientation changes */
 window.addEventListener("resize", () => {
-  startAutoScroll();
+  stopAutoScroll();
+  boardScroll.scrollTop = 0;
 });
 </script>
 
