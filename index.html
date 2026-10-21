@@ -1,384 +1,397 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#572638">
-
-<title>Esquina Park Rangers | Tournament Centre</title>
-
-<style>
-:root {
-  --maroon: #572638;
-  --dark: #351724;
-  --light-blue: #B9E6F5;
-  --background: #f2f5f9;
-  --white: #ffffff;
-  --text: #283443;
-  --muted: #687587;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: var(--text);
-}
-
-/* HERO */
-.hero {
-  background: linear-gradient(135deg, var(--dark), var(--maroon));
-  color: var(--white);
-  text-align: center;
-  padding: 48px 20px 42px;
-  border-bottom: 6px solid var(--light-blue);
-}
-
-.club-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.badge {
-  width: 115px;
-  height: 115px;
-  object-fit: contain;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(26px, 4vw, 43px);
-  letter-spacing: 1.5px;
-}
-
-.subtitle {
-  color: var(--light-blue);
-  font-weight: bold;
-  letter-spacing: 2px;
-  margin-top: 12px;
-  font-size: clamp(13px, 2vw, 17px);
-}
-
-.description {
-  margin: 22px auto 0;
-  max-width: 650px;
-  line-height: 1.6;
-  color: #f3eaf0;
-}
-
-/* STATUS */
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  background: rgba(255,255,255,0.12);
-  padding: 10px 17px;
-  border-radius: 30px;
-  margin-top: 20px;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.status-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--light-blue);
-  box-shadow: 0 0 8px var(--light-blue);
-}
-
-/* MAIN CONTENT */
-main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 38px 20px 50px;
-}
-
-.section-heading {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.section-heading h2 {
-  color: var(--maroon);
-  font-size: clamp(24px, 3vw, 32px);
-  margin: 0 0 10px;
-}
-
-.section-heading p {
-  color: var(--muted);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* DAY CARDS */
-.days {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.day-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 6px 24px rgba(53, 23, 36, 0.08);
-  border: 1px solid #e7eaf0;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.day-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(53, 23, 36, 0.14);
-}
-
-.card-top {
-  padding: 25px;
-  background: var(--maroon);
-  color: white;
-}
-
-.day-two .card-top {
-  background: #b9e6f5;
-  color: var(--dark);
-}
-
-.day-label {
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 12px;
-  letter-spacing: 2px;
-  opacity: 0.9;
-}
-
-.card-top h3 {
-  font-size: 30px;
-  margin: 9px 0 0;
-}
-
-.card-body {
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.card-body p {
-  line-height: 1.65;
-  color: var(--muted);
-  margin: 0 0 25px;
-  flex: 1;
-}
-
-.open-button {
-  display: block;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  background: var(--maroon);
-  color: white;
-  padding: 15px 18px;
-  border-radius: 9px;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-
-.open-button:hover {
-  background: var(--dark);
-}
-
-.day-two .open-button {
-  background: #b9e6f5;
-  color: var(--dark);
-}
-
-.day-two .open-button:hover {
-  background: #91d5ec;
-}
-
-/* INFORMATION */
-.info {
-  margin-top: 30px;
-  padding: 24px;
-  border-radius: 14px;
-  background: white;
-  border-left: 5px solid var(--light-blue);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-}
-
-.info h3 {
-  margin: 0 0 10px;
-  color: var(--maroon);
-}
-
-.info p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-footer {
-  background: var(--dark);
-  color: var(--light-blue);
-  text-align: center;
-  padding: 25px 15px;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-footer strong {
-  color: white;
-  letter-spacing: 1px;
-}
-
-/* MOBILE */
-@media (max-width: 650px) {
-  .hero {
-    padding: 30px 14px;
-  }
-
-  .club-header {
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .badge {
-    width: 90px;
-    height: 90px;
-  }
-
-  .days {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  main {
-    padding: 28px 14px 35px;
-  }
-
-  .card-top,
-  .card-body {
-    padding: 21px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esquina Park Rangers — Day 1 Live Results</title>
+  <style>
+    :root {
+      --maroon: #71364B;
+      --maroon-dark: #4B2433;
+      --blue: #B9E6F5;
+      --page: #f3f6f9;
+      --ink: #283443;
+      --line: #d9e0e7;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--page);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .site-header {
+      flex: 0 0 auto;
+      background: var(--maroon);
+      color: white;
+      padding: 12px 22px 10px;
+      box-shadow: 0 3px 10px #0002;
+      z-index: 2;
+    }
+    .header-main {
+      display: grid;
+      grid-template-columns: minmax(82px, 150px) 1fr minmax(82px, 150px);
+      align-items: center;
+      gap: 18px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    .brand-badge {
+      width: clamp(76px, 8vw, 124px);
+      height: clamp(76px, 8vw, 124px);
+      object-fit: contain;
+      justify-self: center;
+      background: #fff;
+      border-radius: 50%;
+      padding: 4px;
+    }
+    .heading { text-align: center; min-width: 0; }
+    h1 {
+      font-size: clamp(22px, 2.6vw, 42px);
+      line-height: 1.05;
+      margin: 0 0 7px;
+      letter-spacing: .035em;
+    }
+    .cup-title {
+      color: var(--blue);
+      font-size: clamp(13px, 1.35vw, 21px);
+      font-weight: 800;
+      letter-spacing: .06em;
+      margin-bottom: 6px;
+    }
+    .event-date {
+      font-size: clamp(12px, 1.15vw, 18px);
+      font-weight: 700;
+    }
+    .header-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      font-size: clamp(12px, 1vw, 16px);
+    }
+    .clock {
+      color: var(--blue);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+    .nav { display: flex; gap: 8px; }
+    .nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 7px 13px;
+      border: 1px solid #ffffff70;
+      border-radius: 7px;
+    }
+    .nav a.active, .nav a:hover { background: var(--blue); color: var(--maroon-dark); }
+    .status { opacity: .9; font-size: 12px; }
+    .board-scroll {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px clamp(10px, 2vw, 28px) 24px;
+      scroll-behavior: smooth;
+    }
+    .board {
+      max-width: 1800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 20px;
+    }
+    .pitch-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 14px #17212b12;
+      min-width: 0;
+    }
+    .pitch-card.pitch-3 {
+      grid-column: 1 / -1;
+      width: min(100%, 900px);
+      justify-self: center;
+    }
+    .pitch-heading {
+      margin: 0;
+      padding: 11px 16px;
+      background: var(--maroon);
+      color: white;
+      font-size: clamp(18px, 1.7vw, 26px);
+      letter-spacing: .03em;
+    }
+    .pitch-heading span { color: var(--blue); }
+    table { width: 100%; border-collapse: collapse; table-layout: auto; }
+    th {
+      background: #f0e7eb;
+      color: var(--maroon-dark);
+      font-size: 12px;
+      text-align: left;
+      padding: 8px 9px;
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 9px;
+      border-bottom: 1px solid var(--line);
+      font-size: clamp(13px, 1.1vw, 17px);
+      vertical-align: middle;
+    }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .time-cell { white-space: nowrap; font-weight: 700; width: 1%; }
+    .group-cell { white-space: nowrap; color: #596575; font-size: .9em; }
+    .team-cell { font-weight: 800; min-width: 0; }
+    .team-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .team-name { overflow-wrap: anywhere; }
+    .team-badge {
+      width: clamp(24px, 2.4vw, 38px);
+      height: clamp(24px, 2.4vw, 38px);
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+    .score-cell {
+      font-weight: 900;
+      font-size: clamp(16px, 1.35vw, 21px);
+      text-align: center;
+      white-space: nowrap;
+      width: 1%;
+    }
+    .score-dash { color: #8792a0; padding: 0 3px; }
+    .loading, .error {
+      background: white;
+      padding: 24px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .error { color: #a12626; }
+    .site-footer {
+      flex: 0 0 auto;
+      background: var(--maroon-dark);
+      color: white;
+      text-align: center;
+      padding: 7px 10px;
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+    @media (max-width: 760px) {
+      body { overflow: auto; }
+      .site-header { padding: 10px; }
+      .header-main { grid-template-columns: 64px 1fr 64px; gap: 8px; }
+      .brand-badge { width: 60px; height: 60px; }
+      .board-scroll { overflow: visible; }
+      .board { grid-template-columns: 1fr; }
+      .pitch-card.pitch-3 { grid-column: auto; width: 100%; }
+      .header-bottom { gap: 10px; }
+    }
+  </style>
 </head>
-
 <body>
-
-<header class="hero">
-  <div class="club-header">
-
-    <!-- Keep the badge image in the same folder as this file -->
-    <img
-      class="badge"
-      src="esquina-badge.png"
-      alt="Esquina Park Rangers club badge"
-    >
-
-    <div>
-      <h1>ESQUINA PARK RANGERS</h1>
-      <div class="subtitle">
-        INTERNATIONAL WALKING FOOTBALL CUP
+  <header class="site-header">
+    <div class="header-main">
+      <img class="brand-badge" src="esquina-badge.png" alt="Esquina Park Rangers badge">
+      <div class="heading">
+        <h1>ESQUINA PARK RANGERS</h1>
+        <div class="cup-title">INTERNATIONAL WALKING FOOTBALL CUP</div>
+        <div class="event-date">5th &amp; 6th November 2026</div>
       </div>
-      <div style="margin-top:10px">
-        Fifth Annual International Tournament
-      </div>
+      <img class="brand-badge" src="badges/Rojales.png" alt="Rojales Council badge">
     </div>
+    <div class="header-bottom">
+      <div class="clock" id="clock">--:--:--</div>
+      <nav class="nav" aria-label="Tournament days">
+        <a class="active" href="day1.html">DAY 1</a>
+        <a href="day2.html">DAY 2</a>
+      </nav>
+      <div class="status" id="status">Loading tournament results…</div>
+    </div>
+  </header>
 
-  </div>
+  <main class="board-scroll" id="boardScroll">
+    <div id="board" class="board">
+      <div class="loading">Loading Day 1 fixtures from Google Sheets…</div>
+    </div>
+  </main>
+  <footer class="site-footer">ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE</footer>
 
-  <p class="description">
-    Welcome to the official tournament centre.
-    Follow the action and view match results across both
-    days of the Esquina Park Rangers International Cup.
-  </p>
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+    const REFRESH_SECONDS = 30;
+    const SCROLL_PAUSE_MS = 4500;
+    const SCROLL_PIXELS_PER_SECOND = 24;
 
-  <div class="status">
-    <span class="status-dot"></span>
-    TOURNAMENT RESULTS CENTRE
-  </div>
-</header>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      }).format(now);
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
 
-<main>
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], field = "", quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i], next = text[i + 1];
+        if (c === '"' && quoted && next === '"') { field += '"'; i++; }
+        else if (c === '"') { quoted = !quoted; }
+        else if (c === "," && !quoted) { row.push(field.trim()); field = ""; }
+        else if ((c === "\n" || c === "\r") && !quoted) {
+          if (c === "\r" && next === "\n") i++;
+          row.push(field.trim());
+          if (row.some(v => v !== "")) rows.push(row);
+          row = []; field = "";
+        } else field += c;
+      }
+      if (field.length || row.length) {
+        row.push(field.trim());
+        if (row.some(v => v !== "")) rows.push(row);
+      }
+      return rows;
+    }
 
-  <section class="section-heading">
-    <h2>Choose Your Match Day</h2>
-    <p>Select a day below to view its scoreboard and match results.</p>
-  </section>
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
 
-  <section class="days">
+    function teamBadge(name) {
+      const safe = String(name || "").trim();
+      if (!safe) return "";
+      const encoded = encodeURIComponent(safe);
+      const lower = encodeURIComponent(safe.toLowerCase());
+      return `<img class="team-badge" src="badges/${encoded}.png" alt="" loading="lazy"
+        onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='badges/${lower}.png'}else{this.style.display='none'}">`;
+    }
 
-    <!-- DAY ONE -->
-    <article class="day-card day-one">
-      <div class="card-top">
-        <div class="day-label">Tournament</div>
-        <h3>DAY 1</h3>
-      </div>
+    function teamCell(name) {
+      const clean = String(name || "").trim();
+      return `<td class="team-cell"><div class="team-wrap">${teamBadge(clean)}<span class="team-name">${escapeHTML(clean || "TBC")}</span></div></td>`;
+    }
 
-      <div class="card-body">
-        <p>
-          View the first day's matches and scores.
-          The scoreboard displays the Day 1 results
-          directly from the tournament spreadsheet.
-        </p>
+    function pitchCard(pitch, fixtures) {
+      const rows = fixtures.map(cells => {
+        // Columns A-G: A time, B pitch, C group, D team 1, E score 1, F score 2, G team 2.
+        const time = cells[0] || "";
+        const group = cells[2] || "";
+        const team1 = cells[3] || "";
+        const score1 = cells[4] || "";
+        const score2 = cells[5] || "";
+        const team2 = cells[6] || "";
+        return `<tr>
+          <td class="time-cell">${escapeHTML(time)}</td>
+          <td class="group-cell">${escapeHTML(group)}</td>
+          ${teamCell(team1)}
+          <td class="score-cell">${escapeHTML(score1)}<span class="score-dash">–</span>${escapeHTML(score2)}</td>
+          ${teamCell(team2)}
+        </tr>`;
+      }).join("");
 
-        <a class="open-button" href="day1.html">
-          OPEN DAY 1 SCOREBOARD →
-        </a>
-      </div>
-    </article>
+      return `<section class="pitch-card ${pitch === "3" ? "pitch-3" : ""}">
+        <h2 class="pitch-heading">PITCH <span>${escapeHTML(pitch)}</span></h2>
+        <table>
+          <thead><tr><th>TIME</th><th>GROUP</th><th colspan="1">TEAM 1</th><th>SCORE</th><th>TEAM 2</th></tr></thead>
+          <tbody>${rows || '<tr><td colspan="5">No fixtures found for this pitch.</td></tr>'}</tbody>
+        </table>
+      </section>`;
+    }
 
-    <!-- DAY TWO -->
-    <article class="day-card day-two">
-      <div class="card-top">
-        <div class="day-label">Tournament</div>
-        <h3>DAY 2</h3>
-      </div>
+    function startAutoScroll() {
+      const container = document.getElementById("boardScroll");
+      if (window.matchMedia("(max-width: 760px)").matches) return;
+      if (window.boardScrollTimer) clearTimeout(window.boardScrollTimer);
+      if (window.boardAnimationFrame) cancelAnimationFrame(window.boardAnimationFrame);
+      container.scrollTop = 0;
+      let direction = 1, last = 0, pauseUntil = performance.now() + SCROLL_PAUSE_MS;
+      function step(now) {
+        if (!last) last = now;
+        const delta = Math.min(50, now - last);
+        last = now;
+        const maxScroll = container.scrollHeight - container.clientHeight;
+        if (maxScroll <= 2) {
+          window.boardScrollTimer = setTimeout(() => {
+            container.scrollTop = 0;
+            startAutoScroll();
+          }, REFRESH_SECONDS * 1000);
+          return;
+        }
+        if (now >= pauseUntil) {
+          container.scrollTop += direction * SCROLL_PIXELS_PER_SECOND * delta / 1000;
+          if (container.scrollTop >= maxScroll - 1) {
+            container.scrollTop = maxScroll;
+            direction = -1;
+            pauseUntil = now + SCROLL_PAUSE_MS;
+          } else if (container.scrollTop <= 0 && direction === -1) {
+            container.scrollTop = 0;
+            direction = 1;
+            pauseUntil = now + SCROLL_PAUSE_MS;
+          }
+        }
+        window.boardAnimationFrame = requestAnimationFrame(step);
+      }
+      window.boardAnimationFrame = requestAnimationFrame(step);
+    }
 
-      <div class="card-body">
-        <p>
-          Follow the second day's matches and scores.
-          Open the separate Day 2 scoreboard to see
-          its results.
-        </p>
+    let hasStartedAutoScroll = false;
 
-        <a class="open-button" href="day2.html">
-          OPEN DAY 2 SCOREBOARD →
-        </a>
-      </div>
-    </article>
+    async function loadResults() {
+      const status = document.getElementById("status");
+      try {
+        const response = await fetch(CSV_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error(`Google Sheets returned HTTP ${response.status}`);
+        const csv = await response.text();
+        const allRows = parseCSV(csv);
 
-  </section>
+        // Sheet rows 2–61 are Day 1 fixtures. Skip only the CSV column-heading row.
+        // Do not drop the first fixture from this selected range.
+        const fixtures = allRows.slice(1, 61).map(row => row.slice(0, 7));
+        const byPitch = { "1": [], "2": [], "3": [] };
+        fixtures.forEach(row => {
+          const pitch = String(row[1] || "").trim().replace(/^pitch\s*/i, "");
+          if (byPitch[pitch]) byPitch[pitch].push(row);
+        });
 
-  <section class="info">
-    <h3>Live Tournament Information</h3>
-    <p>
-      Both scoreboards retrieve their results from the published
-      Google Sheets data and refresh automatically every 30 seconds.
-      Use the Day 1 and Day 2 links to switch between scoreboards.
-    </p>
-  </section>
+        const scrollContainer = document.getElementById("boardScroll");
+        const previousScrollTop = scrollContainer.scrollTop;
+        document.getElementById("board").innerHTML =
+          pitchCard("1", byPitch["1"]) +
+          pitchCard("2", byPitch["2"]) +
+          pitchCard("3", byPitch["3"]);
 
-</main>
-
-<footer>
-  <strong>ESQUINA PARK RANGERS</strong><br>
-  International Walking Football Cup<br>
-  Match Centre · Day 1 · Day 2
-</footer>
-
+        const count = fixtures.length;
+        status.textContent = `${count} fixtures · Updates every 30 seconds`;
+        if (!hasStartedAutoScroll) {
+          hasStartedAutoScroll = true;
+          startAutoScroll();
+        } else {
+          scrollContainer.scrollTop = Math.min(previousScrollTop, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+        }
+      } catch (error) {
+        console.error(error);
+        document.getElementById("board").innerHTML =
+          `<div class="error">Could not load tournament results. Please check the published Google Sheets CSV link and internet connection.<br><small>${escapeHTML(error.message)}</small></div>`;
+        status.textContent = "Results unavailable";
+      }
+    }
+    loadResults();
+    setInterval(loadResults, REFRESH_SECONDS * 1000);
+  </script>
 </body>
 </html>
-```
