@@ -1,397 +1,761 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Esquina Park Rangers — Day 1 Live Results</title>
-  <style>
-    :root {
-      --maroon: #71364B;
-      --maroon-dark: #4B2433;
-      --blue: #B9E6F5;
-      --page: #f3f6f9;
-      --ink: #283443;
-      --line: #d9e0e7;
-      --white: #fff;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--ink);
-      background: var(--page);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .site-header {
-      flex: 0 0 auto;
-      background: var(--maroon);
-      color: white;
-      padding: 12px 22px 10px;
-      box-shadow: 0 3px 10px #0002;
-      z-index: 2;
-    }
-    .header-main {
-      display: grid;
-      grid-template-columns: minmax(82px, 150px) 1fr minmax(82px, 150px);
-      align-items: center;
-      gap: 18px;
-      max-width: 1800px;
-      margin: 0 auto;
-    }
-    .brand-badge {
-      width: clamp(76px, 8vw, 124px);
-      height: clamp(76px, 8vw, 124px);
-      object-fit: contain;
-      justify-self: center;
-      background: #fff;
-      border-radius: 50%;
-      padding: 4px;
-    }
-    .heading { text-align: center; min-width: 0; }
-    h1 {
-      font-size: clamp(22px, 2.6vw, 42px);
-      line-height: 1.05;
-      margin: 0 0 7px;
-      letter-spacing: .035em;
-    }
-    .cup-title {
-      color: var(--blue);
-      font-size: clamp(13px, 1.35vw, 21px);
-      font-weight: 800;
-      letter-spacing: .06em;
-      margin-bottom: 6px;
-    }
-    .event-date {
-      font-size: clamp(12px, 1.15vw, 18px);
-      font-weight: 700;
-    }
-    .header-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      font-size: clamp(12px, 1vw, 16px);
-    }
-    .clock {
-      color: var(--blue);
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: .04em;
-      white-space: nowrap;
-    }
-    .nav { display: flex; gap: 8px; }
-    .nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      padding: 7px 13px;
-      border: 1px solid #ffffff70;
-      border-radius: 7px;
-    }
-    .nav a.active, .nav a:hover { background: var(--blue); color: var(--maroon-dark); }
-    .status { opacity: .9; font-size: 12px; }
-    .board-scroll {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 16px clamp(10px, 2vw, 28px) 24px;
-      scroll-behavior: smooth;
-    }
-    .board {
-      max-width: 1800px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
-      gap: 20px;
-    }
-    .pitch-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      box-shadow: 0 4px 14px #17212b12;
-      min-width: 0;
-    }
-    .pitch-card.pitch-3 {
-      grid-column: 1 / -1;
-      width: min(100%, 900px);
-      justify-self: center;
-    }
-    .pitch-heading {
-      margin: 0;
-      padding: 11px 16px;
-      background: var(--maroon);
-      color: white;
-      font-size: clamp(18px, 1.7vw, 26px);
-      letter-spacing: .03em;
-    }
-    .pitch-heading span { color: var(--blue); }
-    table { width: 100%; border-collapse: collapse; table-layout: auto; }
-    th {
-      background: #f0e7eb;
-      color: var(--maroon-dark);
-      font-size: 12px;
-      text-align: left;
-      padding: 8px 9px;
-      white-space: nowrap;
-    }
-    td {
-      padding: 10px 9px;
-      border-bottom: 1px solid var(--line);
-      font-size: clamp(13px, 1.1vw, 17px);
-      vertical-align: middle;
-    }
-    tbody tr:nth-child(even) { background: #f8fafc; }
-    tbody tr:last-child td { border-bottom: 0; }
-    .time-cell { white-space: nowrap; font-weight: 700; width: 1%; }
-    .group-cell { white-space: nowrap; color: #596575; font-size: .9em; }
-    .team-cell { font-weight: 800; min-width: 0; }
-    .team-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-    .team-name { overflow-wrap: anywhere; }
-    .team-badge {
-      width: clamp(24px, 2.4vw, 38px);
-      height: clamp(24px, 2.4vw, 38px);
-      object-fit: contain;
-      flex: 0 0 auto;
-    }
-    .score-cell {
-      font-weight: 900;
-      font-size: clamp(16px, 1.35vw, 21px);
-      text-align: center;
-      white-space: nowrap;
-      width: 1%;
-    }
-    .score-dash { color: #8792a0; padding: 0 3px; }
-    .loading, .error {
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: 700;
-    }
-    .error { color: #a12626; }
-    .site-footer {
-      flex: 0 0 auto;
-      background: var(--maroon-dark);
-      color: white;
-      text-align: center;
-      padding: 7px 10px;
-      font-size: 11px;
-      letter-spacing: .08em;
-    }
-    @media (max-width: 760px) {
-      body { overflow: auto; }
-      .site-header { padding: 10px; }
-      .header-main { grid-template-columns: 64px 1fr 64px; gap: 8px; }
-      .brand-badge { width: 60px; height: 60px; }
-      .board-scroll { overflow: visible; }
-      .board { grid-template-columns: 1fr; }
-      .pitch-card.pitch-3 { grid-column: auto; width: 100%; }
-      .header-bottom { gap: 10px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Esquina Park Rangers — Day 1 Live Results</title>
+
+<style>
+:root {
+  --maroon: #71364B;
+  --dark-maroon: #351724;
+  --light-blue: #B9E6F5;
+  --background: #f3f6f9;
+  --text: #283443;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: var(--background);
+  overflow: hidden;
+}
+
+.page {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* HEADER */
+
+header {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(8px, 2vw, 24px);
+  padding: clamp(8px, 1.5vh, 16px) clamp(10px, 2vw, 26px);
+  color: white;
+  background: linear-gradient(135deg, var(--maroon), var(--dark-maroon));
+  border-bottom: 4px solid var(--light-blue);
+  box-shadow: 0 4px 10px #0003;
+  z-index: 2;
+}
+
+.logo {
+  display: block;
+  width: clamp(48px, 7vw, 100px);
+  height: clamp(48px, 7vw, 100px);
+  object-fit: contain;
+  background: transparent;
+  border: 2px solid #fff9;
+  border-radius: 12px;
+  padding: 3px;
+  filter:
+    drop-shadow(2px 2px 0 #0008)
+    drop-shadow(-1px -1px 0 #ffffffb3)
+    drop-shadow(0 4px 4px #0007);
+}
+
+.heading {
+  min-width: 0;
+  text-align: center;
+}
+
+.heading h1 {
+  margin: 0;
+  font-size: clamp(1.05rem, 3vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+}
+
+.heading p {
+  margin: 5px 0 0;
+  color: var(--light-blue);
+  font-size: clamp(0.72rem, 1.5vw, 1.2rem);
+  font-weight: bold;
+}
+
+.day-label {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 4px 12px;
+  color: var(--dark-maroon);
+  background: var(--light-blue);
+  border-radius: 20px;
+  font-size: clamp(0.7rem, 1.2vw, 1rem);
+  font-weight: bold;
+}
+
+/* FIXTURE AREA */
+
+.board-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: clamp(8px, 1.5vh, 18px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--maroon) #dce3e9;
+  overscroll-behavior: contain;
+}
+
+.pitch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.5vw, 20px);
+  align-items: start;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.pitch {
+  min-width: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #d6dde4;
+  border-radius: 12px;
+  box-shadow: 0 3px 9px #00000012;
+}
+
+.pitch.pitch-3 {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 65%;
+  max-width: 950px;
+}
+
+.pitch-title {
+  padding: clamp(7px, 1vh, 12px);
+  color: white;
+  background: linear-gradient(135deg, var(--maroon), var(--dark-maroon));
+  text-align: center;
+  font-size: clamp(0.95rem, 1.8vw, 1.5rem);
+  font-weight: bold;
+  border-bottom: 3px solid var(--light-blue);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: white;
+  background: #4c2937;
+}
+
+th {
+  padding: clamp(5px, 0.8vh, 9px) 3px;
+  font-size: clamp(0.62rem, 0.95vw, 0.88rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+td {
+  padding: clamp(5px, 0.75vh, 9px) 3px;
+  border-bottom: 1px solid #e3e8ed;
+  text-align: center;
+  font-size: clamp(0.7rem, 1.05vw, 1rem);
+  overflow-wrap: anywhere;
+}
+
+tbody tr:nth-child(even) {
+  background: #f0f7fa;
+}
+
+tbody tr:nth-child(odd) {
+  background: white;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.time-col {
+  width: 12%;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.group-col {
+  width: 10%;
+}
+
+.team-col {
+  width: 29%;
+}
+
+.score-col {
+  width: 10%;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3px, 0.5vw, 7px);
+  min-width: 0;
+  font-weight: bold;
+}
+
+.team-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.team-badge {
+  flex: 0 0 auto;
+  width: clamp(20px, 2.5vw, 34px);
+  height: clamp(20px, 2.5vw, 34px);
+  object-fit: contain;
+  background: transparent;
+  filter:
+    drop-shadow(1px 1px 0 #0005)
+    drop-shadow(-1px -1px 0 #ffffffb3)
+    drop-shadow(0 2px 2px #0004);
+}
+
+.score {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 3px 5px;
+  color: white;
+  background: var(--maroon);
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+}
+
+.empty {
+  padding: 18px 8px;
+  color: #687786;
+  font-style: italic;
+}
+
+/* FOOTER */
+
+footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px clamp(10px, 2vw, 24px);
+  color: white;
+  background: var(--dark-maroon);
+  border-top: 3px solid var(--light-blue);
+  font-size: clamp(0.65rem, 1vw, 0.9rem);
+}
+
+#status {
+  color: var(--light-blue);
+  text-align: right;
+}
+
+/* SMALLER SCREENS */
+
+@media (max-width: 760px) {
+  body {
+    overflow: hidden;
+  }
+
+  header {
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .logo {
+    width: clamp(38px, 10vw, 60px);
+    height: clamp(38px, 10vw, 60px);
+    border-radius: 8px;
+  }
+
+  .heading h1 {
+    font-size: clamp(0.9rem, 4vw, 1.4rem);
+  }
+
+  .heading p {
+    font-size: clamp(0.65rem, 2.5vw, 0.85rem);
+  }
+
+  .day-label {
+    font-size: 0.65rem;
+    padding: 3px 8px;
+  }
+
+  .board-scroll {
+    padding: 8px;
+  }
+
+  .pitch-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .pitch.pitch-3 {
+    grid-column: auto;
+    width: 100%;
+    max-width: none;
+  }
+
+  .pitch-title {
+    font-size: 1rem;
+  }
+
+  th {
+    font-size: 0.65rem;
+    padding: 6px 2px;
+  }
+
+  td {
+    font-size: clamp(0.68rem, 2.5vw, 0.85rem);
+    padding: 6px 2px;
+  }
+
+  .team-badge {
+    width: clamp(18px, 5vw, 27px);
+    height: clamp(18px, 5vw, 27px);
+  }
+
+  footer {
+    padding: 6px 8px;
+    font-size: 0.65rem;
+  }
+}
+
+/* Short landscape screens */
+
+@media (max-height: 600px) and (min-width: 761px) {
+  header {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .heading h1 {
+    font-size: clamp(1rem, 2.6vw, 1.7rem);
+  }
+
+  .heading p {
+    margin-top: 2px;
+  }
+
+  .day-label {
+    margin-top: 2px;
+    padding: 2px 8px;
+  }
+
+  .board-scroll {
+    padding: 6px;
+  }
+
+  .pitch-grid {
+    gap: 8px;
+  }
+
+  .pitch-title {
+    padding: 5px;
+  }
+
+  th,
+  td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  footer {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="header-main">
-      <img class="brand-badge" src="esquina-badge.png" alt="Esquina Park Rangers badge">
-      <div class="heading">
-        <h1>ESQUINA PARK RANGERS</h1>
-        <div class="cup-title">INTERNATIONAL WALKING FOOTBALL CUP</div>
-        <div class="event-date">5th &amp; 6th November 2026</div>
-      </div>
-      <img class="brand-badge" src="badges/Rojales.png" alt="Rojales Council badge">
+<div class="page">
+
+  <header>
+    <img class="logo"
+         src="esquina-badge.png"
+         alt="Esquina Park Rangers badge"
+         onerror="this.style.visibility='hidden'">
+
+    <div class="heading">
+      <h1>ESQUINA PARK RANGERS</h1>
+      <p>International Walking Football Cup</p>
+      <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
     </div>
-    <div class="header-bottom">
-      <div class="clock" id="clock">--:--:--</div>
-      <nav class="nav" aria-label="Tournament days">
-        <a class="active" href="day1.html">DAY 1</a>
-        <a href="day2.html">DAY 2</a>
-      </nav>
-      <div class="status" id="status">Loading tournament results…</div>
-    </div>
+
+    <img class="logo"
+         src="badges/Rojales.png"
+         alt="Rojales Council badge"
+         onerror="this.style.visibility='hidden'">
   </header>
 
   <main class="board-scroll" id="boardScroll">
-    <div id="board" class="board">
-      <div class="loading">Loading Day 1 fixtures from Google Sheets…</div>
+    <div class="pitch-grid">
+
+      <section class="pitch" id="pitch1">
+        <div class="pitch-title">PITCH 1</div>
+        <div class="pitch-content"></div>
+      </section>
+
+      <section class="pitch" id="pitch2">
+        <div class="pitch-title">PITCH 2</div>
+        <div class="pitch-content"></div>
+      </section>
+
+      <section class="pitch pitch-3" id="pitch3">
+        <div class="pitch-title">PITCH 3</div>
+        <div class="pitch-content"></div>
+      </section>
+
     </div>
   </main>
-  <footer class="site-footer">ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE</footer>
 
-  <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
-    const REFRESH_SECONDS = 30;
-    const SCROLL_PAUSE_MS = 4500;
-    const SCROLL_PIXELS_PER_SECOND = 24;
+  <footer>
+    <div id="clock">Spanish time: --:--:--</div>
+    <div id="status">Loading tournament results…</div>
+  </footer>
 
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent = new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-      }).format(now);
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
+</div>
 
-    function parseCSV(text) {
-      const rows = [];
-      let row = [], field = "", quoted = false;
-      for (let i = 0; i < text.length; i++) {
-        const c = text[i], next = text[i + 1];
-        if (c === '"' && quoted && next === '"') { field += '"'; i++; }
-        else if (c === '"') { quoted = !quoted; }
-        else if (c === "," && !quoted) { row.push(field.trim()); field = ""; }
-        else if ((c === "\n" || c === "\r") && !quoted) {
-          if (c === "\r" && next === "\n") i++;
-          row.push(field.trim());
-          if (row.some(v => v !== "")) rows.push(row);
-          row = []; field = "";
-        } else field += c;
+<script>
+const CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+
+const boardScroll = document.getElementById("boardScroll");
+const statusEl = document.getElementById("status");
+
+let scrollTimer = null;
+let scrollDirection = 1;
+let pauseUntil = 0;
+let lastFrame = 0;
+
+/* Live clock in Spanish local time */
+function updateClock() {
+  document.getElementById("clock").textContent =
+    "Spanish time: " +
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(new Date());
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+/* Parse CSV safely, including quoted fields and commas */
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+
+    if (char === '"') {
+      if (quoted && text[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else {
+        quoted = !quoted;
       }
-      if (field.length || row.length) {
-        row.push(field.trim());
-        if (row.some(v => v !== "")) rows.push(row);
+    } else if (char === "," && !quoted) {
+      row.push(field.trim());
+      field = "";
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && text[i + 1] === "\n") i++;
+
+      row.push(field.trim());
+
+      if (row.some(value => value !== "")) {
+        rows.push(row);
       }
-      return rows;
+
+      row = [];
+      field = "";
+    } else {
+      field += char;
     }
+  }
 
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, ch => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      }[ch]));
-    }
+  row.push(field.trim());
 
-    function teamBadge(name) {
-      const safe = String(name || "").trim();
-      if (!safe) return "";
-      const encoded = encodeURIComponent(safe);
-      const lower = encodeURIComponent(safe.toLowerCase());
-      return `<img class="team-badge" src="badges/${encoded}.png" alt="" loading="lazy"
-        onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='badges/${lower}.png'}else{this.style.display='none'}">`;
-    }
+  if (row.some(value => value !== "")) {
+    rows.push(row);
+  }
 
-    function teamCell(name) {
-      const clean = String(name || "").trim();
-      return `<td class="team-cell"><div class="team-wrap">${teamBadge(clean)}<span class="team-name">${escapeHTML(clean || "TBC")}</span></div></td>`;
-    }
+  return rows;
+}
 
-    function pitchCard(pitch, fixtures) {
-      const rows = fixtures.map(cells => {
-        // Columns A-G: A time, B pitch, C group, D team 1, E score 1, F score 2, G team 2.
-        const time = cells[0] || "";
-        const group = cells[2] || "";
-        const team1 = cells[3] || "";
-        const score1 = cells[4] || "";
-        const score2 = cells[5] || "";
-        const team2 = cells[6] || "";
-        return `<tr>
-          <td class="time-cell">${escapeHTML(time)}</td>
-          <td class="group-cell">${escapeHTML(group)}</td>
-          ${teamCell(team1)}
-          <td class="score-cell">${escapeHTML(score1)}<span class="score-dash">–</span>${escapeHTML(score2)}</td>
-          ${teamCell(team2)}
-        </tr>`;
-      }).join("");
+/* Escape team names before inserting them into HTML */
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
-      return `<section class="pitch-card ${pitch === "3" ? "pitch-3" : ""}">
-        <h2 class="pitch-heading">PITCH <span>${escapeHTML(pitch)}</span></h2>
-        <table>
-          <thead><tr><th>TIME</th><th>GROUP</th><th colspan="1">TEAM 1</th><th>SCORE</th><th>TEAM 2</th></tr></thead>
-          <tbody>${rows || '<tr><td colspan="5">No fixtures found for this pitch.</td></tr>'}</tbody>
-        </table>
-      </section>`;
-    }
+/* Build team badge, with lowercase filename fallback */
+function badgeHTML(teamName) {
+  const name = String(teamName || "").trim();
 
-    function startAutoScroll() {
-      const container = document.getElementById("boardScroll");
-      if (window.matchMedia("(max-width: 760px)").matches) return;
-      if (window.boardScrollTimer) clearTimeout(window.boardScrollTimer);
-      if (window.boardAnimationFrame) cancelAnimationFrame(window.boardAnimationFrame);
-      container.scrollTop = 0;
-      let direction = 1, last = 0, pauseUntil = performance.now() + SCROLL_PAUSE_MS;
-      function step(now) {
-        if (!last) last = now;
-        const delta = Math.min(50, now - last);
-        last = now;
-        const maxScroll = container.scrollHeight - container.clientHeight;
-        if (maxScroll <= 2) {
-          window.boardScrollTimer = setTimeout(() => {
-            container.scrollTop = 0;
-            startAutoScroll();
-          }, REFRESH_SECONDS * 1000);
-          return;
-        }
-        if (now >= pauseUntil) {
-          container.scrollTop += direction * SCROLL_PIXELS_PER_SECOND * delta / 1000;
-          if (container.scrollTop >= maxScroll - 1) {
-            container.scrollTop = maxScroll;
-            direction = -1;
-            pauseUntil = now + SCROLL_PAUSE_MS;
-          } else if (container.scrollTop <= 0 && direction === -1) {
-            container.scrollTop = 0;
-            direction = 1;
-            pauseUntil = now + SCROLL_PAUSE_MS;
-          }
-        }
-        window.boardAnimationFrame = requestAnimationFrame(step);
-      }
-      window.boardAnimationFrame = requestAnimationFrame(step);
-    }
+  if (!name) return "";
 
-    let hasStartedAutoScroll = false;
+  const safeName = escapeHTML(name);
+  const safeLower = escapeHTML(name.toLowerCase());
 
-    async function loadResults() {
-      const status = document.getElementById("status");
-      try {
-        const response = await fetch(CSV_URL, { cache: "no-store" });
-        if (!response.ok) throw new Error(`Google Sheets returned HTTP ${response.status}`);
-        const csv = await response.text();
-        const allRows = parseCSV(csv);
-
-        // Sheet rows 2–61 are Day 1 fixtures. Skip only the CSV column-heading row.
-        // Do not drop the first fixture from this selected range.
-        const fixtures = allRows.slice(1, 61).map(row => row.slice(0, 7));
-        const byPitch = { "1": [], "2": [], "3": [] };
-        fixtures.forEach(row => {
-          const pitch = String(row[1] || "").trim().replace(/^pitch\s*/i, "");
-          if (byPitch[pitch]) byPitch[pitch].push(row);
-        });
-
-        const scrollContainer = document.getElementById("boardScroll");
-        const previousScrollTop = scrollContainer.scrollTop;
-        document.getElementById("board").innerHTML =
-          pitchCard("1", byPitch["1"]) +
-          pitchCard("2", byPitch["2"]) +
-          pitchCard("3", byPitch["3"]);
-
-        const count = fixtures.length;
-        status.textContent = `${count} fixtures · Updates every 30 seconds`;
-        if (!hasStartedAutoScroll) {
-          hasStartedAutoScroll = true;
-          startAutoScroll();
+  return `
+    <img
+      class="team-badge"
+      src="badges/${safeName}.png"
+      alt=""
+      loading="lazy"
+      onerror="
+        if (!this.dataset.fallback) {
+          this.dataset.fallback = '1';
+          this.src = 'badges/${safeLower}.png';
         } else {
-          scrollContainer.scrollTop = Math.min(previousScrollTop, scrollContainer.scrollHeight - scrollContainer.clientHeight);
+          this.style.display = 'none';
         }
-      } catch (error) {
-        console.error(error);
-        document.getElementById("board").innerHTML =
-          `<div class="error">Could not load tournament results. Please check the published Google Sheets CSV link and internet connection.<br><small>${escapeHTML(error.message)}</small></div>`;
-        status.textContent = "Results unavailable";
-      }
+      ">
+  `;
+}
+
+function renderPitch(pitchNumber, fixtures) {
+  const section = document.getElementById("pitch" + pitchNumber);
+  const content = section.querySelector(".pitch-content");
+
+  if (!fixtures.length) {
+    content.innerHTML = '<div class="empty">No fixtures found.</div>';
+    return;
+  }
+
+  let html = `
+    <table>
+      <colgroup>
+        <col class="time-col">
+        <col class="group-col">
+        <col class="team-col">
+        <col class="score-col">
+        <col class="score-col">
+        <col class="team-col">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Grp</th>
+          <th>Team 1</th>
+          <th>Score</th>
+          <th>Score</th>
+          <th>Team 2</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  fixtures.forEach(row => {
+    const time = row[0] || "";
+    const group = row[2] || "";
+    const team1 = row[3] || "";
+    const score1 = row[4] || "";
+    const score2 = row[5] || "";
+    const team2 = row[6] || "";
+
+    html += `
+      <tr>
+        <td>${escapeHTML(time)}</td>
+        <td>${escapeHTML(group)}</td>
+        <td>
+          <div class="team">
+            ${badgeHTML(team1)}
+            <span class="team-name">${escapeHTML(team1)}</span>
+          </div>
+        </td>
+        <td><span class="score">${escapeHTML(score1)}</span></td>
+        <td><span class="score">${escapeHTML(score2)}</span></td>
+        <td>
+          <div class="team">
+            ${badgeHTML(team2)}
+            <span class="team-name">${escapeHTML(team2)}</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody></table>";
+  content.innerHTML = html;
+}
+
+/* Automatic scroll through the whole fixture board */
+function stopAutoScroll() {
+  if (scrollTimer !== null) {
+    cancelAnimationFrame(scrollTimer);
+    scrollTimer = null;
+  }
+
+  lastFrame = 0;
+}
+
+function startAutoScroll() {
+  stopAutoScroll();
+
+  scrollDirection = 1;
+  pauseUntil = performance.now() + 2500;
+
+  function step(now) {
+    scrollTimer = requestAnimationFrame(step);
+
+    const maxScroll =
+      boardScroll.scrollHeight - boardScroll.clientHeight;
+
+    /* No scrolling needed if all fixtures fit on screen */
+    if (maxScroll <= 2) {
+      lastFrame = now;
+      return;
     }
-    loadResults();
-    setInterval(loadResults, REFRESH_SECONDS * 1000);
-  </script>
+
+    if (now < pauseUntil) {
+      lastFrame = now;
+      return;
+    }
+
+    if (!lastFrame) lastFrame = now;
+
+    const elapsed = Math.min(now - lastFrame, 80);
+    lastFrame = now;
+
+    /* Scroll speed: 20 pixels per second */
+    boardScroll.scrollTop += scrollDirection * elapsed * 0.020;
+
+    if (boardScroll.scrollTop >= maxScroll - 1) {
+      boardScroll.scrollTop = maxScroll;
+      scrollDirection = -1;
+      pauseUntil = now + 4000;
+      lastFrame = now;
+    } else if (boardScroll.scrollTop <= 1 && scrollDirection < 0) {
+      boardScroll.scrollTop = 0;
+      scrollDirection = 1;
+      pauseUntil = now + 4000;
+      lastFrame = now;
+    }
+  }
+
+  scrollTimer = requestAnimationFrame(step);
+}
+
+/* Fetch and display Day 1 fixtures */
+async function loadResults() {
+  try {
+    statusEl.textContent = "Updating results…";
+
+    const response = await fetch(CSV_URL, {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Google Sheets returned HTTP " + response.status);
+    }
+
+    const csvText = await response.text();
+    const allRows = parseCSV(csvText);
+
+    /*
+      CSV row 1 contains the headings.
+      Day 1 is sheet rows 2–61.
+      Keep all 60 fixtures and columns A–G.
+    */
+    const fixtures = allRows
+      .slice(1, 61)
+      .map(row => row.slice(0, 7));
+
+    const pitches = {
+      1: [],
+      2: [],
+      3: []
+    };
+
+    fixtures.forEach(row => {
+      const pitchNumber = Number(row[1]);
+
+      if (pitches[pitchNumber]) {
+        pitches[pitchNumber].push(row);
+      }
+    });
+
+    renderPitch(1, pitches[1]);
+    renderPitch(2, pitches[2]);
+    renderPitch(3, pitches[3]);
+
+    boardScroll.scrollTop = 0;
+    startAutoScroll();
+
+    const time = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    }).format(new Date());
+
+    statusEl.textContent =
+      "Live data updated " + time +
+      " · " + fixtures.length + " fixtures";
+
+  } catch (error) {
+    console.error("Could not load results:", error);
+    statusEl.textContent =
+      "Could not update results — retrying shortly";
+  }
+}
+
+/* Initial load, then update the data every 30 seconds */
+loadResults();
+setInterval(loadResults, 30000);
+
+/* Recheck the scroll after screen size or orientation changes */
+window.addEventListener("resize", () => {
+  startAutoScroll();
+});
+</script>
+
 </body>
 </html>
+```
