@@ -8,12 +8,11 @@
 
 <style>
 :root {
-  --maroon: #783D55;
-  --dark-maroon: #422538;
-  --light-blue: #79C9E8;
+  --maroon: #71364B;
+  --dark-maroon: #351724;
+  --light-blue: #B9E6F5;
   --background: #f3f6f9;
   --text: #283443;
-  --white: #ffffff;
 }
 
 * { box-sizing: border-box; }
@@ -26,7 +25,7 @@ header {
   flex: 0 0 auto; display: grid;
   grid-template-columns: 150px minmax(0, 1fr) 170px;
   align-items: center; gap: 18px; padding: 10px 26px;
-  color: #fff; background: linear-gradient(135deg, #783D55, #422538);
+  color: #fff; background: linear-gradient(135deg, var(--maroon), var(--dark-maroon));
   border-bottom: 3px solid var(--light-blue); box-shadow: 0 3px 8px #0003;
 }
 .logo { display: block; object-fit: contain; background: transparent; border: 1px solid #ffffffaa; border-radius: 8px; padding: 2px; }
@@ -42,20 +41,20 @@ header {
 .header-clock { display: block; margin-bottom: 2px; color: var(--light-blue); font-size: clamp(15px, 1.35vw, 25px); font-weight: bold; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
 .heading h1 { margin: 0; font-size: clamp(21px, 2vw, 36px); line-height: 1.05; }
 .heading p { margin: 3px 0; color: var(--light-blue); font-size: clamp(12px, 1.15vw, 21px); font-weight: bold; }
-.day-label { display: inline-block; margin-top: 2px; padding: 3px 10px; color: var(--dark-maroon); : var(--light-blue); border-radius: 20px; font-size: clamp(10px, .8vw, 15px); font-weight: bold; }
+.day-label { display: inline-block; margin-top: 2px; padding: 3px 10px; color: var(--dark-maroon); background: var(--light-blue); border-radius: 20px; font-size: clamp(10px, .8vw, 15px); font-weight: bold; }
 
 /* Three equal columns on desktop / TV */
 .board-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 7px; scrollbar-width: thin; scrollbar-color: var(--maroon) #dce3e9; overscroll-behavior: contain; }
 .pitch-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 8px; width: 100%; max-width: none; margin: 0 auto; }
-.pitch { min-width: 0; overflow: hidden; : #fff; border: 1px solid #d6dde4; border-radius: 7px; box-shadow: 0 2px 6px #00000012; }
-.pitch-title { padding: 5px 3px; color: #fff; : linear-gradient(135deg, var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
+.pitch { min-width: 0; overflow: hidden; background: #fff; border: 1px solid #d6dde4; border-radius: 7px; box-shadow: 0 2px 6px #00000012; }
+.pitch-title { padding: 5px 3px; color: #fff; background: linear-gradient(135deg, var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
 
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-thead { position: sticky; top: 0; z-index: 1; color: #fff; : #4c2937; }
+thead { position: sticky; top: 0; z-index: 1; color: #fff; background: #4c2937; }
 th { height: 24px; padding: 3px 2px; font-size: clamp(9px, .62vw, 12px); line-height: 1; text-transform: uppercase; letter-spacing: 0; }
 td { padding: 2px 3px; border-bottom: 1px solid #e3e8ed; text-align: center; font-size: clamp(10px, .72vw, 14px); line-height: 1.08; overflow-wrap: anywhere; vertical-align: middle; }
-tbody tr:nth-child(even) { : #f0f7fa; }
-tbody tr:nth-child(odd) { : #fff; }
+tbody tr:nth-child(even) { background: #f0f7fa; }
+tbody tr:nth-child(odd) { background: #fff; }
 tbody tr:last-child td { border-bottom: none; }
 .time-col { width: 12%; font-weight: bold; white-space: nowrap; }
 .group-col { width: 8%; }
@@ -63,8 +62,8 @@ tbody tr:last-child td { border-bottom: none; }
 .score-col { width: 11%; }
 .team { display: flex; align-items: center; justify-content: flex-start; gap: 3px; width: 100%; min-width: 0; text-align: left; font-weight: bold; }
 .team-name { flex: 1 1 auto; min-width: 0; text-align: left; overflow-wrap: anywhere; line-height: 1.08; }
-.team-badge { flex: 0 0 clamp(16px, 1.35vw, 24px); width: clamp(16px, 1.35vw, 24px); height: clamp(16px, 1.35vw, 24px); object-fit: contain; margin: 0; : transparent; }
-.score { display: inline-block; min-width: 1.35em; padding: 2px 3px; color: #fff; : var(--maroon); border-radius: 3px; font-weight: bold; font-size: clamp(11px, .8vw, 15px); }
+.team-badge { flex: 0 0 clamp(16px, 1.35vw, 24px); width: clamp(16px, 1.35vw, 24px); height: clamp(16px, 1.35vw, 24px); object-fit: contain; margin: 0; background: transparent; }
+.score { display: inline-block; min-width: 1.35em; padding: 2px 3px; color: #fff; background: var(--maroon); border-radius: 3px; font-weight: bold; font-size: clamp(11px, .8vw, 15px); }
 .empty { padding: 14px 6px; color: #687786; font-style: italic; text-align: center; }
 
 footer {
@@ -77,7 +76,7 @@ footer {
   gap: 5px;
   padding: 8px 14px;
   color: #fff;
-  : linear-gradient(110deg, var(--dark-maroon), var(--maroon), var(--dark-maroon));
+  background: linear-gradient(110deg, var(--dark-maroon), var(--maroon), var(--dark-maroon));
   border-top: 3px solid var(--light-blue);
   position: relative;
   z-index: 5;
@@ -118,7 +117,7 @@ footer {
 
 /* Phones: one pitch per row, with comfortable readable text */
 @media (max-width: 650px) {
-  header { grid-template-columns: 48px minmax(0, 1fr) 54px; background: linear-gradient(135deg, #783D55, #422538); gap: 4px; padding: 5px; }
+  header { grid-template-columns: 48px minmax(0, 1fr) 54px; gap: 4px; padding: 5px; }
   .logo-left { width: 46px; height: 46px; }
   .logo-right { width: 52px; height: 46px; }
   .logo { border-width: 1px; border-radius: 6px; padding: 1px; }
@@ -128,13 +127,13 @@ footer {
   .day-label { margin-top: 1px; padding: 2px 5px; font-size: clamp(8px, 2vw, 10px); }
   .board-scroll { padding: 5px; }
   .pitch-grid { grid-template-columns: minmax(0, 1fr); gap: 9px; }
-  .pitch-title { padding: 5px; font-size: 15px; background: #422538; color: white; }
+  .pitch-title { padding: 5px; font-size: 15px; }
   th { height: 27px; padding: 5px 2px; font-size: 10px; }
   td { padding: 5px 3px; font-size: clamp(11px, 3vw, 14px); line-height: 1.15; }
   .team { gap: 4px; }
   .team-badge { flex-basis: clamp(19px, 5vw, 26px); width: clamp(19px, 5vw, 26px); height: clamp(19px, 5vw, 26px); }
   .score { font-size: 13px; padding: 2px 4px; }
-  footer { min-height: 58px; padding: 5px 7px; gap: 3px; background: #783D55; color: white; }
+  footer { min-height: 58px; padding: 5px 7px; gap: 3px; }
   .footer-message { font-size: clamp(10px, 3vw, 14px); letter-spacing: .06em; }
   .footer-submessage { font-size: 9px; letter-spacing: .03em; }
   #status { font-size: 9px; }
@@ -190,7 +189,7 @@ footer p {
        alt="Esquina Park Rangers badge">
 
   <div class="heading">
-    <div class="header-clock">Local Time <span id="clock">--:--:--</span></div>
+    <div id="clock" class="header-clock">--:--:--</div>
     <h1>ESQUINA PARK RANGERS</h1>
     <p>International Walking Football Cup</p>
     <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
