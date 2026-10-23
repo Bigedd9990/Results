@@ -118,7 +118,7 @@ footer {
 
 /* Phones: one pitch per row, with comfortable readable text */
 @media (max-width: 650px) {
-  header { grid-template-columns: 48px minmax(0, 1fr) 54px; background: linear-gradient(135deg, #783D55, #422538); gap: 4px; padding: 5px; }
+  header { grid-template-columns: 48px minmax(0, 1fr) 54px; gap: 4px; padding: 5px; }
   .logo-left { width: 46px; height: 46px; }
   .logo-right { width: 52px; height: 46px; }
   .logo { border-width: 1px; border-radius: 6px; padding: 1px; }
@@ -128,13 +128,13 @@ footer {
   .day-label { margin-top: 1px; padding: 2px 5px; font-size: clamp(8px, 2vw, 10px); }
   .board-scroll { padding: 5px; }
   .pitch-grid { grid-template-columns: minmax(0, 1fr); gap: 9px; }
-  .pitch-title { padding: 5px; font-size: 15px; background: #422538; color: white; }
+  .pitch-title { padding: 5px; font-size: 15px; }
   th { height: 27px; padding: 5px 2px; font-size: 10px; }
   td { padding: 5px 3px; font-size: clamp(11px, 3vw, 14px); line-height: 1.15; }
   .team { gap: 4px; }
   .team-badge { flex-basis: clamp(19px, 5vw, 26px); width: clamp(19px, 5vw, 26px); height: clamp(19px, 5vw, 26px); }
   .score { font-size: 13px; padding: 2px 4px; }
-  footer { min-height: 58px; padding: 5px 7px; gap: 3px; background: #783D55; color: white; }
+  footer { min-height: 58px; padding: 5px 7px; gap: 3px; }
   .footer-message { font-size: clamp(10px, 3vw, 14px); letter-spacing: .06em; }
   .footer-submessage { font-size: 9px; letter-spacing: .03em; }
   #status { font-size: 9px; }
@@ -155,7 +155,7 @@ footer {
   th { height: 20px; padding: 2px; }
   td { padding-top: 1px; padding-bottom: 1px; }
   .team-badge { flex-basis: 18px; width: 18px; height: 18px; }
-  footer { min-height: 56px; padding-top: 4px; padding-bottom: 4px; }
+  footer { min-height: 58px; padding: 5px 7px; gap: 3px; }
   .footer-message { font-size: 11px; }
   .footer-submessage { font-size: 9px; }
 }
