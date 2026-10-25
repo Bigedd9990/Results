@@ -3,651 +3,363 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="300">
-  <title>Esquina Park Rangers - Live League Standings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="30">
+  <title>Esquina Park Rangers - League Standings</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
     :root {
-      --primary: #581b32;
-      --primary-dark: #3d1022;
-      --accent: #8ed0e8;
-      --accent-light: #e8f6fb;
-      --bg: #f3f6f9;
-      --card: #ffffff;
-      --text: #273444;
-      --muted: #718096;
-      --border: #e2e8f0;
-      --success: #52b788;
-      --error: #c53030;
+      --maroon: #581b32;
+      --light-blue: #8ed0e8;
+      --pale-blue: #eaf7fc;
+      --white: #ffffff;
     }
 
     * { box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, sans-serif;
       margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--text);
+      padding: 18px;
+      background: #f1f5f8;
+      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    
-.tournament-header {
-  background: linear-gradient(135deg, #3d1022, #701f40);
-  color: white;
-  padding: 22px 12px;
-  border-bottom: 6px solid #8ed0e8;
-}
+    .page {
+      max-width: 1500px;
+      margin: auto;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px #00000018;
+    }
 
-.header-logos {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  max-width: 1400px;
-  margin: auto;
-}
-
-.club-logo {
-  width: clamp(75px, 12vw, 145px);
-  height: clamp(75px, 12vw, 145px);
-  object-fit: contain;
-  flex-shrink: 0;
-  background: white;
-  border-radius: 50%;
-  padding: 5px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.3);
-}
-
-.header-title {
-  flex: 1;
-  text-align: center;
-}
-
-.header-title h1 {
-  margin: 0;
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
-  font-weight: 900;
-  line-height: 1.15;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.header-title p {
-  margin: 10px 0 0;
-  font-size: clamp(.9rem, 2.5vw, 1.35rem);
-  font-weight: 800;
-  line-height: 1.3;
-  color: #bce8f6;
-}
-
-.section-heading {
-  margin: 0 0 16px;
-  color: #581b32;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 900;
-}
-
-th {
-  background: #581b32;
-  color: white;
-  padding: 15px 12px;
-  font-size: clamp(.85rem, 1.5vw, 1rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-td {
-  padding: 14px 12px;
-  border-bottom: 1px solid #d5dee8;
-  white-space: nowrap;
-  font-size: clamp(1rem, 1.7vw, 1.2rem);
-  font-weight: 700;
-}
-
-td.team-cell {
-  text-align: left;
-  min-width: 180px;
-  font-weight: 900;
-}
-
-.team-badge {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  flex: 0 0 42px;
-}
-
-.team-name {
-  white-space: normal;
-  min-width: 100px;
-  font-weight: 900;
-}
-
-td.pts-cell {
-  background: #e0f3fa !important;
-  color: #581b32;
-  font-size: 1.25rem;
-  font-weight: 900;
-}
-
-@media (max-width: 600px) {
-  .header-logos {
-    gap: 8px;
-  }
-
-  .club-logo {
-    width: 64px;
-    height: 64px;
-  }
-
-  .header-title h1 {
-    font-size: 1.25rem;
-    letter-spacing: 0;
-  }
-
-  .header-title p {
-    font-size: .8rem;
-  }
-
-  td {
-    padding: 12px 9px;
-    font-size: 1rem;
-  }
-
-  .team-badge {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-  }
-}
-
-
-    .live-indicator {
-      display: inline-flex;
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 22px 16px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-top: 15px;
-      padding: 8px 13px;
-      border-radius: 30px;
-      background: rgba(255,255,255,.12);
-      font-size: .85rem;
-      font-weight: 600;
+      gap: 22px;
+      text-align: center;
+      border-bottom: 7px solid var(--light-blue);
     }
 
-    .dot {
-      width: 9px;
-      height: 9px;
-      flex: 0 0 9px;
-      background: #cbd5e0;
-      border-radius: 50%;
+    .header-logo {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
-    .live-indicator.connected .dot {
-      background: var(--success);
-      animation: blink 1.5s infinite;
+    h1 {
+      font-size: clamp(23px, 4vw, 42px);
+      margin: 0;
+      font-weight: 900;
+      line-height: 1.15;
     }
 
-    .live-indicator.failed .dot { background: #ff9b9b; }
-
-    @keyframes blink {
-      0%, 100% { opacity: .45; }
-      50% { opacity: 1; }
+    .subtitle {
+      margin-top: 8px;
+      color: var(--light-blue);
+      font-size: 17px;
+      font-weight: bold;
     }
 
-    main {
-      width: 96%;
-      max-width: 1500px;
-      margin: 20px auto;
-    }
-
-    .section-heading {
-      margin: 0 0 12px;
-      color: var(--primary);
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: clamp(10px, 2vw, 20px);
-      box-shadow: 0 4px 18px rgba(0,0,0,.06);
-      border-top: 4px solid var(--accent);
+    .status {
+      text-align: center;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--maroon);
+      background: var(--pale-blue);
     }
 
     .table-wrap {
-      width: 100%;
+      padding: 12px;
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 8px;
     }
 
     table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      text-align: center;
-      margin-top: 5px;
-      font-size: .92rem;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: clamp(15px, 1.6vw, 21px);
     }
 
-    th {
-      background: var(--primary);
+    thead th {
+      background: var(--maroon);
       color: white;
-      padding: 12px 10px;
-      font-size: .78rem;
-      text-transform: uppercase;
-      letter-spacing: .3px;
+      padding: 14px 9px;
+      font-weight: 900;
+      text-align: center;
       white-space: nowrap;
+      border: 1px solid #ffffff30;
     }
 
-    th:first-child { border-radius: 6px 0 0 0; }
-    th:last-child { border-radius: 0 6px 0 0; }
-
-    td {
-      padding: 10px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-      background: white;
+    thead th:nth-child(2) {
+      width: 58px;
+      min-width: 58px;
+      padding: 5px;
     }
 
-    tbody tr:nth-child(even) td {
-      background: #f7fafc;
+    tbody td {
+      padding: 12px 9px;
+      border-bottom: 1px solid #d7e1e7;
+      text-align: center;
+      font-weight: 700;
     }
 
-    tbody tr:hover td {
-      background: var(--accent-light);
+    tbody tr:nth-child(even) {
+      background: var(--pale-blue);
     }
 
-    /* Team names and badges */
-    td.team-cell {
+    tbody tr:first-child td {
+      background-color: #fff5d8;
+    }
+
+    tbody td:nth-child(1) {
+      color: var(--maroon);
+      font-size: 1.1em;
+      font-weight: 900;
+    }
+
+    tbody td:nth-child(2) {
+      width: 58px;
+      padding: 5px;
+    }
+
+    tbody td:nth-child(3) {
       text-align: left;
-      min-width: 155px;
-      font-weight: 650;
-    }
-
-    .team-content {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      min-width: 150px;
+      font-weight: 900;
+      color: var(--maroon);
     }
 
     .team-badge {
-      width: 32px;
-      height: 32px;
+      display: block;
+      width: 42px;
+      height: 42px;
       object-fit: contain;
-      flex: 0 0 32px;
+      margin: auto;
     }
 
-    .team-name {
-      white-space: normal;
-      min-width: 90px;
-    }
-
-    /* Keep the existing points columns highlighted */
-    td.pts-cell {
-      background: var(--accent-light) !important;
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    th.points-heading {
-      background: #315c72;
-    }
-
-    .loading, .empty-msg, .error-msg {
-      text-align: center;
-      padding: 28px 12px;
-    }
-
-    .loading, .empty-msg {
-      color: var(--muted);
-    }
-
-    .error-msg {
-      color: var(--error);
-      overflow-wrap: anywhere;
-      font-weight: 600;
-    }
-
-    .error-detail {
-      display: block;
-      margin-top: 8px;
-      font-size: .9rem;
-      font-weight: normal;
-    }
-
-    .retry {
-      display: block;
-      margin: 15px auto 0;
-      border: 0;
-      border-radius: 7px;
-      padding: 11px 18px;
-      background: var(--primary);
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
+    .points {
+      color: var(--maroon);
+      font-size: 1.12em;
+      font-weight: 900;
     }
 
     .footer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: .78rem;
+      padding: 13px;
+      text-align: center;
+      background: var(--maroon);
+      color: white;
+      font-size: 13px;
+      font-weight: bold;
     }
 
-    .scroll-hint {
-      display: none;
-      color: var(--muted);
-      font-size: .78rem;
-      margin: 8px 0 0;
-    }
-
-    @media (max-width: 650px) {
-      header { padding: 22px 10px 19px; }
-      main { width: 97%; margin: 12px auto; }
-      .card { padding: 8px; }
-      table { font-size: .82rem; }
-      th { padding: 10px 8px; font-size: .7rem; }
-      td { padding: 8px; }
-      td.team-cell { min-width: 145px; }
-      .team-badge { width: 27px; height: 27px; flex-basis: 27px; }
-      .scroll-hint { display: block; }
+    @media (max-width: 600px) {
+      body { padding: 5px; }
+      header { gap: 9px; padding: 16px 7px; }
+      .header-logo { width: 48px; height: 48px; }
+      .subtitle { font-size: 13px; }
+      .table-wrap { padding: 5px; }
+      thead th, tbody td { padding: 9px 6px; }
+      .team-badge { width: 32px; height: 32px; }
+      thead th:nth-child(2), tbody td:nth-child(2) {
+        width: 40px;
+        min-width: 40px;
+      }
     }
   </style>
 </head>
 
 <body>
-  
-<header class="tournament-header">
-  <div class="header-logos">
-    <img src="badges/Esquina Park Rangers.png"
+<div class="page">
+
+  <header>
+    <img class="header-logo"
+         src="badges/Esquina Park Rangers.png"
          alt="Esquina Park Rangers"
-         class="club-logo"
-         onerror="this.style.visibility='hidden'">
+         onerror="this.style.display='none'">
 
-    <div class="header-title">
+    <div>
       <h1>ESQUINA PARK RANGERS</h1>
-      <p>INTERNATIONAL WALKING FOOTBALL CUP</p>
-      <div class="live-indicator" id="live-indicator" aria-live="polite">
-        <span class="dot"></span>
-        <span id="status-text">Connecting to Google Sheets…</span>
-      </div>
+      <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+      <div class="subtitle">LEAGUE STANDINGS</div>
     </div>
 
-    <img src="badges/Rojales.png"
+    <img class="header-logo"
+         src="badges/Rojales.png"
          alt="Rojales"
-         class="club-logo"
-         onerror="this.style.visibility='hidden'">
+         onerror="this.style.display='none'">
+  </header>
+
+  <div class="status" id="status">Loading league standings...</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
   </div>
-</header>
 
+  <div class="footer">
+    ESQUINA PARK RANGERS · LIVE TOURNAMENT STANDINGS
+  </div>
+</div>
 
-  <main>
-    <h2 class="section-heading">🏆 Live League Standings</h2>
+<script>
+  const CSV_URL =
+    "https://script.google.com/macros/s/AKfycbxQQB-Fi9liFMcjkULvSWaboQBZ9OTBqrmcxORx0MJU69lJsKfguEBFAoxhMc6B6LJBRA/exec";
 
-    <div class="card">
-      <div id="table-destination" aria-live="polite">
-        <div class="loading">Loading league standings…</div>
-      </div>
+  const REFRESH_INTERVAL_MS = 15000;
 
-      <p class="scroll-hint">
-        On a phone, swipe sideways to see all table columns.
-      </p>
+  // Google Sheets range B3:L18:
+  // B Rank, C badge, D Team, E Pld, F W, G D,
+  // H L, I GF, J GA, K GD, L Pts.
 
-      <div class="footer">
-        <span>Standings supplied by Google Sheets</span>
-        <span id="last-updated">Waiting for first update…</span>
-      </div>
-    </div>
-  </main>
+  const HEADINGS = [
+    "Rank", "", "Team", "Pld", "W", "D",
+    "L", "GF", "GA", "GD", "Pts"
+  ];
 
-  <script>
-    // Existing Google Sheets data feed — unchanged.
-    const csvSourceUrl =
-      "https://script.google.com/macros/s/AKfycbxQQB-Fi9liFMcjkULvSWaboQBZ9OTBqrmcxORx0MJU69lJsKfguEBFAoxhMc6B6LJBRA/exec";
+  function normalise(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\.png$/i, "")
+      .replace(/\.jpe?g$/i, "")
+      .replace(/\.webp$/i, "")
+      .replace(/[^a-z0-9]/g, "");
+  }
 
-    const REFRESH_INTERVAL_MS = 15000;
-    const MAX_ROWS = 21;
-    const MAX_COLUMNS = 15;
+  function badgeHtml(teamName) {
+    if (!teamName) return "";
 
-    // Team names are in spreadsheet columns D and G.
-    const TEAM_COLUMNS = [3, 6];
+    // Badge filenames should match the team name.
+    // Both .png and .jpg/.jpeg/.webp are tried.
+    const extensions = ["png", "jpg", "jpeg", "webp"];
+    const base = "badges/" + String(teamName).trim();
 
-    // Existing points highlighting — spreadsheet columns J and K.
-    const POINTS_COLUMNS = [9, 10];
+    const candidates = extensions.map(ext =>
+      base + "." + ext
+    );
 
-    const destination = document.getElementById("table-destination");
-    const liveIndicator = document.getElementById("live-indicator");
-    const statusText = document.getElementById("status-text");
-    const lastUpdated = document.getElementById("last-updated");
+    const fallback = "badges/" +
+      String(teamName).trim().toLowerCase() + ".png";
 
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[character]);
+    return `<img class="team-badge"
+      src="${candidates[0]}"
+      data-candidates='${JSON.stringify(candidates)}'
+      alt="${escapeHtml(teamName)} badge"
+      onerror="tryNextBadge(this)">`;
+  }
+
+  function tryNextBadge(img) {
+    const candidates = JSON.parse(
+      img.getAttribute("data-candidates") || "[]"
+    );
+
+    const current = Number(img.dataset.tryIndex || 0) + 1;
+
+    if (current < candidates.length) {
+      img.dataset.tryIndex = current;
+      img.src = candidates[current];
+    } else {
+      img.style.display = "none";
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function renderTable(allRows) {
+    // The Apps Script feed may return the whole sheet.
+    // Select rows 3–18 and columns B–L.
+    const rows = allRows.slice(2, 18).map(row =>
+      row.slice(1, 12)
+    );
+
+    if (!rows.length) {
+      throw new Error("No data was returned for B3:L18.");
     }
 
-    function setStatus(state, message) {
-      liveIndicator.classList.remove("connected", "failed");
-      if (state === "connected") {
-        liveIndicator.classList.add("connected");
+    const head = document.getElementById("tableHead");
+    const body = document.getElementById("tableBody");
+
+    head.innerHTML = "<tr>" +
+      HEADINGS.map(h => `<th>${escapeHtml(h)}</th>`).join("") +
+      "</tr>";
+
+    body.innerHTML = rows.map(row => {
+      const cells = HEADINGS.map((heading, index) => {
+        const value = row[index] ?? "";
+
+        if (index === 1) {
+          // Column C is reserved for the badge; no heading.
+          // Use the team name from column D to locate its image.
+          return `<td>${badgeHtml(row[2])}</td>`;
+        }
+
+        const className = index === 10 ? " class=\"points\"" : "";
+        return `<td${className}>${escapeHtml(value)}</td>`;
+      });
+
+      return "<tr>" + cells.join("") + "</tr>";
+    }).join("");
+
+    document.getElementById("status").textContent =
+      "LIVE STANDINGS · Last updated " +
+      new Date().toLocaleTimeString();
+  }
+
+  async function loadStandings() {
+    const status = document.getElementById("status");
+
+    try {
+      const url = CSV_URL +
+        (CSV_URL.includes("?") ? "&" : "?") +
+        "t=" + Date.now();
+
+      const response = await fetch(url, { cache: "no-store" });
+
+      if (!response.ok) {
+        throw new Error("Unable to retrieve the spreadsheet.");
       }
-      if (state === "failed") {
-        liveIndicator.classList.add("failed");
+
+      const text = await response.text();
+
+      const parsed = Papa.parse(text, {
+        skipEmptyLines: false
+      });
+
+      if (parsed.errors && parsed.errors.length &&
+          !parsed.data.length) {
+        throw new Error("The spreadsheet data could not be read.");
       }
-      statusText.textContent = message;
+
+      renderTable(parsed.data);
+    } catch (error) {
+      console.error(error);
+      status.textContent =
+        "Unable to refresh standings. Retrying shortly...";
     }
+  }
 
-    function badgeHtml(teamName) {
-      const team = String(teamName ?? "").trim();
-
-      if (!team) return "";
-
-      const normalPath = "badges/" + encodeURIComponent(team) + ".png";
-      const lowerPath = "badges/" +
-        encodeURIComponent(team.toLowerCase()) + ".png";
-
-      return `
-        <img
-          class="team-badge"
-          src="${normalPath}"
-          alt=""
-          loading="lazy"
-          onerror="if(!this.dataset.fallback){
-            this.dataset.fallback='1';
-            this.src='${lowerPath}';
-          } else {
-            this.style.display='none';
-          }"
-        >`;
-    }
-
-    function showError(message) {
-      setStatus("failed", "Connection problem — retrying");
-
-      destination.innerHTML = `
-        <div class="error-msg">
-          League standings could not be loaded.
-          <span class="error-detail">${escapeHtml(message)}</span>
-          <button class="retry" type="button" id="retry-button">
-            Try again now
-          </button>
-        </div>`;
-
-      document.getElementById("retry-button")
-        .addEventListener("click", loadTournamentData);
-    }
-
-    function renderTable(rows) {
-      if (!Array.isArray(rows) || rows.length === 0 ||
-          rows.every(row => !Array.isArray(row) || row.join("").trim() === "")) {
-        throw new Error("No rows returned. Check the published Google Sheets feed.");
-      }
-
-      const targetRows = rows.slice(0, MAX_ROWS);
-      const headers = targetRows[0] || [];
-      const columnCount = Math.min(
-        MAX_COLUMNS,
-        Math.max(headers.length, ...targetRows.map(row => row.length))
-      );
-
-      if (!columnCount) {
-        throw new Error("No columns were found in the spreadsheet.");
-      }
-
-      let tableHtml = '<div class="table-wrap"><table><thead><tr>';
-
-      for (let c = 0; c < columnCount; c++) {
-        const heading = String(headers[c] ?? "").trim();
-        const classes = POINTS_COLUMNS.includes(c) ? "points-heading" : "";
-
-        tableHtml += `
-          <th class="${classes}">
-            ${escapeHtml(heading || "---")}
-          </th>`;
-      }
-
-      tableHtml += "</tr></thead><tbody>";
-
-      let displayedRows = 0;
-
-      for (let r = 1; r < targetRows.length; r++) {
-        const row = targetRows[r];
-
-        if (!row || row.join("").trim() === "") continue;
-
-        tableHtml += "<tr>";
-
-        for (let c = 0; c < columnCount; c++) {
-          const cellValue = String(row[c] ?? "").trim();
-          const classes = [];
-
-          if (TEAM_COLUMNS.includes(c)) {
-            classes.push("team-cell");
-          }
-
-          if (POINTS_COLUMNS.includes(c)) {
-            classes.push("pts-cell");
-          }
-
-          let cellContent = escapeHtml(cellValue || "-");
-
-          if (TEAM_COLUMNS.includes(c) && cellValue) {
-            cellContent = `
-              <div class="team-content">
-                ${badgeHtml(cellValue)}
-                <span class="team-name">${escapeHtml(cellValue)}</span>
-              </div>`;
-          }
-
-          tableHtml += `
-            <td class="${classes.join(" ")}">
-              ${cellContent}
-            </td>`;
-        }
-
-        tableHtml += "</tr>";
-        displayedRows++;
-      }
-
-      tableHtml += "</tbody></table></div>";
-
-      if (displayedRows === 0) {
-        tableHtml += `
-          <div class="empty-msg">
-            The sheet loaded, but no standings rows were found.
-          </div>`;
-      }
-
-      destination.innerHTML = tableHtml;
-    }
-
-    let isLoading = false;
-
-    async function loadTournamentData() {
-      if (isLoading) return;
-      isLoading = true;
-
-      setStatus("loading", "Syncing league standings…");
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-      try {
-        const separator = csvSourceUrl.includes("?") ? "&" : "?";
-        const freshUrl =
-          csvSourceUrl + separator + "_refresh=" + Date.now();
-
-        const response = await fetch(freshUrl, {
-          cache: "no-store",
-          signal: controller.signal
-        });
-
-        if (!response.ok) {
-          throw new Error("Google Sheets returned HTTP " + response.status);
-        }
-
-        const csvText = await response.text();
-
-        if (!csvText.trim()) {
-          throw new Error("Google Sheets returned an empty response.");
-        }
-
-        if (/^\s*<(?:!doctype|html)\b/i.test(csvText)) {
-          throw new Error("Google returned HTML instead of CSV data.");
-        }
-
-        if (typeof Papa === "undefined") {
-          throw new Error("The CSV parser did not load.");
-        }
-
-        const results = Papa.parse(csvText, {
-          skipEmptyLines: true
-        });
-
-        if (results.errors && results.errors.length) {
-          console.warn("CSV parsing warnings:", results.errors);
-        }
-
-        renderTable(results.data);
-
-        setStatus("connected", "Live — refreshes every 15 seconds");
-        lastUpdated.textContent =
-          "Last updated: " + new Date().toLocaleTimeString();
-
-      } catch (error) {
-        console.error("League standings loading failed:", error);
-
-        const message = error.name === "AbortError"
-          ? "Google Sheets took too long to respond."
-          : error.message || "Unable to load the standings.";
-
-        showError(message);
-
-      } finally {
-        clearTimeout(timeoutId);
-        isLoading = false;
-      }
-    }
-
-    loadTournamentData();
-    setInterval(loadTournamentData, REFRESH_INTERVAL_MS);
-  </script>
+  loadStandings();
+  setInterval(loadStandings, REFRESH_INTERVAL_MS);
+</script>
 </body>
 </html>
