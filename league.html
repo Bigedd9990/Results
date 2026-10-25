@@ -285,45 +285,56 @@
     })[char]);
   }
 
-  function renderTable(allRows) {
-    // The Apps Script feed may return the whole sheet.
-    // Select rows 3–18 and columns B–L.
-    const rows = allRows.slice(2, 18).map(row =>
-      row.slice(1, 12)
-    );
+  
+function renderTable(allRows) {
+  // Feed columns: Rank, Team, Pld, W, D, L, GF, GA, GD, Pts
+  // Insert a blank badge column after Rank.
+  const rows = allRows
+    .filter(row => row && row.length >= 10)
+    .filter(row => /^\d+$/.test(String(row[0] || "").trim()))
+    .slice(0, 16);
 
-    if (!rows.length) {
-      throw new Error("No data was returned for B3:L18.");
-    }
+  const headings = [
+    "Rank", "", "Team", "Pld", "W", "D",
+    "L", "GF", "GA", "GD", "Pts"
+  ];
 
-    const head = document.getElementById("tableHead");
-    const body = document.getElementById("tableBody");
+  const head = document.getElementById("tableHead");
+  const body = document.getElementById("tableBody");
 
-    head.innerHTML = "<tr>" +
-      HEADINGS.map(h => `<th>${escapeHtml(h)}</th>`).join("") +
-      "</tr>";
+  head.innerHTML = "<tr>" + headings.map(h =>
+    `<th>${escapeHtml(h)}</th>`
+  ).join("") + "</tr>";
 
-    body.innerHTML = rows.map(row => {
-      const cells = HEADINGS.map((heading, index) => {
-        const value = row[index] ?? "";
+  body.innerHTML = rows.map(row => {
+    const rank = row[0] || "";
+    const team = row[1] || "";
 
-        if (index === 1) {
-          // Column C is reserved for the badge; no heading.
-          // Use the team name from column D to locate its image.
-          return `<td>${badgeHtml(row[2])}</td>`;
-        }
+    const values = [
+      rank, "", team,
+      row[2] || "", row[3] || "", row[4] || "",
+      row[5] || "", row[6] || "", row[7] || "",
+      row[8] || "", row[9] || ""
+    ];
 
-        const className = index === 10 ? " class=\"points\"" : "";
-        return `<td${className}>${escapeHtml(value)}</td>`;
-      });
+    return "<tr>" + values.map((value, index) => {
+      if (index === 1) {
+        return `<td>${badgeHtml(team)}</td>`;
+      }
 
-      return "<tr>" + cells.join("") + "</tr>";
-    }).join("");
+      const className = index === 10
+        ? ' class="points"'
+        : "";
 
-    document.getElementById("status").textContent =
-      "LIVE STANDINGS · Last updated " +
-      new Date().toLocaleTimeString();
-  }
+      return `<td${className}>${escapeHtml(value)}</td>`;
+    }).join("") + "</tr>";
+  }).join("");
+
+  document.getElementById("status").textContent =
+    "LIVE STANDINGS · Last updated " +
+    new Date().toLocaleTimeString();
+}
+
 
   async function loadStandings() {
     const status = document.getElementById("status");
