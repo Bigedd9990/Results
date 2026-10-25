@@ -71,13 +71,13 @@
     }
 
     .status {
-      text-align: center;
-      padding: 12px;
-      font-size: 15px;
-      font-weight: bold;
-      color: var(--maroon);
-      background: var(--pale-blue);
-    }
+  background: #f1f5f8;
+  color: #581b32;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 900;
+}
 
     
 .table-wrap {
@@ -200,7 +200,7 @@ tbody td:nth-child(3) {
          onerror="this.style.display='none'">
   </header>
 
-  <div class="status" id="status">Loading league standings...</div>
+  
 
   <div class="table-wrap">
     <table>
@@ -212,6 +212,7 @@ tbody td:nth-child(3) {
   <div class="footer">
     ESQUINA PARK RANGERS · LIVE TOURNAMENT STANDINGS
   </div>
+  <div class="status" id="status">Loading league standings...
 </div>
 
 <script>
@@ -342,9 +343,18 @@ function renderTable(allRows) {
     }).join("") + "</tr>";
   }).join("");
 
-  document.getElementById("status").textContent =
-    "LIVE STANDINGS · Last updated " +
-    new Date().toLocaleTimeString();
+ 
+const spanishTime = new Date().toLocaleTimeString("en-GB", {
+  timeZone: "Europe/Madrid",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false
+});
+
+document.getElementById("status").textContent =
+  "Last updated " + spanishTime + " · Spanish local time";
+
 }
 
 
