@@ -286,9 +286,9 @@
   }
 
   
+
 function renderTable(allRows) {
-  // Feed columns: Rank, Team, Pld, W, D, L, GF, GA, GD, Pts
-  // Insert a blank badge column after Rank.
+  // Remove the heading row and keep the 16 team rows.
   const rows = allRows
     .filter(row => row && row.length >= 10)
     .filter(row => /^\d+$/.test(String(row[0] || "").trim()))
@@ -307,19 +307,23 @@ function renderTable(allRows) {
   ).join("") + "</tr>";
 
   body.innerHTML = rows.map(row => {
-    const rank = row[0] || "";
-    const team = row[1] || "";
-
     const values = [
-      rank, "", team,
-      row[2] || "", row[3] || "", row[4] || "",
-      row[5] || "", row[6] || "", row[7] || "",
-      row[8] || "", row[9] || ""
+      row[0] || "", // Rank
+      "",           // Badge
+      row[1] || "", // Team
+      row[2] || "", // Pld
+      row[3] || "", // W
+      row[4] || "", // D
+      row[5] || "", // L
+      row[6] || "", // GF
+      row[7] || "", // GA
+      row[8] || "", // GD
+      row[9] || ""  // Pts
     ];
 
     return "<tr>" + values.map((value, index) => {
       if (index === 1) {
-        return `<td>${badgeHtml(team)}</td>`;
+        return `<td>${badgeHtml(row[1] || "")}</td>`;
       }
 
       const className = index === 10
@@ -334,6 +338,7 @@ function renderTable(allRows) {
     "LIVE STANDINGS · Last updated " +
     new Date().toLocaleTimeString();
 }
+
 
 
   async function loadStandings() {
