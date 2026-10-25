@@ -229,6 +229,10 @@ tbody td:nth-child(3) {
          src="badges/Rojales.png"
          alt="Rojales"
          onerror="this.style.display='none'">
+    <div class="local-clock">
+  <span>LOCAL TIME</span>
+  <span id="localClock">--:--:--</span>
+</div>
   </header>
 
   
@@ -423,20 +427,26 @@ document.getElementById("status").textContent =
     }
   }
 
+
 function updateLocalClock() {
-  const time = new Date().toLocaleTimeString("en-GB", {
+  const clock = document.getElementById("localClock");
+  if (!clock) return;
+
+  clock.textContent = new Date().toLocaleTimeString("en-GB", {
     timeZone: "Europe/Madrid",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: false
   });
-
-  document.getElementById("localClock").textContent = time;
 }
 
 updateLocalClock();
 setInterval(updateLocalClock, 1000);
+
+
+  document.getElementById("localClock").textContent = time;
+}
 
   loadStandings();
   setInterval(loadStandings, REFRESH_INTERVAL_MS);
