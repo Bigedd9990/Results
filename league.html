@@ -430,22 +430,24 @@
 
       // The seven stats follow the team name.
       const stats = teamIndex >= 0
-        ? row.slice(teamIndex + 1, teamIndex + 8)
-        : [];
+  ? row.slice(teamIndex + 1).filter((value, index, arr) => {
+      return true;
+    })
+  : [];
 
       const values = [
-        row[0] || "",
-        "",
-        team,
-        stats[0] ?? "",
-        stats[1] ?? "",
-        stats[2] ?? "",
-        stats[3] ?? "",
-        stats[4] ?? "",
-        stats[5] ?? "",
-        stats[6] ?? "",
-        stats[7] ?? ""
-      ];
+  row[0] || "",
+  "",
+  team,
+  stats[0] ?? "", // Pld
+  stats[1] ?? "", // W
+  stats[2] ?? "", // D
+  stats[3] ?? "", // L
+  stats[4] ?? "", // GF
+  stats[5] ?? "", // GA
+  stats[6] ?? "", // GD
+  stats[7] ?? ""  // Pts
+];
 
       return "<tr>" + values.map((value, index) => {
         if (index === 1) {
