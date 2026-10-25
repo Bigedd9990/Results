@@ -3,728 +3,513 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="30">
   <title>Esquina Park Rangers - League Standings</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
-:root {
-  --maroon: #572638;
-  --dark-maroon: #351724;
-  --light-blue: #B9E6F5;
-  --white: #ffffff;
-  --background: #f2f5f7;
-  --border: #d6dce1;
-}
+    :root {
+      --maroon: #581b32;
+      --light-blue: #8ed0e8;
+      --pale-blue: #eaf7fc;
+      --white: #ffffff;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-html {
-  width: 100%;
-  min-height: 100%;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f1f5f8;
+      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: #222;
-}
+    .page {
+      width: 100%;
+      margin: 0;
+      background: white;
+      overflow: hidden;
+    }
 
-.page {
-  width: 100%;
-  max-width: none;
-  min-height: 100vh;
-  margin: 0;
-  background: white;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-}
+    /* COMPACT HEADER */
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
+      border-bottom: 5px solid var(--light-blue);
+    }
 
-/* Pitch-side TV header */
-header {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  min-height: 180px;
-  padding: 22px 12px;
-  background: linear-gradient(
-    135deg,
-    #351724 0%,
-    #572638 45%,
-    #78394f 50%,
-    #572638 75%,
-    #351724 100%
-  ) !important;
-  color: #ffffff !important;
-  text-align: center;
-  box-shadow: inset 0 3px 0 rgba(255,255,255,0.18),
-              inset 0 -5px 12px rgba(0,0,0,0.28);
-}
+    .header-logo {
+      width: 66px;
+      height: 66px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
 
-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.20) 0%,
-    rgba(255,255,255,0.06) 28%,
-    transparent 52%,
-    rgba(0,0,0,0.12) 100%
-  );
-}
+    .header-title {
+      flex: 1;
+      min-width: 0;
+    }
 
-.header-content {
-  position: relative;
-  z-index: 2;
-}
+    h1 {
+      font-size: clamp(20px, 3vw, 34px);
+      margin: 0;
+      font-weight: 900;
+      line-height: 1.15;
+    }
 
-.flags-layer {
-  z-index: 1;
-}
+    .subtitle {
+      margin-top: 5px;
+      color: var(--light-blue);
+      font-size: clamp(11px, 1.4vw, 16px);
+      font-weight: bold;
+    }
 
-.header-logo {
-  height: 52px;
-  max-width: 110px;
-  object-fit: contain;
-  vertical-align: middle;
-  margin: 0 12px 8px;
-}
+    /* LIVE LOCAL CLOCK */
+    .local-clock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: var(--light-blue);
+      color: var(--maroon);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-weight: 900;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
-h1 {
-  margin: 0;
-  font-size: clamp(30px, 3vw, 48px);
-  font-weight: 900;
-  letter-spacing: 1px;
-}
+    .local-clock-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
 
-.subtitle {
-  margin-top: 7px;
-  font-size: clamp(18px, 1.8vw, 27px);
-  font-weight: bold;
-  color: var(--light-blue);
-}
+    #localClock {
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
 
-.event-title {
-  margin-top: 5px;
-  font-size: clamp(14px, 1.1vw, 19px);
-  letter-spacing: 1px;
-}
+    /* TABLE */
+    .table-wrap {
+      width: 100%;
+      padding: 8px;
+      overflow-x: auto;
+    }
 
-.clock {
-  position: relative;
-  z-index: 3;
-  display: block;
-  min-height: 20px;
-  margin-top: 7px;
-  color: #ffffff !important;
-  font-size: clamp(13px, 1vw, 17px);
-  font-weight: bold;
-  visibility: visible;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: clamp(16px, 1.8vw, 25px);
+    }
 
-/* Animated flags remain inside the header */
-.flags-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
+    thead th {
+      background: var(--maroon);
+      color: white;
+      padding: 14px 8px;
+      font-size: clamp(14px, 1.5vw, 21px);
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+    }
 
-.flag {
-  position: absolute;
-  display: block;
-  width: 78px;
-  height: 49px;
-  object-fit: fill;
-  border-radius: 2px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  transform-origin: center;
-  animation: flagWave 2.5s ease-in-out infinite;
-  backface-visibility: hidden;
-}
+    thead th:nth-child(2),
+    tbody td:nth-child(2) {
+      width: 55px;
+      min-width: 45px;
+      padding: 5px;
+    }
 
-.flag-england {
-  left: 17%;
-  top: 9px;
-  animation-delay: -0.4s;
-}
+    tbody td {
+      padding: 13px 8px;
+      border-bottom: 2px solid #d7e1e7;
+      text-align: center;
+      font-size: clamp(16px, 1.8vw, 25px);
+      font-weight: 900;
+      white-space: nowrap;
+    }
 
-.flag-argentina {
-  left: 29%;
-  bottom: 9px;
-  animation-delay: -1.6s;
-}
+    tbody tr:nth-child(even) {
+      background: var(--pale-blue);
+    }
 
-.flag-spain {
-  width: 88px;
-  height: 55px;
-  left: 50%;
-  top: 7px;
-  margin-left: -44px;
-  animation-delay: -0.8s;
-}
+    tbody tr:first-child td {
+      background: #fff5d8;
+    }
 
-.flag-catalonia {
-  right: 29%;
-  bottom: 9px;
-  animation-delay: -1.9s;
-}
+    tbody td:nth-child(1) {
+      color: var(--maroon);
+      font-size: 1.1em;
+      font-weight: 900;
+    }
 
-.flag-wales {
-  right: 17%;
-  top: 9px;
-  animation-delay: -1.1s;
-}
+    tbody td:nth-child(3) {
+      text-align: left;
+      min-width: 170px;
+      color: var(--maroon);
+      font-weight: 900;
+      white-space: normal;
+    }
 
-@keyframes flagWave {
-  0%, 100% {
-    transform: perspective(180px) rotateY(-9deg) skewY(-1deg);
-  }
-  50% {
-    transform: perspective(180px) rotateY(9deg) skewY(1deg);
-  }
-}
+    .team-badge {
+      display: block;
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      margin: auto;
+    }
 
-/* Large, high-contrast standings */
-.standings-heading {
-  padding: 18px 12px;
-  text-align: center;
-  color: var(--maroon);
-  font-size: clamp(26px, 2.4vw, 38px);
-  font-weight: 900;
-  text-transform: uppercase;
-}
+    .points {
+      color: var(--maroon);
+      font-size: 1.15em;
+      font-weight: 900;
+    }
 
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  padding: 0 12px 15px;
-}
+    /* FOOTER AND STATUS */
+    .footer {
+      padding: 14px;
+      text-align: center;
+      background: var(--maroon);
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+    }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
-  font-size: clamp(17px, 1.5vw, 25px);
-}
+    .status {
+      background: #f1f5f8;
+      color: var(--maroon);
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
 
-thead {
-  background: var(--maroon);
-  color: white;
-}
+    /* MOBILE */
+    @media (max-width: 650px) {
+      header {
+        padding: 10px 6px;
+        gap: 7px;
+      }
 
-th {
-  padding: 16px 10px;
-  text-align: center;
-  white-space: nowrap;
-  font-weight: 900;
-}
+      .header-logo {
+        width: 42px;
+        height: 42px;
+      }
 
-td {
-  padding: 15px 10px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
+      h1 {
+        font-size: clamp(15px, 4vw, 22px);
+      }
 
-tbody tr {
-  background: #ffffff;
-}
+      .subtitle {
+        font-size: 10px;
+        margin-top: 4px;
+      }
 
-tbody tr:nth-child(even) {
-  background: #e4f5fb;
-}
+      .local-clock {
+        padding: 5px 6px;
+        gap: 2px;
+      }
 
-tbody tr:first-child {
-  background: #fff0c2;
-  font-weight: bold;
-}
+      .local-clock-label {
+        font-size: 8px;
+        letter-spacing: 0.5px;
+      }
 
-tbody tr:hover {
-  background: #c8eaf7;
-}
+      #localClock {
+        font-size: 13px;
+      }
 
-td.team-name {
-  text-align: left;
-  font-weight: bold;
-  min-width: 180px;
-}
-td.rank {
-  font-weight: 900;
-  color: var(--maroon);
-}
+      .table-wrap {
+        padding: 3px;
+      }
 
-td.points {
-  font-weight: 900;
-  color: var(--maroon);
-}
+      thead th {
+        padding: 9px 5px;
+        font-size: 13px;
+      }
 
-.team-badge {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  vertical-align: middle;
-}
+      tbody td {
+        padding: 9px 5px;
+        font-size: 15px;
+      }
 
-.status {
-  padding: 14px;
-  text-align: center;
-  font-size: clamp(13px, 1vw, 17px);
-  color: #555;
-  background: #f7f8f9;
-  border-top: 1px solid var(--border);
-}
+      tbody td:nth-child(3) {
+        min-width: 130px;
+      }
 
-.status.error {
-  color: #a32121;
-  font-weight: bold;
-}
+      .team-badge {
+        width: 30px;
+        height: 30px;
+      }
 
-footer {
-  padding: 16px;
-  background: linear-gradient(
-    to bottom,
-    #78394f 0%,
-    #572638 35%,
-    #351724 100%
-  ) !important;
-  color: #ffffff !important;
-  text-align: center;
-  font-size: clamp(13px, 1vw, 17px);
-  font-weight: bold;
-  border-top: 1px solid rgba(255,255,255,0.25);
-  box-shadow: inset 0 2px 5px rgba(255,255,255,0.12);
-}
+      thead th:nth-child(2),
+      tbody td:nth-child(2) {
+        width: 38px;
+        min-width: 38px;
+      }
 
-/* Smaller screens only; TV layout above remains full width */
-@media (max-width: 650px) {
-  header {
-    min-height: 140px;
-    padding: 17px 5px;
-  }
-
-  .header-logo {
-    height: 32px;
-    max-width: 65px;
-    margin: 0 5px 7px;
-  }
-
-  .flag {
-    width: 36px;
-    height: 23px;
-  }
-
-  .flag-england {
-    left: 8%;
-  }
-
-  .flag-wales {
-    right: 8%;
-  }
-
-  .flag-argentina {
-    left: 22%;
-  }
-
-  .flag-catalonia {
-    right: 22%;
-  }
-
-  .flag-spain {
-    width: 42px;
-    height: 26px;
-    margin-left: -21px;
-  }
-
-  .standings-heading {
-    font-size: 22px;
-    padding: 12px 5px;
-  }
-
-  .table-wrap {
-    padding: 0 4px 10px;
-  }
-
-  table {
-    font-size: 12px;
-  }
-
-  th,
-  td {
-    padding: 8px 5px;
-  }
-
-  td.team-name {
-    min-width: 120px;
-  }
-
-  .team-badge {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flag {
-    animation: none;
-  }
-}
-```
+      .footer {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <main class="page">
+<div class="page">
 
-    <header>
-      <div class="flags-layer" aria-hidden="true">
-        <img src="badges/england.png" class="flag flag-england" alt="">
-        <img src="badges/argentina.png" class="flag flag-argentina" alt="">
-        <img src="badges/spain.png" class="flag flag-spain" alt="">
-        <img src="badges/catalonia.png" class="flag flag-catalonia" alt="">
-        <img src="badges/wales.png" class="flag flag-wales" alt="">
-      </div>
+  <header>
+    <img class="header-logo"
+         src="badges/Esquina Park Rangers.png"
+         alt="Esquina Park Rangers"
+         onerror="this.style.display='none'">
 
-      <div class="header-content">
-        <div>
-          <img
-            src="badges/esquina-badge.png"
-            class="header-logo"
-            alt="Esquina Park Rangers"
-            onerror="this.style.display='none'"
-          >
-
-          <img
-            src="badges/rojales.png"
-            class="header-logo"
-            alt="Rojales"
-            onerror="this.style.display='none'"
-          >
-        </div>
-
-        <h1>ESQUINA PARK RANGERS</h1>
-        <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-        <div class="event-title">5TH ANNUAL INTERNATIONAL TOURNAMENT</div>
-        <div class="clock" id="clock">Loading local time...</div>
-      </div>
-    </header>
-
-    <div class="standings-heading">League Standings</div>
-
-    <div class="table-wrap">
-      <table id="standings">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th></th>
-            <th>Team</th>
-            <th>Pld</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
-            <th>GF</th>
-            <th>GA</th>
-            <th>GD</th>
-            <th>Pts</th>
-          </tr>
-        </thead>
-        <tbody id="standings-body">
-          <tr>
-            <td colspan="11">Loading tournament data from Google Sheets...</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="header-title">
+      <h1>ESQUINA PARK RANGERS</h1>
+      <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+      <div class="subtitle">LEAGUE STANDINGS</div>
     </div>
 
-    <div class="status" id="status">
-      Connecting to tournament data...
+    <img class="header-logo"
+         src="badges/Rojales.png"
+         alt="Rojales"
+         onerror="this.style.display='none'">
+
+    <div class="local-clock">
+      <span class="local-clock-label">LOCAL TIME</span>
+      <span id="localClock">--:--:--</span>
     </div>
+  </header>
 
-    <footer>
-      ESQUINA PARK RANGERS · INTERNATIONAL WALKING FOOTBALL CUP
-    </footer>
-  </main>
+  <div class="table-wrap">
+    <table>
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
 
-  <script>
-    /*
-      Published Google Sheets CSV feed.
-      Keep this URL if it is the feed currently supplying your standings.
-    */
-    const CSV_URL =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=198337941&single=true&output=csv";
+  <div class="footer">
+    ESQUINA PARK RANGERS · LIVE TOURNAMENT STANDINGS
+  </div>
 
-    const REFRESH_INTERVAL_MS = 15000;
+  <div class="status" id="status">
+    Loading league standings...
+  </div>
 
-    const tbody = document.getElementById("standings-body");
-    const statusBox = document.getElementById("status");
+</div>
 
-    let loading = false;
-    let lastSuccessfulUpdate = null;
+<script>
+  const CSV_URL =
+    "https://script.google.com/macros/s/AKfycbxQQB-Fi9liFMcjkULvSWaboQBZ9OTBqrmcxORx0MJU69lJsKfguEBFAoxhMc6B6LJBRA/exec";
 
-    function updateClock() {
-      const now = new Date();
+  const REFRESH_INTERVAL_MS = 15000;
 
-      document.getElementById("clock").textContent =
-        now.toLocaleString("en-GB", {
-          timeZone: "Europe/Madrid",
-          weekday: "short",
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
-        }) + " · Rojales, Spain";
+  const HEADINGS = [
+    "Rank", "", "Team", "Pld", "W", "D",
+    "L", "GF", "GA", "GD", "Pts"
+  ];
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function normalise(value) {
+    return String(value ?? "")
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+  }
+
+  function badgeHtml(teamName) {
+    if (!teamName) return "";
+
+    const candidates = ["png", "jpg", "jpeg", "webp"].map(
+      ext => "badges/" + String(teamName).trim() + "." + ext
+    );
+
+    return `<img class="team-badge"
+      src="${candidates[0]}"
+      data-candidates='${JSON.stringify(candidates)}'
+      data-try-index="0"
+      alt="${escapeHtml(teamName)} badge"
+      onerror="tryNextBadge(this)">`;
+  }
+
+  function tryNextBadge(img) {
+    const candidates = JSON.parse(
+      img.getAttribute("data-candidates") || "[]"
+    );
+
+    const current = Number(img.dataset.tryIndex || 0) + 1;
+
+    if (current < candidates.length) {
+      img.dataset.tryIndex = current;
+      img.src = candidates[current];
+    } else {
+      img.style.display = "none";
+    }
+  }
+
+  function updateLocalClock() {
+    const clock = document.getElementById("localClock");
+    if (!clock) return;
+
+    clock.textContent = new Date().toLocaleTimeString("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+  }
+
+  function renderTable(allRows) {
+    // Find the header row in the feed, if one exists.
+    const headerIndex = allRows.findIndex(row =>
+      row && row.some(cell =>
+        /^(rank|team|pld|pts)$/i.test(String(cell || "").trim())
+      )
+    );
+
+    let rows = headerIndex >= 0
+      ? allRows.slice(headerIndex + 1)
+      : allRows;
+
+    // Keep rows with a numeric rank in the first column.
+    rows = rows.filter(row =>
+      row &&
+      /^\d+$/.test(String(row[0] || "").trim())
+    );
+
+    const head = document.getElementById("tableHead");
+    const body = document.getElementById("tableBody");
+
+    head.innerHTML = "<tr>" + HEADINGS.map(h =>
+      `<th>${escapeHtml(h)}</th>`
+    ).join("") + "</tr>";
+
+    if (!rows.length) {
+      body.innerHTML =
+        '<tr><td colspan="11">No standings rows found. Check the feed format.</td></tr>';
+      document.getElementById("status").textContent =
+        "Feed loaded, but no ranked teams were found.";
+      return;
     }
 
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    // Parse CSV correctly, including commas inside quoted cells.
-    function parseCSV(text) {
-      const rows = [];
-      let row = [];
-      let cell = "";
-      let inQuotes = false;
-
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const next = text[i + 1];
-
-        if (char === '"' && inQuotes && next === '"') {
-          cell += '"';
-          i++;
-        } else if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === "," && !inQuotes) {
-          row.push(cell.trim());
-          cell = "";
-        } else if ((char === "\n" || char === "\r") && !inQuotes) {
-          if (char === "\r" && next === "\n") i++;
-
-          row.push(cell.trim());
-
-          if (row.some(value => value !== "")) {
-            rows.push(row);
-          }
-
-          row = [];
-          cell = "";
-        } else {
-          cell += char;
-        }
-      }
-
-      if (cell !== "" || row.length > 0) {
-        row.push(cell.trim());
-
-        if (row.some(value => value !== "")) {
-          rows.push(row);
-        }
-      }
-
-      return rows;
-    }
-
-    function normalise(value) {
-      return String(value ?? "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, " ");
-    }
-
-    function findHeaderRow(rows) {
-      return rows.findIndex(row =>
-        row.some(cell => normalise(cell) === "rank") &&
-        row.some(cell => normalise(cell) === "team")
+    body.innerHTML = rows.slice(0, 16).map(row => {
+      // Locate the team name in the row rather than assuming
+      // the blank badge column is always present.
+      let teamIndex = row.findIndex(cell =>
+        /[a-zA-ZÀ-ÿ]/.test(String(cell || "").trim()) &&
+        !/^(rank|team|pld|pts|gf|ga|gd|w|d|l)$/i.test(
+          String(cell || "").trim()
+        )
       );
-    }
 
-    function teamBadgePath(teamName) {
-  const slug = String(teamName || "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+      const team = teamIndex >= 0 ? String(row[teamIndex]).trim() : "";
 
-  
-function teamBadgePath(teamName) {
-  return "badges/" + String(teamName || "").trim() + ".png";
-}
+      // The seven stats follow the team name.
+      const stats = teamIndex >= 0
+  ? row.slice(teamIndex + 1).filter((value, index, arr) => {
+      return true;
+    })
+  : [];
 
-    function createCell(text, className = "") {
-      const td = document.createElement("td");
-      td.textContent = text ?? "";
+      const values = [
+  row[0] || "",
+  "",
+  team,
+  stats[0] ?? "", // Pld
+  stats[1] ?? "", // W
+  stats[2] ?? "", // D
+  stats[3] ?? "", // L
+  stats[4] ?? "", // GF
+  stats[5] ?? "", // GA
+  stats[6] ?? "", // GD
+  stats[7] ?? ""  // Pts
+];
 
-      if (className) {
-        td.className = className;
-      }
-
-      return td;
-    }
-
-    function renderTable(rows) {
-      const headerIndex = findHeaderRow(rows);
-
-      if (headerIndex === -1) {
-        throw new Error(
-          "Could not find the Rank and Team headings in the Google Sheets feed."
-        );
-      }
-
-      const sourceHeaders = rows[headerIndex].map(normalise);
-      const columnIndex = name => sourceHeaders.indexOf(name);
-
-      const rankIndex = columnIndex("rank");
-      const teamIndex = columnIndex("team");
-
-      const aliases = {
-        pld: ["pld", "played", "p"],
-        w: ["w", "won", "wins"],
-        d: ["d", "drawn", "draws"],
-        l: ["l", "lost", "losses"],
-        gf: ["gf", "goals for"],
-        ga: ["ga", "goals against"],
-        gd: ["gd", "goal difference"],
-        pts: ["pts", "points", "pt"]
-      };
-
-      function findColumn(names) {
-        return sourceHeaders.findIndex(header => names.includes(header));
-      }
-
-      const statIndexes = {
-        pld: findColumn(aliases.pld),
-        w: findColumn(aliases.w),
-        d: findColumn(aliases.d),
-        l: findColumn(aliases.l),
-        gf: findColumn(aliases.gf),
-        ga: findColumn(aliases.ga),
-        gd: findColumn(aliases.gd),
-        pts: findColumn(aliases.pts)
-      };
-
-      const outputRows = [];
-
-      for (let i = headerIndex + 1; i < rows.length; i++) {
-        const row = rows[i];
-
-        if (!row || !row.some(value => String(value).trim() !== "")) {
-          continue;
+      return "<tr>" + values.map((value, index) => {
+        if (index === 1) {
+          return `<td>${badgeHtml(team)}</td>`;
         }
 
-        const rankValue = rankIndex >= 0 ? row[rankIndex] : "";
-        const teamName = teamIndex >= 0 ? row[teamIndex] : "";
+        const className = index === 10
+          ? ' class="points"'
+          : "";
 
-        // Ignore headings, notes and blank rows.
-        if (!teamName || !/^\d+$/.test(String(rankValue).trim())) {
-          continue;
-        }
+        return `<td${className}>${escapeHtml(value)}</td>`;
+      }).join("") + "</tr>";
+    }).join("");
 
-        const tr = document.createElement("tr");
+    const spanishTime = new Date().toLocaleTimeString("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
 
-        tr.appendChild(createCell(rankValue, "rank"));
+    document.getElementById("status").textContent =
+      "Last updated " + spanishTime + " · Spanish local time";
+  }
 
-        const badgeCell = document.createElement("td");
-        const badge = document.createElement("img");
-        badge.className = "team-badge";
-        badge.alt = "";
-        badge.src = teamBadgePath(teamName);
-        badge.onerror = function () {
-          this.style.display = "none";
-        };
-        badgeCell.appendChild(badge);
-        tr.appendChild(badgeCell);
+  async function loadStandings() {
+    const status = document.getElementById("status");
 
-        tr.appendChild(createCell(teamName, "team-name"));
+    try {
+      const url = CSV_URL +
+        (CSV_URL.includes("?") ? "&" : "?") +
+        "t=" + Date.now();
 
-        ["pld", "w", "d", "l", "gf", "ga", "gd", "pts"].forEach(key => {
-          const index = statIndexes[key];
-          const value = index >= 0 ? (row[index] ?? "") : "";
-          const className = key === "pts" ? "points" : "";
-          tr.appendChild(createCell(value, className));
-        });
+      const response = await fetch(url, { cache: "no-store" });
 
-        outputRows.push(tr);
+      if (!response.ok) {
+        throw new Error("Unable to retrieve the spreadsheet.");
       }
 
-      if (outputRows.length === 0) {
-        throw new Error(
-          "The feed loaded, but no ranked teams were found beneath the headings."
-        );
-      }
+      const text = await response.text();
 
-      tbody.replaceChildren(...outputRows);
+      const parsed = Papa.parse(text, {
+        skipEmptyLines: false
+      });
+
+      renderTable(parsed.data);
+    } catch (error) {
+      console.error("Standings error:", error);
+      status.textContent =
+        "Unable to refresh standings. Retrying shortly...";
     }
+  }
 
-    async function loadStandings() {
-      if (loading) return;
-      loading = true;
+  // Start the clock once, independently of the standings refresh.
+  updateLocalClock();
+  setInterval(updateLocalClock, 1000);
 
-      try {
-        statusBox.classList.remove("error");
-        statusBox.textContent = "Updating tournament standings...";
+  // Load and refresh standings.
+  loadStandings();
+  setInterval(loadStandings, REFRESH_INTERVAL_MS);
+</script>
 
-        const separator = CSV_URL.includes("?") ? "&" : "?";
-        const response = await fetch(
-          CSV_URL + separator + "_=" + Date.now(),
-          { cache: "no-store" }
-        );
-
-        if (!response.ok) {
-          throw new Error("Google Sheets returned HTTP " + response.status);
-        }
-
-        const csvText = await response.text();
-
-        if (!csvText.trim()) {
-          throw new Error("Google Sheets returned an empty response.");
-        }
-
-        const rows = parseCSV(csvText);
-        renderTable(rows);
-
-        lastSuccessfulUpdate = new Date();
-
-        statusBox.textContent =
-          "Live standings · Last updated " +
-          lastSuccessfulUpdate.toLocaleTimeString("en-GB", {
-            timeZone: "Europe/Madrid",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: false
-          }) +
-          " · Refreshes every 15 seconds";
-      } catch (error) {
-        console.error("Standings update failed:", error);
-
-        statusBox.classList.add("error");
-        statusBox.textContent =
-          "Unable to update standings: " + error.message +
-          (lastSuccessfulUpdate
-            ? " · Showing the last successfully loaded table."
-            : "");
-      } finally {
-        loading = false;
-      }
-    }
-
-    loadStandings();
-    setInterval(loadStandings, REFRESH_INTERVAL_MS);
-  </script>
 </body>
 </html>
-```
