@@ -17,194 +17,251 @@
       --white: #ffffff;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-  margin: 0;
-  padding: 0;
-  background: #f1f5f8;
-  color: #222;
-  font-family: Arial, Helvetica, sans-serif;
-}
+      margin: 0;
+      padding: 0;
+      background: #f1f5f8;
+      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-.page {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  background: white;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: none;
-}
+    .page {
+      width: 100%;
+      margin: 0;
+      background: white;
+      overflow: hidden;
+    }
 
-    
-header {
-  background: var(--maroon);
-  color: white;
-  padding: 22px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  text-align: center;
-  border-bottom: 7px solid var(--light-blue);
-}
-
-.local-clock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background: #8ed0e8;
-  color: #581b32;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: 900;
-  font-size: clamp(16px, 2vw, 24px);
-  white-space: nowrap;
-}
-
-.local-clock span:first-child {
-  font-size: 0.75em;
-  letter-spacing: 1px;
-}
-
-#localClock {
-  font-variant-numeric: tabular-nums;
-}
-
-
-#localClock {
-  font-variant-numeric: tabular-nums;
-}
-
+    /* COMPACT HEADER */
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
+      border-bottom: 5px solid var(--light-blue);
     }
 
     .header-logo {
-      width: 76px;
-      height: 76px;
+      width: 66px;
+      height: 66px;
       object-fit: contain;
       flex-shrink: 0;
     }
 
+    .header-title {
+      flex: 1;
+      min-width: 0;
+    }
+
     h1 {
-      font-size: clamp(23px, 4vw, 42px);
+      font-size: clamp(20px, 3vw, 34px);
       margin: 0;
       font-weight: 900;
       line-height: 1.15;
     }
 
     .subtitle {
-      margin-top: 8px;
+      margin-top: 5px;
       color: var(--light-blue);
-      font-size: 17px;
+      font-size: clamp(11px, 1.4vw, 16px);
       font-weight: bold;
     }
 
+    /* LIVE LOCAL CLOCK */
+    .local-clock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: var(--light-blue);
+      color: var(--maroon);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-weight: 900;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .local-clock-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    #localClock {
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* TABLE */
+    .table-wrap {
+      width: 100%;
+      padding: 8px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: clamp(16px, 1.8vw, 25px);
+    }
+
+    thead th {
+      background: var(--maroon);
+      color: white;
+      padding: 14px 8px;
+      font-size: clamp(14px, 1.5vw, 21px);
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    thead th:nth-child(2),
+    tbody td:nth-child(2) {
+      width: 55px;
+      min-width: 45px;
+      padding: 5px;
+    }
+
+    tbody td {
+      padding: 13px 8px;
+      border-bottom: 2px solid #d7e1e7;
+      text-align: center;
+      font-size: clamp(16px, 1.8vw, 25px);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--pale-blue);
+    }
+
+    tbody tr:first-child td {
+      background: #fff5d8;
+    }
+
+    tbody td:nth-child(1) {
+      color: var(--maroon);
+      font-size: 1.1em;
+      font-weight: 900;
+    }
+
+    tbody td:nth-child(3) {
+      text-align: left;
+      min-width: 170px;
+      color: var(--maroon);
+      font-weight: 900;
+      white-space: normal;
+    }
+
+    .team-badge {
+      display: block;
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      margin: auto;
+    }
+
+    .points {
+      color: var(--maroon);
+      font-size: 1.15em;
+      font-weight: 900;
+    }
+
+    /* FOOTER AND STATUS */
+    .footer {
+      padding: 14px;
+      text-align: center;
+      background: var(--maroon);
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
     .status {
-  background: #f1f5f8;
-  color: #581b32;
-  text-align: center;
-  padding: 10px;
-  font-size: 13px;
-  font-weight: 900;
-}
+      background: #f1f5f8;
+      color: var(--maroon);
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
 
-    
-.table-wrap {
-  width: 100%;
-  padding: 8px;
-  overflow-x: auto;
-}
+    /* MOBILE */
+    @media (max-width: 650px) {
+      header {
+        padding: 10px 6px;
+        gap: 7px;
+      }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
-  font-size: clamp(18px, 2vw, 28px);
-}
+      .header-logo {
+        width: 42px;
+        height: 42px;
+      }
 
-thead th {
-  background: #581b32;
-  color: white;
-  padding: 16px 10px;
-  font-size: clamp(16px, 1.8vw, 24px);
-  font-weight: 900;
-  text-align: center;
-  white-space: nowrap;
-}
+      h1 {
+        font-size: clamp(15px, 4vw, 22px);
+      }
 
-thead th:nth-child(2),
-tbody td:nth-child(2) {
-  width: 60px;
-  min-width: 45px;
-  padding: 5px;
-}
+      .subtitle {
+        font-size: 10px;
+        margin-top: 4px;
+      }
 
-tbody td {
-  padding: 15px 10px;
-  border-bottom: 2px solid #d7e1e7;
-  text-align: center;
-  font-size: clamp(18px, 2vw, 28px);
-  font-weight: 900;
-}
+      .local-clock {
+        padding: 5px 6px;
+        gap: 2px;
+      }
 
-tbody tr:nth-child(even) {
-  background: #eaf7fc;
-}
+      .local-clock-label {
+        font-size: 8px;
+        letter-spacing: 0.5px;
+      }
 
-tbody tr:first-child td {
-  background: #fff5d8;
-}
+      #localClock {
+        font-size: 13px;
+      }
 
-tbody td:nth-child(1) {
-  color: #581b32;
-  font-size: 1.15em;
-  font-weight: 900;
-}
+      .table-wrap {
+        padding: 3px;
+      }
 
-tbody td:nth-child(3) {
-  text-align: left;
-  min-width: 180px;
-  color: #581b32;
-  font-weight: 900;
-}
+      thead th {
+        padding: 9px 5px;
+        font-size: 13px;
+      }
 
-.team-badge {
-  display: block;
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  margin: auto;
-}
+      tbody td {
+        padding: 9px 5px;
+        font-size: 15px;
+      }
 
-.points {
-  color: #581b32;
-  font-size: 1.2em;
-  font-weight: 900;
-}
+      tbody td:nth-child(3) {
+        min-width: 130px;
+      }
 
-.footer {
-  padding: 15px;
-  text-align: center;
-  background: #581b32;
-  color: white;
-  font-size: 15px;
-  font-weight: 900;
-}
+      .team-badge {
+        width: 30px;
+        height: 30px;
+      }
 
+      thead th:nth-child(2),
+      tbody td:nth-child(2) {
+        width: 38px;
+        min-width: 38px;
+      }
 
-    @media (max-width: 600px) {
-      body { padding: 5px; }
-      header { gap: 9px; padding: 16px 7px; }
-      .header-logo { width: 48px; height: 48px; }
-      .subtitle { font-size: 13px; }
-      .table-wrap { padding: 5px; }
-      thead th, tbody td { padding: 9px 6px; }
-      .team-badge { width: 32px; height: 32px; }
-      thead th:nth-child(2), tbody td:nth-child(2) {
-        width: 40px;
-        min-width: 40px;
+      .footer {
+        font-size: 12px;
       }
     }
   </style>
@@ -219,7 +276,7 @@ tbody td:nth-child(3) {
          alt="Esquina Park Rangers"
          onerror="this.style.display='none'">
 
-    <div>
+    <div class="header-title">
       <h1>ESQUINA PARK RANGERS</h1>
       <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
       <div class="subtitle">LEAGUE STANDINGS</div>
@@ -229,13 +286,12 @@ tbody td:nth-child(3) {
          src="badges/Rojales.png"
          alt="Rojales"
          onerror="this.style.display='none'">
-    <div class="local-clock">
-  <span>LOCAL TIME</span>
-  <span id="localClock">--:--:--</span>
-</div>
-  </header>
 
-  
+    <div class="local-clock">
+      <span class="local-clock-label">LOCAL TIME</span>
+      <span id="localClock">--:--:--</span>
+    </div>
+  </header>
 
   <div class="table-wrap">
     <table>
@@ -247,7 +303,11 @@ tbody td:nth-child(3) {
   <div class="footer">
     ESQUINA PARK RANGERS · LIVE TOURNAMENT STANDINGS
   </div>
-  <div class="status" id="status">Loading league standings...
+
+  <div class="status" id="status">
+    Loading league standings...
+  </div>
+
 </div>
 
 <script>
@@ -256,43 +316,41 @@ tbody td:nth-child(3) {
 
   const REFRESH_INTERVAL_MS = 15000;
 
-  // Google Sheets range B3:L18:
-  // B Rank, C badge, D Team, E Pld, F W, G D,
-  // H L, I GF, J GA, K GD, L Pts.
-
   const HEADINGS = [
     "Rank", "", "Team", "Pld", "W", "D",
     "L", "GF", "GA", "GD", "Pts"
   ];
 
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
   function normalise(value) {
-    return String(value || "")
+    return String(value ?? "")
       .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
-      .replace(/\.png$/i, "")
-      .replace(/\.jpe?g$/i, "")
-      .replace(/\.webp$/i, "")
       .replace(/[^a-z0-9]/g, "");
   }
 
   function badgeHtml(teamName) {
     if (!teamName) return "";
 
-    // Badge filenames should match the team name.
-    // Both .png and .jpg/.jpeg/.webp are tried.
-    const extensions = ["png", "jpg", "jpeg", "webp"];
-    const base = "badges/" + String(teamName).trim();
-
-    const candidates = extensions.map(ext =>
-      base + "." + ext
+    const candidates = ["png", "jpg", "jpeg", "webp"].map(
+      ext => "badges/" + String(teamName).trim() + "." + ext
     );
-
-    const fallback = "badges/" +
-      String(teamName).trim().toLowerCase() + ".png";
 
     return `<img class="team-badge"
       src="${candidates[0]}"
       data-candidates='${JSON.stringify(candidates)}'
+      data-try-index="0"
       alt="${escapeHtml(teamName)} badge"
       onerror="tryNextBadge(this)">`;
   }
@@ -312,87 +370,107 @@ tbody td:nth-child(3) {
     }
   }
 
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[char]);
+  function updateLocalClock() {
+    const clock = document.getElementById("localClock");
+    if (!clock) return;
+
+    clock.textContent = new Date().toLocaleTimeString("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
   }
 
-  
+  function renderTable(allRows) {
+    // Find the header row in the feed, if one exists.
+    const headerIndex = allRows.findIndex(row =>
+      row && row.some(cell =>
+        /^(rank|team|pld|pts)$/i.test(String(cell || "").trim())
+      )
+    );
 
+    let rows = headerIndex >= 0
+      ? allRows.slice(headerIndex + 1)
+      : allRows;
 
+    // Keep rows with a numeric rank in the first column.
+    rows = rows.filter(row =>
+      row &&
+      /^\d+$/.test(String(row[0] || "").trim())
+    );
 
-function renderTable(allRows) {
-  // Feed already contains 11 columns:
-  // Rank, blank badge column, Team, Pld, W, D, L,
-  // GF, GA, GD, Pts.
+    const head = document.getElementById("tableHead");
+    const body = document.getElementById("tableBody");
 
-  const rows = allRows
-    .filter(row => row && row.length >= 11)
-    .filter(row => /^\d+$/.test(String(row[0] || "").trim()))
-    .slice(0, 16);
+    head.innerHTML = "<tr>" + HEADINGS.map(h =>
+      `<th>${escapeHtml(h)}</th>`
+    ).join("") + "</tr>";
 
-  const headings = [
-    "Rank", "", "Team", "Pld", "W", "D",
-    "L", "GF", "GA", "GD", "Pts"
-  ];
+    if (!rows.length) {
+      body.innerHTML =
+        '<tr><td colspan="11">No standings rows found. Check the feed format.</td></tr>';
+      document.getElementById("status").textContent =
+        "Feed loaded, but no ranked teams were found.";
+      return;
+    }
 
-  const head = document.getElementById("tableHead");
-  const body = document.getElementById("tableBody");
+    body.innerHTML = rows.slice(0, 16).map(row => {
+      // Locate the team name in the row rather than assuming
+      // the blank badge column is always present.
+      let teamIndex = row.findIndex(cell =>
+        /[a-zA-ZÀ-ÿ]/.test(String(cell || "").trim()) &&
+        !/^(rank|team|pld|pts|gf|ga|gd|w|d|l)$/i.test(
+          String(cell || "").trim()
+        )
+      );
 
-  head.innerHTML = "<tr>" + headings.map(h =>
-    `<th>${escapeHtml(h)}</th>`
-  ).join("") + "</tr>";
+      const team = teamIndex >= 0 ? String(row[teamIndex]).trim() : "";
 
-  body.innerHTML = rows.map(row => {
-    const team = row[2] || "";
+      // The seven stats follow the team name.
+      const stats = teamIndex >= 0
+        ? row.slice(teamIndex + 1, teamIndex + 8)
+        : [];
 
-    const values = [
-      row[0] || "", // Rank
-      "",           // Badge image goes here
-      team,         // Team name
-      row[3] || "", // Pld
-      row[4] || "", // W
-      row[5] || "", // D
-      row[6] || "", // L
-      row[7] || "", // GF
-      row[8] || "", // GA
-      row[9] || "", // GD
-      row[10] || "" // Pts
-    ];
+      const values = [
+        row[0] || "",
+        "",
+        team,
+        stats[0] ?? "",
+        stats[1] ?? "",
+        stats[2] ?? "",
+        stats[3] ?? "",
+        stats[4] ?? "",
+        stats[5] ?? "",
+        stats[6] ?? "",
+        stats[7] ?? ""
+      ];
 
-    return "<tr>" + values.map((value, index) => {
-      if (index === 1) {
-        return `<td>${badgeHtml(team)}</td>`;
-      }
+      return "<tr>" + values.map((value, index) => {
+        if (index === 1) {
+          return `<td>${badgeHtml(team)}</td>`;
+        }
 
-      const className = index === 10
-        ? ' class="points"'
-        : "";
+        const className = index === 10
+          ? ' class="points"'
+          : "";
 
-      return `<td${className}>${escapeHtml(value)}</td>`;
-    }).join("") + "</tr>";
-  }).join("");
+        return `<td${className}>${escapeHtml(value)}</td>`;
+      }).join("") + "</tr>";
+    }).join("");
 
- 
-const spanishTime = new Date().toLocaleTimeString("en-GB", {
-  timeZone: "Europe/Madrid",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hour12: false
-});
+    const spanishTime = new Date().toLocaleTimeString("en-GB", {
+      timeZone: "Europe/Madrid",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
 
-document.getElementById("status").textContent =
-  "Last updated " + spanishTime + " · Spanish local time";
-
-}
-
-
+    document.getElementById("status").textContent =
+      "Last updated " + spanishTime + " · Spanish local time";
+  }
 
   async function loadStandings() {
     const status = document.getElementById("status");
@@ -414,42 +492,22 @@ document.getElementById("status").textContent =
         skipEmptyLines: false
       });
 
-      if (parsed.errors && parsed.errors.length &&
-          !parsed.data.length) {
-        throw new Error("The spreadsheet data could not be read.");
-      }
-
       renderTable(parsed.data);
     } catch (error) {
-      console.error(error);
+      console.error("Standings error:", error);
       status.textContent =
         "Unable to refresh standings. Retrying shortly...";
     }
   }
 
+  // Start the clock once, independently of the standings refresh.
+  updateLocalClock();
+  setInterval(updateLocalClock, 1000);
 
-function updateLocalClock() {
-  const clock = document.getElementById("localClock");
-  if (!clock) return;
-
-  clock.textContent = new Date().toLocaleTimeString("en-GB", {
-    timeZone: "Europe/Madrid",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false
-  });
-}
-
-updateLocalClock();
-setInterval(updateLocalClock, 1000);
-
-
-  document.getElementById("localClock").textContent = time;
-}
-
+  // Load and refresh standings.
   loadStandings();
   setInterval(loadStandings, REFRESH_INTERVAL_MS);
 </script>
+
 </body>
 </html>
