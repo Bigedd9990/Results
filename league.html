@@ -53,14 +53,42 @@ header {
   overflow: hidden;
   min-height: 180px;
   padding: 22px 12px;
-  background: linear-gradient(135deg, #351724 0%, #572638 100%) !important;
+  background: linear-gradient(
+    135deg,
+    #351724 0%,
+    #572638 45%,
+    #78394f 50%,
+    #572638 75%,
+    #351724 100%
+  ) !important;
   color: #ffffff !important;
   text-align: center;
+  box-shadow: inset 0 3px 0 rgba(255,255,255,0.18),
+              inset 0 -5px 12px rgba(0,0,0,0.28);
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.20) 0%,
+    rgba(255,255,255,0.06) 28%,
+    transparent 52%,
+    rgba(0,0,0,0.12) 100%
+  );
 }
 
 .header-content {
   position: relative;
   z-index: 2;
+}
+
+.flags-layer {
+  z-index: 1;
 }
 
 .header-logo {
@@ -254,11 +282,19 @@ td.points {
 }
 
 footer {
-  padding: 14px;
-  background: #351724 !important;
+  padding: 16px;
+  background: linear-gradient(
+    to bottom,
+    #78394f 0%,
+    #572638 35%,
+    #351724 100%
+  ) !important;
   color: #ffffff !important;
   text-align: center;
   font-size: clamp(13px, 1vw, 17px);
+  font-weight: bold;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  box-shadow: inset 0 2px 5px rgba(255,255,255,0.12);
 }
 
 /* Smaller screens only; TV layout above remains full width */
