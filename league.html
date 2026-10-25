@@ -120,9 +120,15 @@ h1 {
 }
 
 .clock {
+  position: relative;
+  z-index: 3;
+  display: block;
+  min-height: 20px;
   margin-top: 7px;
+  color: #ffffff !important;
   font-size: clamp(13px, 1vw, 17px);
-  color: #f1e7eb;
+  font-weight: bold;
+  visibility: visible;
 }
 
 /* Animated flags remain inside the header */
@@ -546,15 +552,15 @@ footer {
     }
 
     function teamBadgePath(teamName) {
-      const slug = String(teamName || "")
-        .trim()
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
+  const slug = String(teamName || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
-      return "badges/" + slug + ".png";
-    }
+  return "badges/" + slug + ".png";
+}
 
     function createCell(text, className = "") {
       const td = document.createElement("td");
