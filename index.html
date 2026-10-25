@@ -50,17 +50,21 @@
       box-shadow: 0 5px 22px rgba(0, 0, 0, 0.3);
     }
 
-    .badge .football {
-      font-size: 39px;
-      line-height: 1.1;
-    }
+    .club-logo {
+  width: 190px;
+  height: 190px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .badge .badge-text {
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      margin-top: 5px;
-    }
+.club-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
     .club {
       margin: 0;
@@ -168,10 +172,12 @@
 <body>
   <main class="container">
 
-    <div class="badge" aria-label="Tournament football emblem">
-      <span class="football">⚽</span>
-      <span class="badge-text">ESQUINA PR</span>
-    </div>
+    <div class="club-logo">
+  <img
+    src="badges/Esquina Park Rangers.png"
+    alt="Esquina Park Rangers club logo"
+  >
+</div>
 
     <h1 class="club">ESQUINA PARK RANGERS</h1>
 
