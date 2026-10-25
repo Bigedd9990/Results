@@ -288,10 +288,14 @@
   
 
 
+
 function renderTable(allRows) {
-  // Remove the heading row and keep the 16 team rows.
+  // Feed already contains 11 columns:
+  // Rank, blank badge column, Team, Pld, W, D, L,
+  // GF, GA, GD, Pts.
+
   const rows = allRows
-    .filter(row => row && row.length >= 10)
+    .filter(row => row && row.length >= 11)
     .filter(row => /^\d+$/.test(String(row[0] || "").trim()))
     .slice(0, 16);
 
@@ -308,23 +312,25 @@ function renderTable(allRows) {
   ).join("") + "</tr>";
 
   body.innerHTML = rows.map(row => {
+    const team = row[2] || "";
+
     const values = [
       row[0] || "", // Rank
-      "",           // Badge
-      row[1] || "", // Team
-      row[2] || "", // Pld
-      row[3] || "", // W
-      row[4] || "", // D
-      row[5] || "", // L
-      row[6] || "", // GF
-      row[7] || "", // GA
-      row[8] || "", // GD
-      row[9] || ""  // Pts
+      "",           // Badge image goes here
+      team,         // Team name
+      row[3] || "", // Pld
+      row[4] || "", // W
+      row[5] || "", // D
+      row[6] || "", // L
+      row[7] || "", // GF
+      row[8] || "", // GA
+      row[9] || "", // GD
+      row[10] || "" // Pts
     ];
 
     return "<tr>" + values.map((value, index) => {
       if (index === 1) {
-        return `<td>${badgeHtml(row[1] || "")}</td>`;
+        return `<td>${badgeHtml(team)}</td>`;
       }
 
       const className = index === 10
