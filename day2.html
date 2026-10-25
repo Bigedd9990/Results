@@ -2,476 +2,583 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#572638">
-  <title>Esquina Park Rangers - Day 2 Live Results</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esquina Park Rangers — Day 2 Live Results</title>
 
-  <style>
-    :root {
-      --maroon: #572638;
-      --blue: #B9E6F5;
-      --white: #ffffff;
-      --background: #f2f5f7;
-      --text: #20242a;
-      --border: #d8dfe4;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background: var(--background);
-    }
-
-    header {
-      background: var(--maroon);
-      color: var(--white);
-      text-align: center;
-      padding: 12px 16px;
-    }
-
-    .club-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-    }
-
-    .club-header img {
-      width: 76px;
-      height: 76px;
-      object-fit: contain;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(25px, 3vw, 42px);
-    }
-
-    .subtitle {
-      margin-top: 7px;
-      font-size: clamp(16px, 1.8vw, 23px);
-      font-weight: bold;
-      color: var(--blue);
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      padding: 10px;
-      background: var(--blue);
-    }
-
-    nav a {
-      color: var(--maroon);
-      text-decoration: none;
-      font-weight: bold;
-      padding: 9px 22px;
-      border: 2px solid var(--maroon);
-      border-radius: 7px;
-    }
-
-    nav a.active {
-      background: var(--maroon);
-      color: white;
-    }
-
-    #status {
-      text-align: center;
-      padding: 9px;
-      font-size: 14px;
-      font-weight: bold;
-      background: white;
-      border-bottom: 1px solid var(--border);
-    }
-
-    #boardScroll {
-      padding: 12px;
-      max-width: 1900px;
-      margin: 0 auto;
-    }
-
-    .pitch-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      align-items: start;
-    }
-
-    .pitch {
-      background: white;
-      border: 2px solid var(--maroon);
-      border-radius: 9px;
-      overflow: hidden;
-      min-width: 0;
-    }
-
-    .pitch:last-child {
-      grid-column: 1 / -1;
-    }
-
-    .pitch-heading {
-      margin: 0;
-      padding: 10px;
-      background: var(--maroon);
-      color: white;
-      text-align: center;
-      font-size: clamp(19px, 2vw, 27px);
-    }
-
-    .fixture {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      align-items: center;
-      gap: 8px;
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border);
-      min-height: 67px;
-    }
-
-    .fixture:last-child {
-      border-bottom: none;
-    }
-
-    .fixture:nth-child(even) {
-      background: #f0f8fb;
-    }
-
-    .team {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-      font-weight: bold;
-      font-size: clamp(13px, 1.25vw, 18px);
-    }
-
-    .team.home {
-      justify-content: flex-end;
-      text-align: right;
-    }
-
-    .team.away {
-      justify-content: flex-start;
-      text-align: left;
-    }
-
-    .team-name {
-      overflow-wrap: anywhere;
-    }
-
-    .team img {
-      width: 34px;
-      height: 34px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    .score {
-      min-width: 70px;
-      padding: 7px 9px;
-      text-align: center;
-      background: var(--maroon);
-      color: white;
-      border-radius: 6px;
-      font-size: clamp(18px, 1.8vw, 25px);
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .fixture-info {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: #52616b;
-      font-size: 12px;
-      margin-top: -3px;
-    }
-
-    .empty {
-      padding: 18px;
-      text-align: center;
-      color: #66717a;
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 12px;
-      color: #5d6870;
-    }
-
-    @media (max-width: 700px) {
-      .pitch-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .pitch:last-child {
-        grid-column: auto;
-      }
-
-      .club-header img {
-        width: 55px;
-        height: 55px;
-      }
-
-      .fixture {
-        padding: 9px 6px;
-      }
-
-      .team img {
-        width: 27px;
-        height: 27px;
-      }
-    }
-  </style>
+<style>
+:root {
+  --maroon: #71364B;
+  --dark-maroon: #351724;
+  --light-blue: #B9E6F5;
+  --background: #f3f6f9;
+  --text: #283443;
+}
+* { box-sizing: border-box; }
+html, body { width:100%; height:100%; margin:0; padding:0; }
+body {
+  font-family:"Segoe UI","Trebuchet MS",Verdana,sans-serif;
+  color:var(--text);
+  background:var(--background);
+  overflow:hidden;
+}
+.page {
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  min-height:0;
+  overflow:hidden;
+}
+header {
+  flex:0 0 auto;
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr) 170px;
+  align-items:center;
+  gap:18px;
+  padding:10px 26px;
+  color:white;
+  background:linear-gradient(135deg,#8F4965 0%,#71364B 45%,#351724 100%);
+  border-bottom:3px solid #79C9E8;
+  box-shadow:0 3px 8px #0003;
+}
+.logo {
+  display:block;
+  object-fit:contain;
+  background:rgba(255,255,255,.08);
+  border:2px solid #ffffffd9;
+  border-radius:14px;
+  padding:4px;
+  filter:drop-shadow(0 3px 3px #0008);
+}
+.logo-left { width:105px; height:105px; justify-self:start; }
+.logo-right { width:115px; height:105px; justify-self:end; }
+.heading { min-width:0; text-align:center; }
+.header-clock {
+  display:block;
+  margin-bottom:2px;
+  color:var(--light-blue);
+  font-size:clamp(15px,1.35vw,25px);
+  font-weight:bold;
+  font-variant-numeric:tabular-nums;
+}
+.heading h1 {
+  margin:0;
+  font-size:clamp(21px,2vw,36px);
+  line-height:1.05;
+  letter-spacing:1px;
+}
+.heading p {
+  margin:3px 0;
+  color:var(--light-blue);
+  font-size:clamp(12px,1.15vw,21px);
+  font-weight:bold;
+}
+.day-label {
+  display:inline-block;
+  margin-top:2px;
+  padding:3px 10px;
+  color:var(--dark-maroon);
+  background:var(--light-blue);
+  border-radius:20px;
+  font-size:clamp(10px,.8vw,15px);
+  font-weight:bold;
+}
+.page-nav {
+  flex:0 0 auto;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  padding:5px;
+  background:#e4edf2;
+}
+.page-nav a {
+  display:inline-block;
+  padding:4px 12px;
+  border:1px solid var(--maroon);
+  border-radius:5px;
+  color:var(--maroon);
+  font-size:clamp(10px,.75vw,13px);
+  font-weight:bold;
+  text-decoration:none;
+}
+.page-nav a.active {
+  color:white;
+  background:var(--maroon);
+}
+.board-scroll {
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:4px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--maroon) #dce3e9;
+  overscroll-behavior:contain;
+}
+.pitch-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:start;
+  gap:5px;
+  width:100%;
+  margin:0 auto;
+}
+.pitch {
+  min-width:0;
+  overflow:hidden;
+  background:white;
+  border:1px solid #d6dde4;
+  border-radius:7px;
+  box-shadow:0 2px 6px #00000012;
+}
+.pitch-title {
+  padding:5px 3px;
+  color:white;
+  background:linear-gradient(135deg,#783D55,#422538);
+  text-align:center;
+  font-size:clamp(13px,1.05vw,20px);
+  font-weight:bold;
+  border-bottom:2px solid var(--light-blue);
+}
+table { width:100%; border-collapse:collapse; table-layout:fixed; }
+thead { position:sticky; top:0; z-index:1; color:white; background:#4c2937; }
+th {
+  height:24px;
+  padding:3px 2px;
+  font-size:clamp(9px,.62vw,12px);
+  line-height:1;
+  text-transform:uppercase;
+}
+td {
+  height:23px;
+  padding:3px;
+  border-bottom:1px solid #e3e8ed;
+  text-align:center;
+  font-size:clamp(10px,.72vw,14px);
+  line-height:1.08;
+  overflow-wrap:anywhere;
+  vertical-align:middle;
+}
+tbody tr:nth-child(even) { background:#f0f7fa; }
+tbody tr:nth-child(odd) { background:white; }
+tbody tr:last-child td { border-bottom:none; }
+.time-col { width:12%; font-weight:bold; white-space:nowrap; }
+.group-col { width:8%; }
+.team-col { width:29%; }
+.score-col { width:11%; }
+.team {
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:3px;
+  width:100%;
+  min-width:0;
+  text-align:left;
+  font-weight:bold;
+}
+.team-name {
+  flex:1 1 auto;
+  min-width:0;
+  text-align:left;
+  overflow-wrap:anywhere;
+  line-height:1.08;
+}
+.team-badge {
+  flex:0 0 19px;
+  width:19px;
+  height:19px;
+  object-fit:contain;
+  margin:0;
+  background:transparent;
+}
+.score {
+  display:inline-block;
+  min-width:1.35em;
+  padding:2px 3px;
+  color:white;
+  background:var(--maroon);
+  border-radius:3px;
+  font-weight:bold;
+  font-size:clamp(11px,.8vw,15px);
+}
+.empty { padding:14px 6px; color:#687786; font-style:italic; text-align:center; }
+footer {
+  flex:0 0 auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:2px;
+  padding:4px 6px;
+  color:white;
+  background:linear-gradient(110deg,#351724 0%,#783D55 50%,#351724 100%);
+  border-top:3px solid #79C9E8;
+  text-align:center;
+  position:relative;
+  z-index:5;
+}
+.footer-message {
+  color:white;
+  font-size:clamp(11px,1.05vw,20px);
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.footer-submessage {
+  color:var(--light-blue);
+  font-size:clamp(9px,.7vw,13px);
+  font-weight:bold;
+}
+#status {
+  display:block;
+  color:var(--light-blue);
+  text-align:center;
+  font-size:clamp(9px,.62vw,12px);
+}
+@media (max-width:1100px) {
+  header { grid-template-columns:90px minmax(0,1fr) 100px; padding:7px 12px; gap:8px; }
+  .logo-left { width:82px; height:82px; }
+  .logo-right { width:96px; height:82px; }
+  .pitch-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .pitch-title { font-size:15px; }
+  th { font-size:10px; }
+  td { font-size:12px; padding:3px 2px; }
+  .team-badge { width:17px; height:17px; flex-basis:17px; }
+}
+@media (max-width:650px) {
+  header { grid-template-columns:48px minmax(0,1fr) 54px; gap:4px; padding:5px; }
+  .logo-left { width:46px; height:46px; }
+  .logo-right { width:52px; height:46px; }
+  .logo { border-width:1px; border-radius:6px; padding:1px; }
+  .heading h1 { font-size:clamp(14px,4vw,21px); }
+  .heading p { margin:2px 0; font-size:clamp(9px,2.7vw,13px); }
+  .header-clock { font-size:clamp(12px,3.4vw,17px); }
+  .day-label { padding:2px 5px; font-size:clamp(8px,2vw,10px); }
+  .pitch-grid { grid-template-columns:minmax(0,1fr); gap:9px; }
+  th { height:27px; padding:5px 2px; font-size:10px; }
+  td { padding:5px 3px; font-size:clamp(11px,3vw,14px); }
+  .team-badge { width:22px; height:22px; flex-basis:22px; }
+  footer { padding:5px 7px; }
+}
+@media (min-width:1200px) and (min-height:651px) {
+  header { padding:5px 16px; gap:10px; }
+  .logo-left { width:105px; height:105px; }
+  .logo-right { width:115px; height:105px; }
+  .board-scroll { padding:3px; }
+  .pitch-grid { gap:5px; }
+  .pitch-title { padding:3px; font-size:14px; }
+  th { height:19px; padding:2px 1px; font-size:10px; }
+  td { height:19px; padding:1px 2px; font-size:11px; line-height:1; }
+  .team-badge { width:16px; height:16px; flex-basis:16px; }
+  .score { font-size:11px; padding:1px 2px; }
+  footer { padding:4px 6px; }
+  .footer-message { font-size:13px; }
+  .footer-submessage { font-size:10px; }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="club-header">
-      <img src="esquina-badge.png" alt="Esquina Park Rangers badge">
-      <div>
-        <h1>ESQUINA PARK RANGERS</h1>
-        <div class="subtitle">
-          INTERNATIONAL WALKING FOOTBALL CUP
-        </div>
-        <div>Friday 6 November 2026 — DAY 2</div>
-      </div>
-    </div>
-  </header>
+<div class="page">
 
-  <nav>
-    <a href="day1.html">DAY 1 RESULTS</a>
-    <a href="day2.html" class="active">DAY 2 RESULTS</a>
-  </nav>
+<header>
+  <img class="logo logo-left"
+       src="badges/Esquina%20Park%20Rangers.png"
+       alt="Esquina Park Rangers badge">
 
-  <div id="status">Loading Day 2 tournament data...</div>
+  <div class="heading">
+    <div class="header-clock">Local Time <span id="clock">--:--:--</span></div>
+    <h1>ESQUINA PARK RANGERS</h1>
+    <p>International Walking Football Cup</p>
+    <div class="day-label">DAY 2 — FRIDAY 6 NOVEMBER 2026</div>
+  </div>
 
-  <main id="boardScroll">
-    <div id="pitchGrid" class="pitch-grid">
-      <div class="empty">Loading fixtures...</div>
-    </div>
-  </main>
+  <img class="logo logo-right"
+       src="badges/Rojales.png"
+       alt="Rojales Council badge">
+</header>
 
-  <footer>
-    Esquina Park Rangers · Live tournament scoreboard
-    · Automatically refreshed every 30 seconds
-  </footer>
+<nav class="page-nav">
+  <a href="day1.html">DAY 1 RESULTS</a>
+  <a href="day2.html" class="active">DAY 2 RESULTS</a>
+</nav>
 
-  <script>
-    // Published Google Sheets CSV feed
-    const CSV_URL =
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=198337941&single=true&output=csv";
+<main class="board-scroll" id="boardScroll">
+  <div class="pitch-grid">
+    <section class="pitch" id="pitch1">
+      <div class="pitch-title">PITCH 1</div>
+      <div class="pitch-content"></div>
+    </section>
+    <section class="pitch" id="pitch2">
+      <div class="pitch-title">PITCH 2</div>
+      <div class="pitch-content"></div>
+    </section>
+    <section class="pitch" id="pitch3">
+      <div class="pitch-title">PITCH 3</div>
+      <div class="pitch-content"></div>
+    </section>
+  </div>
+</main>
 
-    const FIRST_DAY2_ROW = 65;
-    const LAST_DAY2_ROW = 124;
+<footer>
+  <div class="footer-message">Welcome to Rojales</div>
+  <div class="footer-submessage">International Walking Football Cup &nbsp; • &nbsp; Friendship · Fair Play · Football</div>
+  <div id="status">Loading Day 2 tournament results…</div>
+</footer>
 
-    const pitchGrid = document.getElementById("pitchGrid");
-    const status = document.getElementById("status");
+</div>
 
-    // Parse CSV while preserving commas and escaped quotation marks.
-    function parseCSV(text) {
-      const rows = [];
-      let row = [];
-      let cell = "";
-      let quoted = false;
+<script>
+const CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
 
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const next = text[i + 1];
+const FIRST_SHEET_ROW = 65;
+const LAST_SHEET_ROW = 124;
 
-        if (char === '"' && quoted && next === '"') {
-          cell += '"';
-          i++;
-        } else if (char === '"') {
-          quoted = !quoted;
-        } else if (char === "," && !quoted) {
-          row.push(cell.trim());
-          cell = "";
-        } else if (
-          (char === "\n" || char === "\r") &&
-          !quoted
-        ) {
-          if (char === "\r" && next === "\n") i++;
+const boardScroll = document.getElementById("boardScroll");
+const statusEl = document.getElementById("status");
 
-          row.push(cell.trim());
+let scrollTimer = null;
+let scrollDirection = 1;
+let pauseUntil = 0;
+let lastFrame = 0;
+let autoScrollStarted = false;
 
-          if (row.some(value => value !== "")) {
-            rows.push(row);
-          }
+function updateClock() {
+  document.getElementById("clock").textContent =
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone:"Europe/Madrid",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:false
+    }).format(new Date());
+}
+updateClock();
+setInterval(updateClock,1000);
 
-          row = [];
-          cell = "";
-        } else {
-          cell += char;
-        }
-      }
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
 
-      row.push(cell.trim());
+  for (let i=0;i<text.length;i++) {
+    const char = text[i];
 
-      if (row.some(value => value !== "")) {
-        rows.push(row);
-      }
-
-      return rows;
-    }
-
-    // Match team names to existing badge images.
-    function badgePath(teamName) {
-      const filename = teamName
-        .trim()
-        .replace(/[<>:"/\\|?*]/g, "")
-        .replace(/\s+/g, " ");
-
-      return "badges/" + filename + ".png";
-    }
-
-    function makeTeam(name, side) {
-      const team = document.createElement("div");
-      team.className = "team " + side;
-
-      const image = document.createElement("img");
-      image.alt = "";
-      image.src = badgePath(name);
-
-      image.onerror = function () {
-        this.style.display = "none";
-      };
-
-      const label = document.createElement("span");
-      label.className = "team-name";
-      label.textContent = name || "TBC";
-
-      if (side === "home") {
-        team.append(label, image);
+    if (char === '"') {
+      if (quoted && text[i+1] === '"') {
+        field += '"';
+        i++;
       } else {
-        team.append(image, label);
+        quoted = !quoted;
       }
-
-      return team;
+    } else if (char === "," && !quoted) {
+      row.push(field.trim());
+      field = "";
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && text[i+1] === "\n") i++;
+      row.push(field.trim());
+      if (row.some(value => value !== "")) rows.push(row);
+      row = [];
+      field = "";
+    } else {
+      field += char;
     }
+  }
 
-    function makeFixture(row) {
-      // A–G: A = fixture/time, B = pitch,
-      // D = home team, E/F = scores, G = away team.
-      const fixture = document.createElement("div");
-      fixture.className = "fixture";
+  row.push(field.trim());
+  if (row.some(value => value !== "")) rows.push(row);
+  return rows;
+}
 
-      const home = row[3] || "";
-      const homeScore = row[4] || "";
-      const awayScore = row[5] || "";
-      const away = row[6] || "";
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g,char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
 
-      const score = document.createElement("div");
-      score.className = "score";
+function badgeHTML(teamName) {
+  const name = String(teamName || "").trim();
+  if (!name) return "";
 
-      if (homeScore !== "" || awayScore !== "") {
-        score.textContent =
-          (homeScore || "–") + " : " + (awayScore || "–");
-      } else {
-        score.textContent = "VS";
-      }
+  const safeName = escapeHTML(name);
+  const safeLower = escapeHTML(name.toLowerCase());
 
-      fixture.append(
-        makeTeam(home, "home"),
-        score,
-        makeTeam(away, "away")
-      );
-
-      if (row[0]) {
-        const info = document.createElement("div");
-        info.className = "fixture-info";
-        info.textContent = row[0];
-        fixture.appendChild(info);
-      }
-
-      return fixture;
-    }
-
-    function renderPitches(rows) {
-      pitchGrid.replaceChildren();
-
-      [1, 2, 3].forEach(pitchNumber => {
-        const section = document.createElement("section");
-        section.className = "pitch";
-
-        const heading = document.createElement("h2");
-        heading.className = "pitch-heading";
-        heading.textContent = "PITCH " + pitchNumber;
-        section.appendChild(heading);
-
-        const fixtures = rows.filter(row =>
-          String(row[1] || "").trim() === String(pitchNumber)
-        );
-
-        if (fixtures.length === 0) {
-          const empty = document.createElement("div");
-          empty.className = "empty";
-          empty.textContent = "No fixtures available";
-          section.appendChild(empty);
+  return `
+    <img class="team-badge"
+      src="badges/${safeName}.png"
+      alt=""
+      onerror="
+        if (!this.dataset.fallback) {
+          this.dataset.fallback='1';
+          this.src='badges/${safeLower}.png';
         } else {
-          fixtures.forEach(row => {
-            section.appendChild(makeFixture(row));
-          });
+          this.style.display='none';
         }
+      ">
+  `;
+}
 
-        pitchGrid.appendChild(section);
-      });
+function renderPitch(pitchNumber,fixtures) {
+  const section = document.getElementById("pitch"+pitchNumber);
+  const content = section.querySelector(".pitch-content");
+
+  if (!fixtures.length) {
+    content.innerHTML='<div class="empty">No fixtures found.</div>';
+    return;
+  }
+
+  let html = `
+    <table>
+      <colgroup>
+        <col class="time-col">
+        <col class="group-col">
+        <col class="team-col">
+        <col class="score-col">
+        <col class="score-col">
+        <col class="team-col">
+      </colgroup>
+      <thead><tr>
+        <th>Time</th><th>Grp</th><th>Team 1</th>
+        <th>Score</th><th>Score</th><th>Team 2</th>
+      </tr></thead><tbody>`;
+
+  fixtures.forEach(row => {
+    const time=row[0] || "";
+    const group=row[2] || "";
+    const team1=row[3] || "";
+    const score1=row[4] || "";
+    const score2=row[5] || "";
+    const team2=row[6] || "";
+
+    html += `<tr>
+      <td>${escapeHTML(time)}</td>
+      <td>${escapeHTML(group)}</td>
+      <td><div class="team">${badgeHTML(team1)}
+        <span class="team-name">${escapeHTML(team1)}</span></div></td>
+      <td><span class="score">${escapeHTML(score1)}</span></td>
+      <td><span class="score">${escapeHTML(score2)}</span></td>
+      <td><div class="team">${badgeHTML(team2)}
+        <span class="team-name">${escapeHTML(team2)}</span></div></td>
+    </tr>`;
+  });
+
+  content.innerHTML=html+"</tbody></table>";
+}
+
+function stopAutoScroll() {
+  if (scrollTimer !== null) cancelAnimationFrame(scrollTimer);
+  scrollTimer=null;
+  lastFrame=0;
+}
+
+function startAutoScroll() {
+  stopAutoScroll();
+  scrollDirection=1;
+  pauseUntil=performance.now()+2500;
+
+  function step(now) {
+    scrollTimer=requestAnimationFrame(step);
+    const maxScroll=boardScroll.scrollHeight-boardScroll.clientHeight;
+
+    if (maxScroll<=2) {
+      lastFrame=now;
+      return;
+    }
+    if (now<pauseUntil) {
+      lastFrame=now;
+      return;
+    }
+    if (!lastFrame) lastFrame=now;
+
+    const elapsed=Math.min(now-lastFrame,80);
+    lastFrame=now;
+    boardScroll.scrollTop+=scrollDirection*elapsed*0.020;
+
+    if (boardScroll.scrollTop>=maxScroll-1) {
+      boardScroll.scrollTop=maxScroll;
+      scrollDirection=-1;
+      pauseUntil=now+4000;
+      lastFrame=now;
+    } else if (boardScroll.scrollTop<=1 && scrollDirection<0) {
+      boardScroll.scrollTop=0;
+      scrollDirection=1;
+      pauseUntil=now+4000;
+      lastFrame=now;
+    }
+  }
+  scrollTimer=requestAnimationFrame(step);
+}
+
+async function loadResults() {
+  try {
+    statusEl.textContent="Updating Day 2 results…";
+
+    const response=await fetch(CSV_URL+"&_="+Date.now(),{
+      cache:"no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("Google Sheets returned HTTP "+response.status);
     }
 
-    async function loadResults() {
-      try {
-        const response = await fetch(
-          CSV_URL + "&_refresh=" + Date.now(),
-          { cache: "no-store" }
-        );
+    const csvText=await response.text();
+    const allRows=parseCSV(csvText);
 
-        if (!response.ok) {
-          throw new Error("Google Sheets returned HTTP " + response.status);
-        }
+    /*
+      Sheet rows 65–124 inclusive.
+      CSV row 1 corresponds to sheet row 1.
+      Array indexes 64–123 select the required rows.
+    */
+    const fixtures=allRows
+      .slice(FIRST_SHEET_ROW-1,LAST_SHEET_ROW)
+      .map(row=>row.slice(0,7))
+      .filter(row=>row.some(value=>value!==""));
 
-        const csv = await response.text();
-        const allRows = parseCSV(csv);
+    const pitches={1:[],2:[],3:[]};
 
-        // CSV row 1 is spreadsheet row 1.
-        // Spreadsheet rows 65–124 are array indexes 64–123.
-        const day2Rows = allRows
-          .slice(FIRST_DAY2_ROW - 1, LAST_DAY2_ROW)
-          .map(row => row.slice(0, 7))
-          .filter(row =>
-            row[3] || row[6]
-          );
+    fixtures.forEach(row=>{
+      const pitchNumber=Number(row[1]);
+      if (pitches[pitchNumber]) pitches[pitchNumber].push(row);
+    });
 
-        renderPitches(day2Rows);
+    renderPitch(1,pitches[1]);
+    renderPitch(2,pitches[2]);
+    renderPitch(3,pitches[3]);
 
-        const time = new Intl.DateTimeFormat("en-GB", {
-          timeZone: "Europe/Madrid",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
-        }).format(new Date());
-
-        status.textContent =
-          "DAY 2 LIVE · " + day2Rows.length +
-          " fixtures · Last updated " + time +
-          " (Spain)";
-
-      } catch (error) {
-        console.error("Day 2 results error:", error);
-        status.textContent =
-          "Unable to refresh results. Retrying automatically.";
-      }
+    if (!autoScrollStarted) {
+      startAutoScroll();
+      autoScrollStarted=true;
     }
 
-    loadResults();
-    setInterval(loadResults, 30000);
-  </script>
+    const time=new Intl.DateTimeFormat("en-GB",{
+      timeZone:"Europe/Madrid",
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:false
+    }).format(new Date());
+
+    statusEl.textContent=
+      "DAY 2 LIVE · "+fixtures.length+
+      " fixtures · Updated "+time+" (Spain)";
+
+  } catch(error) {
+    console.error("Could not load Day 2 results:",error);
+    statusEl.textContent=
+      "Could not update results — retrying shortly";
+  }
+}
+
+loadResults();
+setInterval(loadResults,30000);
+</script>
 </body>
 </html>
