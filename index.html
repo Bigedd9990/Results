@@ -55,7 +55,14 @@ header {
 .board-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 7px; scrollbar-width: thin; scrollbar-color: var(--maroon) #dce3e9; overscroll-behavior: contain; }
 .pitch-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 8px; width: 100%; max-width: none; margin: 0 auto; }
 .pitch { min-width: 0; overflow: hidden; background: #fff; border: 1px solid #d6dde4; border-radius: 7px; box-shadow: 0 2px 6px #00000012; }
-.pitch-title { padding: 5px 3px; color: #fff; background: linear-gradient(135deg, var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
+.pitch-title { padding: 5px 3px; color: #fff; background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.16),
+    transparent 55%,
+    rgba(0,0,0,0.16)
+  ),
+  linear-gradient(135deg, #783D55, #422538); var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
 
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 thead { position: sticky; top: 0; z-index: 1; color: #fff; background: #4c2937; }
