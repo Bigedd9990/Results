@@ -17,20 +17,34 @@
 
 * { box-sizing: border-box; }
 html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
-body { font-family: Arial, Helvetica, sans-serif; color: var(--text); background: var(--background); overflow: hidden; }
+body { font-family: "Segoe UI", "Trebuchet MS", Verdana, sans-serif; color: var(--text); background: var(--background); overflow: hidden; }
 .page { display: flex; flex-direction: column; width: 100%; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
 
 /* Header stays compact enough to leave room for all three pitches on a TV */
 header {
   flex: 0 0 auto; display: grid;
-  grid-template-columns: 90px minmax(0, 1fr) 110px;
-  align-items: center; gap: 10px; padding: 7px 18px;
-  color: #fff; background: linear-gradient(135deg, var(--maroon), var(--dark-maroon));
-  border-bottom: 3px solid var(--light-blue); box-shadow: 0 3px 8px #0003;
+  grid-template-columns: 150px minmax(0, 1fr) 170px;
+  align-items: center; gap: 18px; padding: 10px 26px;
+  color: #fff; background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.20) 0%,
+    rgba(255,255,255,0.05) 18%,
+    transparent 45%,
+    rgba(0,0,0,0.18) 100%
+  ),
+  linear-gradient(135deg, #8F4965 0%, #71364B 45%, #351724 100%); var(--maroon), var(--dark-maroon));
+  border-bottom: 3px solid #79C9E8; box-shadow: 0 3px 8px #0003;
 }
 .logo { display: block; object-fit: contain; background: transparent; border: 1px solid #ffffffaa; border-radius: 8px; padding: 2px; }
-.logo-left { width: 76px; height: 76px; justify-self: start; }
-.logo-right { width: 100px; height: 78px; justify-self: end; }
+.logo-left { width: 132px; height: 132px; justify-self: start; }
+.logo-right { width: 158px; height: 132px; justify-self: end; }
+.logo {
+  border: 2px solid #ffffffd9;
+  border-radius: 14px;
+  padding: 5px;
+  filter: drop-shadow(0 3px 3px #0008) drop-shadow(0 0 7px #ffffff38);
+}
 .heading { min-width: 0; text-align: center; }
 .header-clock { display: block; margin-bottom: 2px; color: var(--light-blue); font-size: clamp(15px, 1.35vw, 25px); font-weight: bold; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
 .heading h1 { margin: 0; font-size: clamp(21px, 2vw, 36px); line-height: 1.05; }
@@ -41,8 +55,16 @@ header {
 .board-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 7px; scrollbar-width: thin; scrollbar-color: var(--maroon) #dce3e9; overscroll-behavior: contain; }
 .pitch-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 8px; width: 100%; max-width: none; margin: 0 auto; }
 .pitch { min-width: 0; overflow: hidden; background: #fff; border: 1px solid #d6dde4; border-radius: 7px; box-shadow: 0 2px 6px #00000012; }
-.pitch-title { padding: 5px 3px; color: #fff; background: linear-gradient(135deg, var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
-
+.pitch-title { padding: 5px 3px; color: #fff; background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.16),
+    transparent 55%,
+    rgba(0,0,0,0.16)
+  ),
+  linear-gradient(135deg, #783D55, #422538); var(--maroon), var(--dark-maroon)); text-align: center; font-size: clamp(13px, 1.05vw, 20px); font-weight: bold; border-bottom: 2px solid var(--light-blue); }
+letter-spacing: 1px;
+text-shadow: 0 1px 2px rgba(0,0,0,0.35);
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 thead { position: sticky; top: 0; z-index: 1; color: #fff; background: #4c2937; }
 th { height: 24px; padding: 3px 2px; font-size: clamp(9px, .62vw, 12px); line-height: 1; text-transform: uppercase; letter-spacing: 0; }
@@ -60,14 +82,51 @@ tbody tr:last-child td { border-bottom: none; }
 .score { display: inline-block; min-width: 1.35em; padding: 2px 3px; color: #fff; background: var(--maroon); border-radius: 3px; font-weight: bold; font-size: clamp(11px, .8vw, 15px); }
 .empty { padding: 14px 6px; color: #687786; font-style: italic; text-align: center; }
 
-footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 5px 12px; color: #fff; background: var(--dark-maroon); border-top: 2px solid var(--light-blue); font-size: clamp(10px, .75vw, 14px); position: relative; z-index: 5; }
-#status { display: block; color: var(--light-blue); text-align: right; }
+footer {
+  flex: 0 0 auto;
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px;
+  color: #fff;
+  background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.18) 0%,
+    rgba(255,255,255,0.04) 20%,
+    transparent 50%,
+    rgba(0,0,0,0.20) 100%
+  ),
+  linear-gradient(110deg, #351724 0%, #783D55 50%, #351724 100%); var(--dark-maroon), var(--maroon), var(--dark-maroon));
+  border-top: 3px solid #79C9E8;
+  position: relative;
+  z-index: 5;
+  text-align: center;
+}
+.footer-message {
+  color: #fff;
+  font-size: clamp(13px, 1.05vw, 20px);
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px #0008;
+}
+.footer-submessage {
+  color: var(--light-blue);
+  font-size: clamp(10px, .7vw, 13px);
+  font-weight: bold;
+  letter-spacing: .08em;
+}
+#status { display: block; color: var(--light-blue); text-align: center; font-size: clamp(9px, .62vw, 12px); }
 
 /* Medium screens: two pitches side by side */
 @media (max-width: 1100px) {
-  header { grid-template-columns: 65px minmax(0, 1fr) 75px; padding: 6px 10px; gap: 6px; }
-  .logo-left { width: 58px; height: 58px; }
-  .logo-right { width: 70px; height: 58px; }
+  header { grid-template-columns: 90px minmax(0, 1fr) 100px; padding: 7px 12px; gap: 8px; }
+  .logo-left { width: 82px; height: 82px; }
+  .logo-right { width: 96px; height: 82px; }
   .heading h1 { font-size: clamp(18px, 2.5vw, 28px); }
   .heading p { font-size: clamp(11px, 1.5vw, 16px); }
   .header-clock { font-size: clamp(13px, 1.7vw, 20px); }
@@ -82,9 +141,10 @@ footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-
 
 /* Phones: one pitch per row, with comfortable readable text */
 @media (max-width: 650px) {
-  header { grid-template-columns: 42px minmax(0, 1fr) 48px; gap: 4px; padding: 5px; }
-  .logo-left { width: 38px; height: 38px; }
-  .logo-right { width: 44px; height: 40px; }
+  header { grid-template-columns: 48px minmax(0, 1fr) 54px; gap: 4px; padding: 5px; }
+  .logo-left { width: 46px; height: 46px; }
+  .logo-right { width: 52px; height: 46px; }
+  .logo { border-width: 1px; border-radius: 6px; padding: 1px; }
   .heading h1 { font-size: clamp(14px, 4vw, 21px); }
   .heading p { margin: 2px 0; font-size: clamp(9px, 2.7vw, 13px); }
   .header-clock { margin-bottom: 1px; font-size: clamp(12px, 3.4vw, 17px); }
@@ -97,14 +157,17 @@ footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-
   .team { gap: 4px; }
   .team-badge { flex-basis: clamp(19px, 5vw, 26px); width: clamp(19px, 5vw, 26px); height: clamp(19px, 5vw, 26px); }
   .score { font-size: 13px; padding: 2px 4px; }
-  footer { min-height: 30px; padding: 5px 7px; font-size: 10px; }
+  footer { min-height: 58px; padding: 5px 7px; gap: 3px; }
+  .footer-message { font-size: clamp(10px, 3vw, 14px); letter-spacing: .06em; }
+  .footer-submessage { font-size: 9px; letter-spacing: .03em; }
+  #status { font-size: 9px; }
 }
 
 /* Keep the header compact on landscape displays with limited height */
 @media (max-height: 650px) and (min-width: 651px) {
   header { padding-top: 4px; padding-bottom: 4px; }
-  .logo-left { width: 52px; height: 52px; }
-  .logo-right { width: 62px; height: 52px; }
+  .logo-left { width: 70px; height: 70px; }
+  .logo-right { width: 82px; height: 70px; }
   .header-clock { font-size: clamp(13px, 1.2vw, 20px); }
   .heading h1 { font-size: clamp(19px, 1.8vw, 30px); }
   .heading p { margin: 2px 0; }
@@ -115,8 +178,254 @@ footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-
   th { height: 20px; padding: 2px; }
   td { padding-top: 1px; padding-bottom: 1px; }
   .team-badge { flex-basis: 18px; width: 18px; height: 18px; }
-  footer { min-height: 26px; padding-top: 3px; padding-bottom: 3px; }
+  footer { min-height: 56px; padding-top: 4px; padding-bottom: 4px; }
+  .footer-message { font-size: 11px; }
+  .footer-submessage { font-size: 9px; }
 }
+  /* Reduce bottom welcome banner height by approximately 50% */
+footer {
+  min-height: 22px !important;
+  padding: 4px 12px !important;
+  gap: 6px;
+  line-height: 1.1;
+}
+
+footer h2 {
+  margin: 2px 0 !important;
+  font-size: 0.85em !important;
+}
+
+footer p {
+  margin: 2px 0 !important;
+  font-size: 0.75em !important;
+  line-height: 1.1;
+}
+ /* LARGE-SCREEN TV READABILITY FIX */
+@media (min-width: 1200px) {
+  body {
+    font-size: 16px;
+  }
+
+  header {
+    padding: 6px 18px;
+  }
+
+  .logo-left {
+    width: 85px;
+    height: 85px;
+  }
+
+  .logo-right {
+    width: 100px;
+    height: 85px;
+  }
+
+  .board-scroll {
+    padding: 4px;
+  }
+
+  .pitch-grid {
+    gap: 8px;
+    padding: 4px;
+  }
+
+  .pitch-title {
+    padding: 6px 3px;
+    font-size: 16px;
+  }
+
+  th {
+    height: 24px;
+    padding: 4px 2px;
+    font-size: 12px;
+    line-height: 1.1;
+  }
+
+  td {
+    height: 23px;
+    padding: 3px 3px;
+    font-size: 13px;
+    line-height: 1.1;
+  }
+
+  .team-badge {
+    width: 19px;
+    height: 19px;
+  }
+
+  footer {
+    min-height: 36px;
+    padding: 5px 7px;
+  }
+} 
+
+/* FINAL 56-INCH TV FIX */
+@media (min-width: 1200px) and (min-height: 651px) {
+  html, body, .page {
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    margin: 0;
+    overflow: hidden !important;
+  }
+
+  .page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 5px 16px !important;
+    gap: 10px !important;
+  }
+
+  .logo-left {
+  width: 105px !important;
+  height: 105px !important;
+  padding: 3px !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  filter: drop-shadow(0 0 6px #ffffff66)
+          drop-shadow(0 3px 5px #0009) !important;
+}
+
+.logo-right {
+  width: 115px !important;
+  height: 105px !important;
+  padding: 3px !important;
+  border: 3px solid #ffffff !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  filter: drop-shadow(0 0 6px #ffffff66)
+          drop-shadow(0 3px 5px #0009) !important;
+}
+  .board-scroll {
+    flex: 1 1 0;
+    min-height: 0;
+    padding: 3px !important;
+    overflow: hidden !important;
+  }
+
+  .pitch-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 5px !important;
+    padding: 0 !important;
+  }
+
+  .pitch {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .pitch-title {
+    padding: 3px !important;
+    font-size: 14px !important;
+  }
+
+  th {
+    height: 19px !important;
+    padding: 2px 1px !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+  }
+
+  td {
+    height: 19px !important;
+    padding: 1px 2px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    overflow-wrap: normal;
+  }
+
+  .team {
+    gap: 2px;
+  }
+
+  .team-name {
+    overflow-wrap: anywhere;
+  }
+
+  .team-badge {
+    flex: 0 0 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .score {
+    font-size: 11px !important;
+    padding: 1px 2px !important;
+  }
+
+  footer {
+    flex: 0 0 auto;
+    min-height: 0 !important;
+    padding: 4px 6px !important;
+    gap: 2px !important;
+  }
+
+  .footer-message {
+    font-size: 13px !important;
+    letter-spacing: .06em;
+  }
+
+  .footer-submessage {
+    font-size: 10px !important;
+  }
+
+  #status {
+    font-size: 9px !important;
+  }
+}
+ /* MODERN, SMOOTH SCOREBOARD TYPOGRAPHY */
+
+body {
+  font-family: "Segoe UI", "Trebuchet MS", Verdana, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.heading h1 {
+  font-weight: 650;
+  letter-spacing: 1.2px;
+}
+
+.heading p {
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+
+th {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+td {
+  font-weight: 400;
+}
+
+.team-name {
+  font-weight: 600;
+}
+
+.time-col {
+  font-weight: 600;
+}
+
+.score {
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.footer-message {
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.footer-submessage {
+  font-weight: 500;
+} 
 </style>
 </head>
 
@@ -130,7 +439,7 @@ footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-
        alt="Esquina Park Rangers badge">
 
   <div class="heading">
-    <div id="clock" class="header-clock">--:--:--</div>
+    <div class="header-clock">Local Time <span id="clock">--:--:--</span></div>
     <h1>ESQUINA PARK RANGERS</h1>
     <p>International Walking Football Cup</p>
     <div class="day-label">DAY 1 — THURSDAY 5 NOVEMBER 2026</div>
@@ -164,6 +473,8 @@ footer { flex: 0 0 auto; min-height: 32px; display: flex; justify-content: flex-
   </main>
 
   <footer>
+    <div class="footer-message">Welcome to Rojales</div>
+    <div class="footer-submessage">International Walking Football Cup &nbsp; • &nbsp; Friendship · Fair Play · Football</div>
     <div id="status">Loading tournament results…</div>
   </footer>
 
@@ -475,16 +786,6 @@ console.log("CSV received:", new Date().toLocaleTimeString(), allRows);
 loadResults();
 setInterval(loadResults, 30000);
 
-/* Recheck the scroll after screen size or orientation changes */
-window.addEventListener("resize", () => {
-  stopAutoScroll();
-  boardScroll.scrollTop = 0;
-  autoScrollStarted = false;
-  requestAnimationFrame(() => {
-    startAutoScroll();
-    autoScrollStarted = true;
-  });
-});
 </script>
 
 </body>
