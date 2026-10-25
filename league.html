@@ -1,0 +1,526 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="300">
+  <title>Esquina Park Rangers - Live League Standings</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #581b32;
+      --primary-dark: #3d1022;
+      --accent: #8ed0e8;
+      --accent-light: #e8f6fb;
+      --bg: #f3f6f9;
+      --card: #ffffff;
+      --text: #273444;
+      --muted: #718096;
+      --border: #e2e8f0;
+      --success: #52b788;
+      --error: #c53030;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      text-align: center;
+      padding: 28px 14px 24px;
+      border-bottom: 5px solid var(--accent);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.45rem, 4vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #dcecf3;
+      font-size: clamp(.9rem, 2.5vw, 1.1rem);
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+      padding: 8px 13px;
+      border-radius: 30px;
+      background: rgba(255,255,255,.12);
+      font-size: .85rem;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      background: #cbd5e0;
+      border-radius: 50%;
+    }
+
+    .live-indicator.connected .dot {
+      background: var(--success);
+      animation: blink 1.5s infinite;
+    }
+
+    .live-indicator.failed .dot { background: #ff9b9b; }
+
+    @keyframes blink {
+      0%, 100% { opacity: .45; }
+      50% { opacity: 1; }
+    }
+
+    main {
+      width: 96%;
+      max-width: 1500px;
+      margin: 20px auto;
+    }
+
+    .section-heading {
+      margin: 0 0 12px;
+      color: var(--primary);
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: clamp(10px, 2vw, 20px);
+      box-shadow: 0 4px 18px rgba(0,0,0,.06);
+      border-top: 4px solid var(--accent);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      text-align: center;
+      margin-top: 5px;
+      font-size: .92rem;
+    }
+
+    th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 10px;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      white-space: nowrap;
+    }
+
+    th:first-child { border-radius: 6px 0 0 0; }
+    th:last-child { border-radius: 0 6px 0 0; }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      background: white;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #f7fafc;
+    }
+
+    tbody tr:hover td {
+      background: var(--accent-light);
+    }
+
+    /* Team names and badges */
+    td.team-cell {
+      text-align: left;
+      min-width: 155px;
+      font-weight: 650;
+    }
+
+    .team-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .team-badge {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex: 0 0 32px;
+    }
+
+    .team-name {
+      white-space: normal;
+      min-width: 90px;
+    }
+
+    /* Keep the existing points columns highlighted */
+    td.pts-cell {
+      background: var(--accent-light) !important;
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    th.points-heading {
+      background: #315c72;
+    }
+
+    .loading, .empty-msg, .error-msg {
+      text-align: center;
+      padding: 28px 12px;
+    }
+
+    .loading, .empty-msg {
+      color: var(--muted);
+    }
+
+    .error-msg {
+      color: var(--error);
+      overflow-wrap: anywhere;
+      font-weight: 600;
+    }
+
+    .error-detail {
+      display: block;
+      margin-top: 8px;
+      font-size: .9rem;
+      font-weight: normal;
+    }
+
+    .retry {
+      display: block;
+      margin: 15px auto 0;
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 18px;
+      background: var(--primary);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .scroll-hint {
+      display: none;
+      color: var(--muted);
+      font-size: .78rem;
+      margin: 8px 0 0;
+    }
+
+    @media (max-width: 650px) {
+      header { padding: 22px 10px 19px; }
+      main { width: 97%; margin: 12px auto; }
+      .card { padding: 8px; }
+      table { font-size: .82rem; }
+      th { padding: 10px 8px; font-size: .7rem; }
+      td { padding: 8px; }
+      td.team-cell { min-width: 145px; }
+      .team-badge { width: 27px; height: 27px; flex-basis: 27px; }
+      .scroll-hint { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Esquina Park Rangers</h1>
+    <p>International Walking Football Cup</p>
+
+    <div class="live-indicator" id="live-indicator" aria-live="polite">
+      <span class="dot"></span>
+      <span id="status-text">Connecting to Google Sheets…</span>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-heading">🏆 Live League Standings</h2>
+
+    <div class="card">
+      <div id="table-destination" aria-live="polite">
+        <div class="loading">Loading league standings…</div>
+      </div>
+
+      <p class="scroll-hint">
+        On a phone, swipe sideways to see all table columns.
+      </p>
+
+      <div class="footer">
+        <span>Standings supplied by Google Sheets</span>
+        <span id="last-updated">Waiting for first update…</span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Existing Google Sheets data feed — unchanged.
+    const csvSourceUrl =
+      "https://script.google.com/macros/s/AKfycbxQQB-Fi9liFMcjkULvSWaboQBZ9OTBqrmcxORx0MJU69lJsKfguEBFAoxhMc6B6LJBRA/exec";
+
+    const REFRESH_INTERVAL_MS = 15000;
+    const MAX_ROWS = 21;
+    const MAX_COLUMNS = 15;
+
+    // Team names are in spreadsheet columns D and G.
+    const TEAM_COLUMNS = [3, 6];
+
+    // Existing points highlighting — spreadsheet columns J and K.
+    const POINTS_COLUMNS = [9, 10];
+
+    const destination = document.getElementById("table-destination");
+    const liveIndicator = document.getElementById("live-indicator");
+    const statusText = document.getElementById("status-text");
+    const lastUpdated = document.getElementById("last-updated");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function setStatus(state, message) {
+      liveIndicator.classList.remove("connected", "failed");
+      if (state === "connected") {
+        liveIndicator.classList.add("connected");
+      }
+      if (state === "failed") {
+        liveIndicator.classList.add("failed");
+      }
+      statusText.textContent = message;
+    }
+
+    function badgeHtml(teamName) {
+      const team = String(teamName ?? "").trim();
+
+      if (!team) return "";
+
+      const normalPath = "badges/" + encodeURIComponent(team) + ".png";
+      const lowerPath = "badges/" +
+        encodeURIComponent(team.toLowerCase()) + ".png";
+
+      return `
+        <img
+          class="team-badge"
+          src="${normalPath}"
+          alt=""
+          loading="lazy"
+          onerror="if(!this.dataset.fallback){
+            this.dataset.fallback='1';
+            this.src='${lowerPath}';
+          } else {
+            this.style.display='none';
+          }"
+        >`;
+    }
+
+    function showError(message) {
+      setStatus("failed", "Connection problem — retrying");
+
+      destination.innerHTML = `
+        <div class="error-msg">
+          League standings could not be loaded.
+          <span class="error-detail">${escapeHtml(message)}</span>
+          <button class="retry" type="button" id="retry-button">
+            Try again now
+          </button>
+        </div>`;
+
+      document.getElementById("retry-button")
+        .addEventListener("click", loadTournamentData);
+    }
+
+    function renderTable(rows) {
+      if (!Array.isArray(rows) || rows.length === 0 ||
+          rows.every(row => !Array.isArray(row) || row.join("").trim() === "")) {
+        throw new Error("No rows returned. Check the published Google Sheets feed.");
+      }
+
+      const targetRows = rows.slice(0, MAX_ROWS);
+      const headers = targetRows[0] || [];
+      const columnCount = Math.min(
+        MAX_COLUMNS,
+        Math.max(headers.length, ...targetRows.map(row => row.length))
+      );
+
+      if (!columnCount) {
+        throw new Error("No columns were found in the spreadsheet.");
+      }
+
+      let tableHtml = '<div class="table-wrap"><table><thead><tr>';
+
+      for (let c = 0; c < columnCount; c++) {
+        const heading = String(headers[c] ?? "").trim();
+        const classes = POINTS_COLUMNS.includes(c) ? "points-heading" : "";
+
+        tableHtml += `
+          <th class="${classes}">
+            ${escapeHtml(heading || "---")}
+          </th>`;
+      }
+
+      tableHtml += "</tr></thead><tbody>";
+
+      let displayedRows = 0;
+
+      for (let r = 1; r < targetRows.length; r++) {
+        const row = targetRows[r];
+
+        if (!row || row.join("").trim() === "") continue;
+
+        tableHtml += "<tr>";
+
+        for (let c = 0; c < columnCount; c++) {
+          const cellValue = String(row[c] ?? "").trim();
+          const classes = [];
+
+          if (TEAM_COLUMNS.includes(c)) {
+            classes.push("team-cell");
+          }
+
+          if (POINTS_COLUMNS.includes(c)) {
+            classes.push("pts-cell");
+          }
+
+          let cellContent = escapeHtml(cellValue || "-");
+
+          if (TEAM_COLUMNS.includes(c) && cellValue) {
+            cellContent = `
+              <div class="team-content">
+                ${badgeHtml(cellValue)}
+                <span class="team-name">${escapeHtml(cellValue)}</span>
+              </div>`;
+          }
+
+          tableHtml += `
+            <td class="${classes.join(" ")}">
+              ${cellContent}
+            </td>`;
+        }
+
+        tableHtml += "</tr>";
+        displayedRows++;
+      }
+
+      tableHtml += "</tbody></table></div>";
+
+      if (displayedRows === 0) {
+        tableHtml += `
+          <div class="empty-msg">
+            The sheet loaded, but no standings rows were found.
+          </div>`;
+      }
+
+      destination.innerHTML = tableHtml;
+    }
+
+    let isLoading = false;
+
+    async function loadTournamentData() {
+      if (isLoading) return;
+      isLoading = true;
+
+      setStatus("loading", "Syncing league standings…");
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+      try {
+        const separator = csvSourceUrl.includes("?") ? "&" : "?";
+        const freshUrl =
+          csvSourceUrl + separator + "_refresh=" + Date.now();
+
+        const response = await fetch(freshUrl, {
+          cache: "no-store",
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error("Google Sheets returned HTTP " + response.status);
+        }
+
+        const csvText = await response.text();
+
+        if (!csvText.trim()) {
+          throw new Error("Google Sheets returned an empty response.");
+        }
+
+        if (/^\s*<(?:!doctype|html)\b/i.test(csvText)) {
+          throw new Error("Google returned HTML instead of CSV data.");
+        }
+
+        if (typeof Papa === "undefined") {
+          throw new Error("The CSV parser did not load.");
+        }
+
+        const results = Papa.parse(csvText, {
+          skipEmptyLines: true
+        });
+
+        if (results.errors && results.errors.length) {
+          console.warn("CSV parsing warnings:", results.errors);
+        }
+
+        renderTable(results.data);
+
+        setStatus("connected", "Live — refreshes every 15 seconds");
+        lastUpdated.textContent =
+          "Last updated: " + new Date().toLocaleTimeString();
+
+      } catch (error) {
+        console.error("League standings loading failed:", error);
+
+        const message = error.name === "AbortError"
+          ? "Google Sheets took too long to respond."
+          : error.message || "Unable to load the standings.";
+
+        showError(message);
+
+      } finally {
+        clearTimeout(timeoutId);
+        isLoading = false;
+      }
+    }
+
+    loadTournamentData();
+    setInterval(loadTournamentData, REFRESH_INTERVAL_MS);
+  </script>
+</body>
+</html>
