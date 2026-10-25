@@ -2,301 +2,476 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="30">
-<title>Esquina Park Rangers | Day 2</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#572638">
+  <title>Esquina Park Rangers - Day 2 Live Results</title>
 
-<style>
-:root {
-  --maroon: #572638;
-  --maroon-dark: #351724;
-  --blue: #B9E6F5;
-  --bg: #f3f6f9;
-  --text: #283443;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-header {
-  background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
-  color: white;
-  text-align: center;
-  padding: 24px 12px;
-  border-bottom: 5px solid var(--blue);
-}
-.club {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.badge {
-  width: 88px;
-  height: 88px;
-  object-fit: contain;
-}
-h1 {
-  margin: 0;
-  font-size: clamp(23px, 4vw, 36px);
-  letter-spacing: 1px;
-}
-.subtitle {
-  margin: 8px 0;
-  color: var(--blue);
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-.day {
-  display: inline-block;
-  margin-top: 10px;
-  background: var(--blue);
-  color: var(--maroon-dark);
-  padding: 8px 22px;
-  border-radius: 25px;
-  font-weight: bold;
-}
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px 8px;
-  flex-wrap: wrap;
-}
-nav a {
-  text-decoration: none;
-  padding: 11px 22px;
-  border-radius: 8px;
-  background: white;
-  color: var(--maroon);
-  border: 2px solid var(--maroon);
-  font-weight: bold;
-}
-nav a.active {
-  background: var(--maroon);
-  color: white;
-}
-main {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 0 14px 24px;
-}
-.panel {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px #0000000d;
-  padding: 14px;
-}
-.panel h2 {
-  color: var(--maroon);
-  margin: 4px 0 14px;
-}
-#results-container {
-  overflow: auto;
-  max-height: 72vh;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  font-size: 14px;
-}
-td, th {
-  border: 1px solid #dce2e8;
-  padding: 10px;
-  text-align: left;
-  white-space: pre-wrap;
-}
-th {
-  background: var(--maroon);
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-tbody tr:nth-child(even) { background: #edf8fc; }
-tbody tr:hover { background: #d8f0f8; }
-.status {
-  text-align: center;
-  color: #64748b;
-  padding: 14px;
-}
-footer {
-  text-align: center;
-  padding: 18px;
-  background: var(--maroon-dark);
-  color: var(--blue);
-  font-size: 13px;
-}
-@media(max-width:600px) {
-  header { padding: 18px 8px; }
-  .badge { width: 65px; height: 65px; }
-  .panel { padding: 7px; }
-  td, th { padding: 8px 6px; font-size: 12px; }
-  main { padding: 0 6px 16px; }
-}
-</style>
+  <style>
+    :root {
+      --maroon: #572638;
+      --blue: #B9E6F5;
+      --white: #ffffff;
+      --background: #f2f5f7;
+      --text: #20242a;
+      --border: #d8dfe4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    header {
+      background: var(--maroon);
+      color: var(--white);
+      text-align: center;
+      padding: 12px 16px;
+    }
+
+    .club-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .club-header img {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 3vw, 42px);
+    }
+
+    .subtitle {
+      margin-top: 7px;
+      font-size: clamp(16px, 1.8vw, 23px);
+      font-weight: bold;
+      color: var(--blue);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px;
+      background: var(--blue);
+    }
+
+    nav a {
+      color: var(--maroon);
+      text-decoration: none;
+      font-weight: bold;
+      padding: 9px 22px;
+      border: 2px solid var(--maroon);
+      border-radius: 7px;
+    }
+
+    nav a.active {
+      background: var(--maroon);
+      color: white;
+    }
+
+    #status {
+      text-align: center;
+      padding: 9px;
+      font-size: 14px;
+      font-weight: bold;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    #boardScroll {
+      padding: 12px;
+      max-width: 1900px;
+      margin: 0 auto;
+    }
+
+    .pitch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+
+    .pitch {
+      background: white;
+      border: 2px solid var(--maroon);
+      border-radius: 9px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .pitch:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .pitch-heading {
+      margin: 0;
+      padding: 10px;
+      background: var(--maroon);
+      color: white;
+      text-align: center;
+      font-size: clamp(19px, 2vw, 27px);
+    }
+
+    .fixture {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      min-height: 67px;
+    }
+
+    .fixture:last-child {
+      border-bottom: none;
+    }
+
+    .fixture:nth-child(even) {
+      background: #f0f8fb;
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      font-weight: bold;
+      font-size: clamp(13px, 1.25vw, 18px);
+    }
+
+    .team.home {
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .team.away {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .team-name {
+      overflow-wrap: anywhere;
+    }
+
+    .team img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .score {
+      min-width: 70px;
+      padding: 7px 9px;
+      text-align: center;
+      background: var(--maroon);
+      color: white;
+      border-radius: 6px;
+      font-size: clamp(18px, 1.8vw, 25px);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .fixture-info {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #52616b;
+      font-size: 12px;
+      margin-top: -3px;
+    }
+
+    .empty {
+      padding: 18px;
+      text-align: center;
+      color: #66717a;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      color: #5d6870;
+    }
+
+    @media (max-width: 700px) {
+      .pitch-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pitch:last-child {
+        grid-column: auto;
+      }
+
+      .club-header img {
+        width: 55px;
+        height: 55px;
+      }
+
+      .fixture {
+        padding: 9px 6px;
+      }
+
+      .team img {
+        width: 27px;
+        height: 27px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<header>
-  <div class="club">
-    <img class="badge" src="esquina-badge.png"
-         alt="Esquina Park Rangers badge">
-    <div>
-      <h1>ESQUINA PARK RANGERS</h1>
-      <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-      <div>5th Annual International Tournament</div>
+  <header>
+    <div class="club-header">
+      <img src="esquina-badge.png" alt="Esquina Park Rangers badge">
+      <div>
+        <h1>ESQUINA PARK RANGERS</h1>
+        <div class="subtitle">
+          INTERNATIONAL WALKING FOOTBALL CUP
+        </div>
+        <div>Friday 6 November 2026 — DAY 2</div>
+      </div>
     </div>
-  </div>
-  <div class="day">DAY 2 · MATCH RESULTS</div>
-</header>
+  </header>
 
-<nav>
-  <a href="day1.html">DAY 1</a>
-  <a class="active" href="day2.html">DAY 2</a>
-</nav>
+  <nav>
+    <a href="day1.html">DAY 1 RESULTS</a>
+    <a href="day2.html" class="active">DAY 2 RESULTS</a>
+  </nav>
 
-<main>
-  <section class="panel">
-    <h2>Day 2 Scoreboard</h2>
-    <div id="results-container" class="status">
-      Loading Day 2 results...
+  <div id="status">Loading Day 2 tournament data...</div>
+
+  <main id="boardScroll">
+    <div id="pitchGrid" class="pitch-grid">
+      <div class="empty">Loading fixtures...</div>
     </div>
-  </section>
-</main>
+  </main>
 
-<footer>
-  ESQUINA PARK RANGERS · LIVE TOURNAMENT CENTRE
-</footer>
+  <footer>
+    Esquina Park Rangers · Live tournament scoreboard
+    · Automatically refreshed every 30 seconds
+  </footer>
 
-```html
-<script>
-(async function loadResults() {
-  const container = document.getElementById("results-container");
+  <script>
+    // Published Google Sheets CSV feed
+    const CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=198337941&single=true&output=csv";
 
-  const csvUrl =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
+    const FIRST_DAY2_ROW = 65;
+    const LAST_DAY2_ROW = 124;
 
-  function parseCSV(text) {
-    const rows = [];
-    let row = [], cell = "", quoted = false;
+    const pitchGrid = document.getElementById("pitchGrid");
+    const status = document.getElementById("status");
 
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
+    // Parse CSV while preserving commas and escaped quotation marks.
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let quoted = false;
 
-      if (ch === '"') {
-        if (quoted && text[i + 1] === '"') {
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const next = text[i + 1];
+
+        if (char === '"' && quoted && next === '"') {
           cell += '"';
           i++;
-        } else {
+        } else if (char === '"') {
           quoted = !quoted;
-        }
-      } else if (ch === "," && !quoted) {
-        row.push(cell);
-        cell = "";
-      } else if ((ch === "\n" || ch === "\r") && !quoted) {
-        if (ch === "\r" && text[i + 1] === "\n") i++;
-        row.push(cell);
-        rows.push(row);
-        row = [];
-        cell = "";
-      } else {
-        cell += ch;
-      }
-    }
+        } else if (char === "," && !quoted) {
+          row.push(cell.trim());
+          cell = "";
+        } else if (
+          (char === "\n" || char === "\r") &&
+          !quoted
+        ) {
+          if (char === "\r" && next === "\n") i++;
 
-    if (cell.length || row.length) {
-      row.push(cell);
-      rows.push(row);
-    }
-    return rows;
-  }
+          row.push(cell.trim());
 
-  function addTeamBadge(cell, teamName) {
-    const name = teamName.trim();
-    if (!name) {
-      cell.textContent = name;
-      return;
-    }
+          if (row.some(value => value !== "")) {
+            rows.push(row);
+          }
 
-    const img = document.createElement("img");
-    img.className = "team-badge";
-    img.alt = "";
-    img.width = 30;
-    img.height = 30;
-    img.style.cssText =
-      "width:30px;height:30px;object-fit:contain;vertical-align:middle;margin-right:8px;";
-
-    img.src = "badges/" + name + ".png";
-
-    img.onerror = function () {
-      if (!this.dataset.triedLowercase) {
-        this.dataset.triedLowercase = "yes";
-        this.src = "badges/" + name.toLowerCase() + ".png";
-      } else {
-        this.remove();
-      }
-    };
-
-    cell.textContent = "";
-    cell.style.whiteSpace = "nowrap";
-    cell.appendChild(img);
-    cell.appendChild(document.createTextNode(name));
-  }
-
-  try {
-    const response = await fetch(csvUrl, { cache: "no-store" });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-
-    const csv = await response.text();
-    if (csv.trimStart().startsWith("<!DOCTYPE")) {
-      throw new Error("Google did not return CSV data");
-    }
-
-    // Day 2: sheet rows 65–124, columns A–G.
-    const rows = parseCSV(csv).slice(64, 124)
-      .map(row => row.slice(0, 7));
-
-    const table = document.createElement("table");
-    const tbody = document.createElement("tbody");
-
-    rows.forEach((cells, index) => {
-      const tr = document.createElement("tr");
-
-      cells.forEach((value, columnIndex) => {
-        const cell = document.createElement(index === 0 ? "th" : "td");
-
-        // Column D = index 3; column G = index 6.
-        if (index !== 0 && (columnIndex === 3 || columnIndex === 6)) {
-          addTeamBadge(cell, value);
+          row = [];
+          cell = "";
         } else {
-          cell.textContent = value;
+          cell += char;
+        }
+      }
+
+      row.push(cell.trim());
+
+      if (row.some(value => value !== "")) {
+        rows.push(row);
+      }
+
+      return rows;
+    }
+
+    // Match team names to existing badge images.
+    function badgePath(teamName) {
+      const filename = teamName
+        .trim()
+        .replace(/[<>:"/\\|?*]/g, "")
+        .replace(/\s+/g, " ");
+
+      return "badges/" + filename + ".png";
+    }
+
+    function makeTeam(name, side) {
+      const team = document.createElement("div");
+      team.className = "team " + side;
+
+      const image = document.createElement("img");
+      image.alt = "";
+      image.src = badgePath(name);
+
+      image.onerror = function () {
+        this.style.display = "none";
+      };
+
+      const label = document.createElement("span");
+      label.className = "team-name";
+      label.textContent = name || "TBC";
+
+      if (side === "home") {
+        team.append(label, image);
+      } else {
+        team.append(image, label);
+      }
+
+      return team;
+    }
+
+    function makeFixture(row) {
+      // A–G: A = fixture/time, B = pitch,
+      // D = home team, E/F = scores, G = away team.
+      const fixture = document.createElement("div");
+      fixture.className = "fixture";
+
+      const home = row[3] || "";
+      const homeScore = row[4] || "";
+      const awayScore = row[5] || "";
+      const away = row[6] || "";
+
+      const score = document.createElement("div");
+      score.className = "score";
+
+      if (homeScore !== "" || awayScore !== "") {
+        score.textContent =
+          (homeScore || "–") + " : " + (awayScore || "–");
+      } else {
+        score.textContent = "VS";
+      }
+
+      fixture.append(
+        makeTeam(home, "home"),
+        score,
+        makeTeam(away, "away")
+      );
+
+      if (row[0]) {
+        const info = document.createElement("div");
+        info.className = "fixture-info";
+        info.textContent = row[0];
+        fixture.appendChild(info);
+      }
+
+      return fixture;
+    }
+
+    function renderPitches(rows) {
+      pitchGrid.replaceChildren();
+
+      [1, 2, 3].forEach(pitchNumber => {
+        const section = document.createElement("section");
+        section.className = "pitch";
+
+        const heading = document.createElement("h2");
+        heading.className = "pitch-heading";
+        heading.textContent = "PITCH " + pitchNumber;
+        section.appendChild(heading);
+
+        const fixtures = rows.filter(row =>
+          String(row[1] || "").trim() === String(pitchNumber)
+        );
+
+        if (fixtures.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "No fixtures available";
+          section.appendChild(empty);
+        } else {
+          fixtures.forEach(row => {
+            section.appendChild(makeFixture(row));
+          });
         }
 
-        tr.appendChild(cell);
+        pitchGrid.appendChild(section);
       });
+    }
 
-      tbody.appendChild(tr);
-    });
+    async function loadResults() {
+      try {
+        const response = await fetch(
+          CSV_URL + "&_refresh=" + Date.now(),
+          { cache: "no-store" }
+        );
 
-    table.appendChild(tbody);
-    container.className = "";
-    container.replaceChildren(table);
+        if (!response.ok) {
+          throw new Error("Google Sheets returned HTTP " + response.status);
+        }
 
-  } catch (error) {
-    container.className = "status";
-    container.textContent =
-      "Unable to load results. Please check the published Google Sheet.";
-    console.error(error);
-  }
-})();
-</script>
-```
+        const csv = await response.text();
+        const allRows = parseCSV(csv);
+
+        // CSV row 1 is spreadsheet row 1.
+        // Spreadsheet rows 65–124 are array indexes 64–123.
+        const day2Rows = allRows
+          .slice(FIRST_DAY2_ROW - 1, LAST_DAY2_ROW)
+          .map(row => row.slice(0, 7))
+          .filter(row =>
+            row[3] || row[6]
+          );
+
+        renderPitches(day2Rows);
+
+        const time = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Europe/Madrid",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        }).format(new Date());
+
+        status.textContent =
+          "DAY 2 LIVE · " + day2Rows.length +
+          " fixtures · Last updated " + time +
+          " (Spain)";
+
+      } catch (error) {
+        console.error("Day 2 results error:", error);
+        status.textContent =
+          "Unable to refresh results. Retrying automatically.";
+      }
+    }
+
+    loadResults();
+    setInterval(loadResults, 30000);
+  </script>
 </body>
 </html>
