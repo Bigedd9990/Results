@@ -559,7 +559,9 @@ footer {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-  return "badges/" + slug + ".png";
+  
+function teamBadgePath(teamName) {
+  return "badges/" + String(teamName || "").trim() + ".png";
 }
 
     function createCell(text, className = "") {
