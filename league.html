@@ -9,6 +9,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
     :root {
       --maroon: #581b32;
       --light-blue: #8ed0e8;
@@ -23,7 +25,7 @@
       padding: 0;
       background: #f1f5f8;
       color: #222;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .page {
@@ -65,16 +67,16 @@
       font-size: clamp(18px, 2.5vw, 34px);
       font-weight: 900;
       line-height: 1.05;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .subtitle {
       margin-top: 3px;
       color: var(--light-blue);
       font-size: clamp(10px, 1.25vw, 16px);
-      font-weight: bold;
+      font-weight: 700;
       line-height: 1.05;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .header-date {
@@ -85,7 +87,7 @@
       letter-spacing: 1px;
       line-height: 1.05;
       white-space: nowrap;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     /* LOCAL CLOCK */
@@ -99,22 +101,22 @@
       color: var(--maroon);
       padding: 7px 10px;
       border-radius: 6px;
-      font-weight: 900;
+      font-weight: 800;
       white-space: nowrap;
       justify-self: end;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .local-clock-label {
       font-size: 10px;
       letter-spacing: 1px;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     #localClock {
       font-size: 18px;
       font-variant-numeric: tabular-nums;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     /* TABLE */
@@ -129,7 +131,7 @@
       border-collapse: collapse;
       table-layout: auto;
       font-size: clamp(16px, 1.8vw, 25px);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     thead th {
@@ -137,10 +139,10 @@
       color: white;
       padding: 14px 8px;
       font-size: clamp(14px, 1.5vw, 21px);
-      font-weight: 900;
+      font-weight: 800;
       text-align: center;
       white-space: nowrap;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     thead th:nth-child(2),
@@ -155,9 +157,9 @@
       border-bottom: 2px solid #d7e1e7;
       text-align: center;
       font-size: clamp(16px, 1.8vw, 25px);
-      font-weight: 900;
+      font-weight: 800;
       white-space: nowrap;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     tbody td:first-child {
@@ -175,16 +177,16 @@
       color: var(--maroon);
       font-size: 1.1em;
       font-weight: 900;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     tbody td:nth-child(3) {
       text-align: left;
       min-width: 170px;
       color: var(--maroon);
-      font-weight: 900;
+      font-weight: 800;
       white-space: normal;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .team-badge {
@@ -199,7 +201,7 @@
       color: var(--maroon);
       font-size: 1.15em;
       font-weight: 900;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     /* FOOTER AND STATUS */
@@ -209,8 +211,8 @@
       background: var(--maroon);
       color: white;
       font-size: 15px;
-      font-weight: 900;
-      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     .status {
@@ -219,8 +221,8 @@
       text-align: center;
       padding: 10px;
       font-size: 13px;
-      font-weight: 900;
-      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     /* TABLET / MEDIUM SCREENS */
@@ -362,7 +364,7 @@
         border: 2px solid #ffffff;
         border-radius: 30px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
         font-size: 13px;
         font-weight: 900;
         text-decoration: none;
