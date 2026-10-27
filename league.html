@@ -36,45 +36,113 @@
       overflow: hidden;
     }
 
-    /* COMPACT HEADER */
-    header {
-      background: var(--maroon);
-      color: white;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      text-align: center;
-      border-bottom: 5px solid var(--light-blue);
-    }
+   /* COMPACT HEADER */
+header {
+  background: var(--maroon);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  text-align: center;
+  border-bottom: 5px solid var(--light-blue);
+  box-sizing: border-box;
+}
 
-    .header-logo {
-      width: 66px;
-      height: 66px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
+.header-logo {
+  width: 99px;
+  height: 99px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
-    .header-title {
-      flex: 1;
-      min-width: 0;
-    }
+.header-title {
+  flex: 1;
+  min-width: 0;
+}
 
-    h1 {
-      font-size: clamp(20px, 3vw, 34px);
-      margin: 0;
-      font-weight: 900;
-      line-height: 1.15;
-    }
+header h1 {
+  font-size: clamp(18px, 2.5vw, 34px);
+  margin: 0;
+  font-weight: 900;
+  line-height: 1.05;
+}
 
-    .subtitle {
-      margin-top: 5px;
-      color: var(--light-blue);
-      font-size: clamp(11px, 1.4vw, 16px);
-      font-weight: bold;
-    }
+.subtitle {
+  margin-top: 3px;
+  color: var(--light-blue);
+  font-size: clamp(10px, 1.25vw, 16px);
+  font-weight: bold;
+  line-height: 1.05;
+}
 
+.header-date {
+  margin-top: 3px;
+  color: var(--light-blue);
+  font-size: clamp(9px, 1.1vw, 14px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+/* MEDIUM SCREENS */
+@media (max-width: 900px) {
+  header {
+    gap: 5px;
+    padding: 8px 10px;
+  }
+
+  .header-logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  header h1 {
+    font-size: clamp(15px, 2.5vw, 23px);
+  }
+
+  .subtitle {
+    font-size: clamp(9px, 1.5vw, 13px);
+    margin-top: 3px;
+  }
+
+  .header-date {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* MOBILE SCREENS */
+@media (max-width: 600px) {
+  header {
+    gap: 4px;
+    padding: 6px 5px;
+  }
+
+  .header-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  header h1 {
+    font-size: clamp(12px, 3.4vw, 18px);
+    line-height: 1.05;
+  }
+
+  .subtitle {
+    font-size: clamp(8px, 2.2vw, 11px);
+    margin-top: 3px;
+    line-height: 1.1;
+  }
+
+  .header-date {
+    font-size: 9px;
+    letter-spacing: 0;
+    margin-top: 3px;
+  }
+}
     /* LIVE LOCAL CLOCK */
     .local-clock {
       display: flex;
