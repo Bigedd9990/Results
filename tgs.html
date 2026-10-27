@@ -505,6 +505,8 @@
 
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=727173544&single=true&output=csv";
+    const DATA_START_ROW = 7; // A8
+    const DATA_END_ROW = 11; // A12
 
     const statusEl = document.getElementById("status");
     const body = document.getElementById("tableBody");
@@ -531,10 +533,6 @@
       })[char]);
     }
 
-    function normalize(str) {
-      return String(str ?? "").trim().toLowerCase();
-    }
-
     function toNumber(value) {
       const cleaned = String(value ?? "").replace(/[^0-9.\-]/g, "");
       const num = Number(cleaned);
@@ -550,52 +548,29 @@
       return `<img class="team-badge" src="${candidateBase}.png" alt="${escapeHtml(cleaned)} badge" loading="lazy" onerror="this.style.display='none'">`;
     }
 
-    function findDataRows(rows) {
-      for (let i = 0; i < rows.length; i++) {
-        const row = rows[i] || [];
-        const joined = row.map(cell => normalize(cell)).join(" |");
-        if (/(rank|position|player|name|team|goals?|scorer)/.test(joined)) {
-          return rows.slice(i + 1);
-        }
-      }
-      return rows.filter(row => row && row.some(cell => /[A-Za-zÀ-ÿ]/.test(String(cell || ""))));
-    }
-
     function extractScorers(rows) {
-      const data = findDataRows(rows);
-      if (!data.length) return [];
+      const rawRows = rows.slice(DATA_START_ROW, DATA_END_ROW + 1)
+        .map(row => Array.isArray(row) ? row.slice(0, 4) : [])
+        .filter(row => row.some(cell => String(cell ?? "").trim() !== ""));
 
-      const firstRow = rows.find(row => row.some(cell => /player|name|team|goals?|scorer/i.test(String(cell || "")))) || [];
-      const header = firstRow.map(cell => normalize(cell));
+      return rawRows
+        .map((row, index) => {
+          const rank = row[0] ?? String(index + 1);
+          const player = row[1] ?? "";
+          const team = row[2] ?? "";
+          const goals = row[3] ?? "0";
 
-      const rankIndex = header.findIndex(cell => /(rank|pos|position|#)/.test(cell));
-      const playerIndex = header.findIndex(cell => /(player|name|scorer|striker|full name)/.test(cell));
-      const teamIndex = header.findIndex(cell => /(team|club|side|country)/.test(cell));
-      const goalsIndex = header.findIndex(cell => /(goals?|g\b|gs|scored)/.test(cell));
-
-      return data
-        .map((row, idx) => {
-          const safe = Array.isArray(row) ? row : [];
-          const rank = safe[rankIndex] ?? safe[0] ?? idx + 1;
-          const player = safe[playerIndex] ?? safe.find(cell => /[A-Za-zÀ-ÿ]/.test(String(cell || "")) && !/^(rank|pos|position|team|club|goals?|g|#)$/.test(normalize(cell))) ?? "";
-          const team = safe[teamIndex] ?? safe.find((cell, index) => index !== (playerIndex >= 0 ? playerIndex : -1) && /[A-Za-zÀ-ÿ]/.test(String(cell || ""))) ?? "";
-          const goals = safe[goalsIndex] ?? safe[safe.length - 1] ?? "0";
-
-          const playerName = String(player || "").trim();
-          const teamName = String(team || "").trim();
-
-          if (!playerName && !teamName) return null;
+          if (!player && !team && !goals) return null;
 
           return {
-            rank: toNumber(rank) || idx + 1,
-            player: playerName,
-            team: teamName,
+            rank: toNumber(rank) || index + 1,
+            player: String(player).trim(),
+            team: String(team).trim(),
             goals: toNumber(goals)
           };
         })
         .filter(Boolean)
-        .sort((a, b) => b.goals - a.goals || a.rank - b.rank)
-        .slice(0, 12);
+        .sort((a, b) => b.goals - a.goals || a.rank - b.rank);
     }
 
     function renderTable(scorers) {
