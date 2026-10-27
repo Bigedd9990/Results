@@ -89,8 +89,8 @@
 
     .flag-item {
       display: block;
-      width: clamp(26px, 2.2vw, 38px);
-      height: clamp(16px, 1.5vw, 22px);
+      width: clamp(28px, 2.3vw, 42px);
+      height: clamp(18px, 1.5vw, 24px);
       aspect-ratio: 1.8 / 1;
       border-radius: 3px;
       object-fit: cover;
@@ -106,16 +106,16 @@
 
     @keyframes flag-wave {
       0% {
-        transform: skewY(-4deg) rotate(-2.5deg) translateX(-2px) translateY(0) scaleY(1) scaleX(1);
+        transform: skewY(-5deg) rotate(-3deg) translateX(-6px) translateY(0) scaleY(1.08) scaleX(1.25);
       }
-      35% {
-        transform: skewY(1.5deg) rotate(1.7deg) translateX(3px) translateY(-1px) scaleY(1.05) scaleX(1.02);
+      32% {
+        transform: skewY(2deg) rotate(2.5deg) translateX(4px) translateY(-2px) scaleY(1.12) scaleX(1.35);
       }
-      50% {
-        transform: skewY(3.5deg) rotate(2.8deg) translateX(5px) translateY(-2px) scaleY(1.08) scaleX(1.04);
+      52% {
+        transform: skewY(5deg) rotate(4deg) translateX(8px) translateY(-3px) scaleY(1.16) scaleX(1.4);
       }
       100% {
-        transform: skewY(-3deg) rotate(-2deg) translateX(-4px) translateY(1px) scaleY(1) scaleX(1);
+        transform: skewY(-4deg) rotate(-2.3deg) translateX(-7px) translateY(1px) scaleY(1.05) scaleX(1.25);
       }
     }
 
@@ -506,7 +506,6 @@
       <div class="flag-row" aria-label="National team flags">
         <img class="flag-item" src="badges/wales.png" alt="Wales flag">
         <img class="flag-item" src="badges/spain.png" alt="Spain flag">
-        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
       </div>
 
@@ -518,6 +517,7 @@
       </div>
 
       <div class="flag-row" aria-label="National team flags">
+        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/england.png" alt="England flag">
         <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
       </div>
