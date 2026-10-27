@@ -132,7 +132,7 @@
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0;
+      border-spacing: 0 6px;
       table-layout: auto;
       font-size: clamp(16px, 1.8vw, 25px);
       font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -158,7 +158,7 @@
 
     tbody tr {
       background: transparent;
-      border: 1px solid var(--row-edge);
+      box-shadow: 0 0 0 1px var(--row-edge);
       border-radius: 16px;
       overflow: hidden;
     }
@@ -167,6 +167,8 @@
       position: relative;
       padding: 12px 8px;
       border: none;
+      border-left: none;
+      border-right: none;
       text-align: center;
       font-size: clamp(16px, 1.8vw, 25px);
       font-weight: 800;
