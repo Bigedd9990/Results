@@ -89,6 +89,15 @@
       justify-self: center;
     }
 
+    .header-brand:first-child {
+      justify-self: start;
+    }
+
+    .header-brand:last-child {
+      justify-self: center;
+      margin-left: 2px;
+    }
+
     .header-logo {
       display: block;
       width: 78px;
@@ -495,7 +504,6 @@
     const DATA_END_ROW = 21;   // row 22 (1-based) = index 21
     const START_COL = 10;      // K = 10th column (0-based)
     const END_COL = 13;        // N = 13th column (0-based)
-    const MAX_DISPLAY_ROWS = 5;
 
     const statusEl = document.getElementById("status");
     const body = document.getElementById("tableBody");
@@ -530,7 +538,7 @@
 
     function badgeHtml(teamName) {
       const name = String(teamName || "").trim();
-      if (!name || name === "-") return "";
+      if (!name) return "";
 
       const cleaned = name.replace(/\s+/g, " ").trim();
       const candidateBase = "badges/" + cleaned;
@@ -546,7 +554,7 @@
         const rank = cells[START_COL] ?? "";
         const player = cells[START_COL + 1] ?? "";
         const team = cells[START_COL + 2] ?? "";
-        const goals = cells[START_COL + 3] ?? "";
+        const goals = cells[START_COL + 3] ?? "0";
 
         if (!String(player).trim() && !String(team).trim() && !String(goals).trim()) {
           continue;
@@ -556,40 +564,33 @@
           rank: toNumber(rank) || result.length + 1,
           player: String(player).trim(),
           team: String(team).trim(),
-          goals: toNumber(goals),
-          goalsRaw: String(goals).trim()
+          goals: toNumber(goals)
         });
       }
 
-      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank).slice(0, MAX_DISPLAY_ROWS);
+      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank);
     }
 
     function renderTable(scorers) {
       if (!scorers.length) {
-        body.innerHTML = '<tr><td colspan="4">-</td></tr>';
-        statusEl.textContent = 'No scorers available.';
+        body.innerHTML = '<tr><td colspan="4">No goal scorers found in the feed.</td></tr>';
+        statusEl.textContent = 'Feed loaded, but no scorers were found.';
         return;
       }
 
-      body.innerHTML = scorers.map(item => {
-        const playerName = item.player || "-";
-        const teamName = item.team || "-";
-        const goalText = item.goalsRaw || "-";
-
-        return `
-          <tr>
-            <td class="rank">${escapeHtml(item.rank)}</td>
-            <td class="player">${escapeHtml(playerName)}</td>
-            <td>
-              <div class="team-chip">
-                ${badgeHtml(teamName)}
-                <span class="team-name">${escapeHtml(teamName)}</span>
-              </div>
-            </td>
-            <td class="goals">${escapeHtml(goalText)}</td>
-          </tr>
-        `;
-      }).join("");
+      body.innerHTML = scorers.map(item => `
+        <tr>
+          <td class="rank">${escapeHtml(item.rank)}</td>
+          <td class="player">${escapeHtml(item.player)}</td>
+          <td>
+            <div class="team-chip">
+              ${badgeHtml(item.team)}
+              <span class="team-name">${escapeHtml(item.team)}</span>
+            </div>
+          </td>
+          <td class="goals">${escapeHtml(item.goals)}</td>
+        </tr>
+      `).join("");
 
       const spanishTime = new Date().toLocaleTimeString("en-GB", {
         timeZone: "Europe/Madrid",
