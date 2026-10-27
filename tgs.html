@@ -495,6 +495,7 @@
     const DATA_END_ROW = 21;   // row 22 (1-based) = index 21
     const START_COL = 10;      // K = 10th column (0-based)
     const END_COL = 13;        // N = 13th column (0-based)
+    const MAX_DISPLAY_ROWS = 5;
 
     const statusEl = document.getElementById("status");
     const body = document.getElementById("tableBody");
@@ -560,13 +561,13 @@
         });
       }
 
-      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank);
+      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank).slice(0, MAX_DISPLAY_ROWS);
     }
 
     function renderTable(scorers) {
       if (!scorers.length) {
-        body.innerHTML = '<tr><td colspan="4">No goal scorers found in the feed.</td></tr>';
-        statusEl.textContent = 'Feed loaded, but no scorers were found.';
+        body.innerHTML = '<tr><td colspan="4">-</td></tr>';
+        statusEl.textContent = 'No scorers available.';
         return;
       }
 
