@@ -18,6 +18,9 @@
       --pale-blue: #dfeef8;
       --white: #ffffff;
       --gold: #fff5d8;
+      --gold-strong: #f6df89;
+      --silver: #e7edf2;
+      --silver-strong: #dfe3ea;
       --row-alt: #dfeef8;
       --row-band: #f8fcff;
       --row-edge: rgba(53, 23, 36, 0.78);
@@ -81,7 +84,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(6px, 0.8vw, 12px);
+      gap: clamp(4px, 0.7vw, 9px);
       min-width: 0;
       overflow: hidden;
       padding: 0 2px;
@@ -89,8 +92,8 @@
 
     .flag-item {
       display: block;
-      width: clamp(28px, 2.3vw, 42px);
-      height: clamp(18px, 1.5vw, 24px);
+      width: clamp(19px, 1.6vw, 29px);
+      height: clamp(12px, 1.1vw, 18px);
       aspect-ratio: 1.8 / 1;
       border-radius: 3px;
       object-fit: cover;
@@ -101,21 +104,33 @@
       background: rgba(255,255,255,0.04);
     }
 
+    .flag-row.left .flag-item {
+      box-shadow: 0 1px 4px rgba(124, 101, 49, 0.42), inset 0 0 0 1px rgba(255,255,255,0.15);
+      filter: saturate(1.18) contrast(1.05) brightness(1.02);
+      background: linear-gradient(180deg, var(--gold) 0%, var(--gold-strong) 100%);
+    }
+
+    .flag-row.right .flag-item {
+      box-shadow: 0 1px 4px rgba(163, 174, 188, 0.42), inset 0 0 0 1px rgba(255,255,255,0.2);
+      filter: saturate(0.95) contrast(1.04) brightness(1.05);
+      background: linear-gradient(180deg, var(--silver) 0%, var(--silver-strong) 100%);
+    }
+
     .flag-item:nth-child(2n) { animation-delay: 0.35s; }
     .flag-item:nth-child(3n) { animation-delay: 0.7s; }
 
     @keyframes flag-wave {
       0% {
-        transform: skewY(-5deg) rotate(-3deg) translateX(-6px) translateY(0) scaleY(1.08) scaleX(1.25);
+        transform: skewY(-5deg) rotate(-3deg) translateX(-6px) translateY(0) scaleY(1.08) scaleX(1.2);
       }
       32% {
-        transform: skewY(2deg) rotate(2.5deg) translateX(4px) translateY(-2px) scaleY(1.12) scaleX(1.35);
+        transform: skewY(2deg) rotate(2.5deg) translateX(4px) translateY(-2px) scaleY(1.12) scaleX(1.28);
       }
       52% {
-        transform: skewY(5deg) rotate(4deg) translateX(8px) translateY(-3px) scaleY(1.16) scaleX(1.4);
+        transform: skewY(5deg) rotate(4deg) translateX(8px) translateY(-3px) scaleY(1.16) scaleX(1.3);
       }
       100% {
-        transform: skewY(-4deg) rotate(-2.3deg) translateX(-7px) translateY(1px) scaleY(1.05) scaleX(1.25);
+        transform: skewY(-4deg) rotate(-2.3deg) translateX(-7px) translateY(1px) scaleY(1.05) scaleX(1.2);
       }
     }
 
@@ -503,7 +518,7 @@
     </div>
 
     <div class="header-center">
-      <div class="flag-row" aria-label="National team flags">
+      <div class="flag-row left" aria-label="National team flags">
         <img class="flag-item" src="badges/wales.png" alt="Wales flag">
         <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
@@ -516,7 +531,7 @@
         <div class="header-date">5–6 NOVEMBER 2026</div>
       </div>
 
-      <div class="flag-row" aria-label="National team flags">
+      <div class="flag-row right" aria-label="National team flags">
         <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/england.png" alt="England flag">
         <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
