@@ -45,20 +45,73 @@
       color: white;
       padding: 12px 16px;
       display: grid;
-      grid-template-columns: 99px minmax(0, 1fr) 99px auto;
+      grid-template-columns: 78px minmax(0, 1fr) 78px auto;
       align-items: center;
       justify-content: center;
-      column-gap: 10px;
+      column-gap: 8px;
       text-align: center;
       border-bottom: 5px solid var(--light-blue);
     }
 
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
     .header-logo {
       display: block;
-      width: 99px;
-      height: 99px;
+      width: 78px;
+      height: 78px;
       object-fit: contain;
       justify-self: center;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+
+    .header-center {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .flag-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(4px, 0.8vw, 10px);
+      min-width: 0;
+      overflow: hidden;
+      padding: 0 2px;
+    }
+
+    .flag-item {
+      display: block;
+      width: clamp(20px, 2vw, 30px);
+      height: auto;
+      border-radius: 4px;
+      object-fit: cover;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+      transform-origin: center top;
+      animation: flag-wave 3s ease-in-out infinite alternate;
+      filter: saturate(1.05);
+    }
+
+    .flag-item:nth-child(2n) { animation-delay: 0.3s; }
+    .flag-item:nth-child(3n) { animation-delay: 0.7s; }
+
+    @keyframes flag-wave {
+      0% {
+        transform: skewY(-1.4deg) rotate(-1.5deg) translateY(0) scaleY(1);
+      }
+      50% {
+        transform: skewY(1.6deg) rotate(1.6deg) translateY(-1px) scaleY(1.02);
+      }
+      100% {
+        transform: skewY(-1.2deg) rotate(-1.2deg) translateY(1px) scaleY(1);
+      }
     }
 
     .header-title {
@@ -286,6 +339,14 @@
         height: 42px;
       }
 
+      .header-center {
+        gap: 4px;
+      }
+
+      .flag-item {
+        width: clamp(13px, 2.8vw, 20px);
+      }
+
       header h1 {
         font-size: clamp(12px, 3.4vw, 18px);
         line-height: 1.05;
@@ -355,6 +416,10 @@
         height: 34px;
       }
 
+      .flag-item {
+        width: 11px;
+      }
+
       header h1 { font-size: 11px; }
       .subtitle { font-size: 7px; }
       .header-date { font-size: 7px; }
@@ -412,7 +477,7 @@
       footer {
         background: linear-gradient(180deg, #8e2020 0%, #650d0d 55%, #400606 100%) !important;
         box-shadow: inset 0 2px 3px rgba(255,255,255,0.18), 0 -3px 10px rgba(0,0,0,0.35) !important;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.65);
+        text-shadow: 0 1px 3px rgba(0,1,0,0.65);
       }
     }
   </style>
@@ -421,16 +486,33 @@
 <body>
 <div class="page">
   <header>
-    <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers" onerror="this.style.display='none'">
-
-    <div class="header-title">
-      <h1>ESQUINA PARK RANGERS</h1>
-      <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-      <div class="subtitle">LEAGUE STANDINGS</div>
-      <div class="header-date">5–6 NOVEMBER 2026</div>
+    <div class="header-brand">
+      <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers" onerror="this.style.display='none'">
     </div>
 
-    <img class="header-logo" src="badges/Rojales.png" alt="Rojales" onerror="this.style.display='none'">
+    <div class="header-center">
+      <div class="flag-row" aria-label="National team flags">
+        <img class="flag-item" src="badges/wales.png" alt="Wales flag">
+        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
+        <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
+      </div>
+
+      <div class="header-title">
+        <h1>ESQUINA PARK RANGERS</h1>
+        <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+        <div class="subtitle">LEAGUE STANDINGS</div>
+        <div class="header-date">5–6 NOVEMBER 2026</div>
+      </div>
+
+      <div class="flag-row" aria-label="National team flags">
+        <img class="flag-item" src="badges/england.png" alt="England flag">
+        <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
+      </div>
+    </div>
+
+    <div class="header-brand">
+      <img class="header-logo" src="badges/Rojales.png" alt="Rojales" onerror="this.style.display='none'">
+    </div>
 
     <div class="local-clock">
       <span class="local-clock-label">LOCAL TIME</span>
