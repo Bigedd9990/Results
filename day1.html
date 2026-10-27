@@ -787,7 +787,47 @@ loadResults();
 setInterval(loadResults, 30000);
 
 </script>
+<!-- Floating Back to Home Button -->
+<a href="index.html" class="floating-home" aria-label="Back to Home">
+  🏠 BACK TO HOME
+</a>
 
+<style>
+  .floating-home {
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    z-index: 99999;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 18px;
+    background: #b9e6f5;
+    color: #351724;
+    border: 2px solid #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    text-decoration: none;
+    line-height: 1.2;
+  }
+
+  .floating-home:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 480px) {
+    .floating-home {
+      bottom: 12px;
+      left: 12px;
+      padding: 12px 15px;
+      font-size: 13px;
+    }
+  }
+</style>
 </body>
 </html>
 ```
