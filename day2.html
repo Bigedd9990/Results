@@ -575,6 +575,43 @@ async function loadResults() {
 loadResults();
 setInterval(loadResults,30000);
 </script>
-  
+ <!-- Mobile-only Floating Back to Home Button -->
+<a href="index.html" class="floating-home" aria-label="Back to Home">
+  🏠 BACK TO HOME
+</a>
+
+<style>
+  .floating-home {
+    display: none;
+  }
+
+  /* Show the button only on mobile-sized screens */
+  @media screen and (max-width: 600px) {
+    .floating-home {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      z-index: 99999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 15px;
+      background: #b9e6f5;
+      color: #351724;
+      border: 2px solid #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      line-height: 1.2;
+    }
+
+    .floating-home:hover {
+      background: #ffffff;
+    }
+  }
+</style> 
 </body>
 </html>
