@@ -17,10 +17,9 @@
       --light-blue: #8ed0e8;
       --pale-blue: #eaf7fc;
       --white: #ffffff;
-      --edge: rgba(88, 27, 50, 0.15);
-      --edge-soft: rgba(88, 27, 50, 0.08);
       --gold: #fff5d8;
       --row-alt: #edf7fb;
+      --row-band: rgba(255, 255, 255, 0.96);
     }
 
     * { box-sizing: border-box; }
@@ -131,8 +130,8 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
-      border-spacing: 0;
+      border-collapse: separate;
+      border-spacing: 0 6px;
       table-layout: auto;
       font-size: clamp(16px, 1.8vw, 25px);
       font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -157,24 +156,19 @@
     }
 
     tbody tr {
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 0 rgba(17, 17, 17, 0.02);
+      background: transparent;
     }
 
     tbody td {
       position: relative;
       padding: 12px 8px;
-      border-top: 1px solid var(--edge-soft);
-      border-bottom: 1px solid var(--edge-soft);
-      border-left: 1px solid var(--edge-soft);
-      border-right: 1px solid var(--edge-soft);
+      border: none;
       text-align: center;
       font-size: clamp(16px, 1.8vw, 25px);
       font-weight: 800;
       white-space: nowrap;
       font-family: 'Inter', Arial, Helvetica, sans-serif;
-      background: rgba(255, 255, 255, 0.97);
+      background: var(--row-band);
       box-shadow: inset 0 0 0 1px rgba(88, 27, 50, 0.02);
     }
 
@@ -203,12 +197,10 @@
     }
 
     tbody tr td:first-child {
-      border-left: 2px solid rgba(88, 27, 50, 0.14);
       border-radius: 16px 0 0 16px;
     }
 
     tbody tr td:last-child {
-      border-right: 2px solid rgba(88, 27, 50, 0.14);
       border-radius: 0 16px 16px 0;
     }
 
