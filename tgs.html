@@ -89,15 +89,6 @@
       justify-self: center;
     }
 
-    .header-brand:first-child {
-      justify-self: start;
-    }
-
-    .header-brand:last-child {
-      justify-self: center;
-      margin-left: 2px;
-    }
-
     .header-logo {
       display: block;
       width: 78px;
@@ -538,7 +529,7 @@
 
     function badgeHtml(teamName) {
       const name = String(teamName || "").trim();
-      if (!name) return "";
+      if (!name || name === "-") return "";
 
       const cleaned = name.replace(/\s+/g, " ").trim();
       const candidateBase = "badges/" + cleaned;
@@ -554,7 +545,7 @@
         const rank = cells[START_COL] ?? "";
         const player = cells[START_COL + 1] ?? "";
         const team = cells[START_COL + 2] ?? "";
-        const goals = cells[START_COL + 3] ?? "0";
+        const goals = cells[START_COL + 3] ?? "";
 
         if (!String(player).trim() && !String(team).trim() && !String(goals).trim()) {
           continue;
@@ -564,7 +555,8 @@
           rank: toNumber(rank) || result.length + 1,
           player: String(player).trim(),
           team: String(team).trim(),
-          goals: toNumber(goals)
+          goals: toNumber(goals),
+          goalsRaw: String(goals).trim()
         });
       }
 
@@ -578,19 +570,25 @@
         return;
       }
 
-      body.innerHTML = scorers.map(item => `
-        <tr>
-          <td class="rank">${escapeHtml(item.rank)}</td>
-          <td class="player">${escapeHtml(item.player)}</td>
-          <td>
-            <div class="team-chip">
-              ${badgeHtml(item.team)}
-              <span class="team-name">${escapeHtml(item.team)}</span>
-            </div>
-          </td>
-          <td class="goals">${escapeHtml(item.goals)}</td>
-        </tr>
-      `).join("");
+      body.innerHTML = scorers.map(item => {
+        const playerName = item.player || "-";
+        const teamName = item.team || "-";
+        const goalText = item.goalsRaw || "-";
+
+        return `
+          <tr>
+            <td class="rank">${escapeHtml(item.rank)}</td>
+            <td class="player">${escapeHtml(playerName)}</td>
+            <td>
+              <div class="team-chip">
+                ${badgeHtml(teamName)}
+                <span class="team-name">${escapeHtml(teamName)}</span>
+              </div>
+            </td>
+            <td class="goals">${escapeHtml(goalText)}</td>
+          </tr>
+        `;
+      }).join("");
 
       const spanishTime = new Date().toLocaleTimeString("en-GB", {
         timeZone: "Europe/Madrid",
