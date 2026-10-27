@@ -349,6 +349,62 @@
 
       .floating-home:hover { background: #ffffff; }
     }
+    
+/* BIG SCREEN HEADER IMPROVEMENTS */
+@media screen and (min-width: 901px) {
+
+  header {
+    background: linear-gradient(
+      180deg,
+      #a83232 0%,
+      #7b1111 45%,
+      #4b0808 100%
+    ) !important;
+
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.25),
+      inset 0 -3px 5px rgba(0, 0, 0, 0.35) !important;
+
+    padding: 8px 16px !important;
+  }
+
+  header img {
+    width: 116px !important;
+    height: 116px !important;
+    object-fit: contain;
+
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
+  }
+
+  header h1 {
+    font-size: clamp(28px, 2.7vw, 44px) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+  }
+
+  header h2,
+  header h3,
+  header p {
+    font-size: clamp(13px, 1.35vw, 19px);
+  }
+
+  footer {
+    background: linear-gradient(
+      180deg,
+      #8e2020 0%,
+      #650d0d 55%,
+      #400606 100%
+    ) !important;
+
+    box-shadow:
+      inset 0 2px 3px rgba(255, 255, 255, 0.18),
+      0 -3px 10px rgba(0, 0, 0, 0.35) !important;
+
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+  }
+
+}
+
   </style>
 </head>
 
