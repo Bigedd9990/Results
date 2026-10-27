@@ -62,7 +62,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.0) 35%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.12) 100%);
+      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.0) 35%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.12));
       pointer-events: none;
       transform: translateX(-18%);
       opacity: 0.95;
@@ -107,6 +107,12 @@
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
       position: relative;
       z-index: 1;
+    }
+
+    .header-brand:last-child .header-logo {
+      width: 117px;
+      height: 117px;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45)) drop-shadow(0 2px 6px rgba(255,255,255,0.18));
     }
 
     .header-center {
@@ -360,6 +366,11 @@
       .header-logo {
         width: 46px;
         height: 46px;
+      }
+
+      .header-brand:last-child .header-logo {
+        width: 69px;
+        height: 69px;
       }
 
       .header-center {
