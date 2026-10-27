@@ -1,1 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="30">
+  <title>Esquina Park Rangers - Top Goal Scorers</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+    :root {
+      --maroon: #581b32;
+      --maroon-deep: #3b0d1d;
+      --light-blue: #8ed0e8;
+      --pale-blue: #dfeef8;
+      --white: #ffffff;
+      --gold: #fff5d8;
+      --gold-strong: #f6df89;
+      --silver: #e7edf2;
+      --silver-strong: #dfe3ea;
+      --row-alt: #dfeef8;
+      --row-band: #f8fcff;
+      --row-edge: rgba(53, 23, 36, 0.78);
+      --shadow: rgba(18, 10, 16, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f1f5f8;
+      color: #222;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      background: white;
+      overflow: hidden;
+    }
+
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr) 78px auto;
+      align-items: center;
+      justify-content: center;
+      column-gap: 8px;
+      text-align: center;
+      border-bottom: 5px solid var(--light-blue);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .header-logo {
+      display: block;
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      justify-self: center;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+
+    .header-center {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .flag-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(4px, 0.7vw, 9px);
+      min-width: 0;
+      overflow: hidden;
+      padding: 0 2px;
+    }
+
+    .flag-item {
+      display: block;
+      width: clamp(19px, 1.6vw, 29px);
+      height: clamp(12px, 1.1vw, 18px);
+      aspect-ratio: 1.8 / 1;
+      border-radius: 3px;
+      object-fit: cover;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+      transform-origin: center top;
+      animation: flag-wave 2.4s ease-in-out infinite alternate;
+      filter: saturate(1.08) contrast(1.04);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .flag-row.left .flag-item {
+      box-shadow: 0 1px 4px rgba(124, 101, 49, 0.42), inset 0 0 0 1px rgba(255,255,255,0.15);
+      filter: saturate(1.18) contrast(1.05) brightness(1.02);
+      background: linear-gradient(180deg, var(--gold) 0%, var(--gold-strong) 100%);
+    }
+
+    .flag-row.right .flag-item {
+      box-shadow: 0 1px 4px rgba(163, 174, 188, 0.42), inset 0 0 0 1px rgba(255,255,255,0.2);
+      filter: saturate(0.95) contrast(1.04) brightness(1.05);
+      background: linear-gradient(180deg, var(--silver) 0%, var(--silver-strong) 100%);
+    }
+
+    .flag-item:nth-child(2n) { animation-delay: 0.35s; }
+    .flag-item:nth-child(3n) { animation-delay: 0.7s; }
+
+    @keyframes flag-wave {
+      0% { transform: skewY(-5deg) rotate(-3deg) translateX(-6px) translateY(0) scaleY(1.08) scaleX(1.2); }
+      32% { transform: skewY(2deg) rotate(2.5deg) translateX(4px) translateY(-2px) scaleY(1.12) scaleX(1.28); }
+      52% { transform: skewY(5deg) rotate(4deg) translateX(8px) translateY(-3px) scaleY(1.16) scaleX(1.3); }
+      100% { transform: skewY(-4deg) rotate(-2.3deg) translateX(-7px) translateY(1px) scaleY(1.05) scaleX(1.2); }
+    }
+
+    .header-title { min-width: 0; text-align: center; }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(18px, 2.5vw, 34px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin-top: 3px;
+      color: var(--light-blue);
+      font-size: clamp(10px, 1.25vw, 16px);
+      font-weight: 700;
+      line-height: 1.05;
+    }
+
+    .header-date {
+      margin-top: 3px;
+      color: var(--light-blue);
+      font-size: clamp(9px, 1.1vw, 14px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
+
+    .local-clock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: var(--light-blue);
+      color: var(--maroon);
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-weight: 800;
+      white-space: nowrap;
+      justify-self: end;
+    }
+
+    .local-clock-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    #localClock {
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .panel {
+      width: min(960px, calc(100% - 24px));
+      margin: 18px auto 0;
+      background: #ffffff;
+      border: 1px solid rgba(88, 27, 50, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 12px 32px var(--shadow);
+      overflow: hidden;
+    }
+
+    .summary {
+      background: linear-gradient(180deg, #f9fbfd 0%, #edf4f9 100%);
+      padding: 18px 18px 12px;
+      border-bottom: 2px solid rgba(88, 27, 50, 0.1);
+      text-align: center;
+    }
+
+    .summary h2 {
+      margin: 0;
+      color: var(--maroon);
+      font-size: clamp(24px, 4vw, 38px);
+      letter-spacing: 0.04em;
+      font-weight: 900;
+    }
+
+    .summary p {
+      margin: 8px 0 0;
+      color: #4d5b66;
+      font-size: clamp(13px, 1.8vw, 16px);
+      font-weight: 600;
+    }
+
+    .table-wrap {
+      width: 100%;
+      padding: 12px 12px 16px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 6px;
+      table-layout: fixed;
+      font-size: clamp(16px, 1.9vw, 25px);
+    }
+
+    thead th {
+      background: var(--maroon);
+      color: white;
+      padding: 14px 10px;
+      font-size: clamp(13px, 1.5vw, 18px);
+      font-weight: 800;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    thead th:first-child { border-radius: 16px 0 0 0; }
+    thead th:last-child { border-radius: 0 16px 0 0; }
+
+    tbody tr {
+      background: transparent;
+      box-shadow: 0 0 0 1px var(--row-edge);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    tbody td {
+      position: relative;
+      padding: 12px 8px;
+      border: none;
+      text-align: center;
+      font-size: clamp(15px, 1.8vw, 22px);
+      font-weight: 800;
+      white-space: nowrap;
+      background: var(--row-band);
+    }
+
+    tbody tr:nth-child(even) td {
+      background: var(--row-alt);
+    }
+
+    tbody tr:first-child td {
+      background: var(--gold);
+    }
+
+    tbody tr td:first-child {
+      border-radius: 16px 0 0 16px;
+    }
+
+    tbody tr td:last-child {
+      border-radius: 0 16px 16px 0;
+    }
+
+    td.rank {
+      color: var(--maroon);
+      font-weight: 900;
+      font-size: 1.1em;
+    }
+
+    td.player {
+      text-align: left;
+      color: var(--maroon);
+      white-space: normal;
+      line-height: 1.2;
+    }
+
+    td.goals {
+      color: var(--maroon);
+      font-size: 1.15em;
+      font-weight: 900;
+    }
+
+    .team-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .team-badge {
+      display: inline-block;
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .team-name {
+      display: inline-block;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status {
+      background: #f1f5f8;
+      color: var(--maroon);
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .footer {
+      padding: 14px;
+      text-align: center;
+      background: var(--maroon);
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .floating-home {
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        grid-template-columns: 52px minmax(0, 1fr) 52px auto;
+        column-gap: 4px;
+        padding: 6px 5px;
+      }
+
+      .header-logo {
+        width: 46px;
+        height: 46px;
+      }
+
+      .header-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+      }
+
+      .flag-row {
+        display: none;
+      }
+
+      header h1 {
+        font-size: clamp(12px, 3.2vw, 18px);
+        line-height: 1.05;
+      }
+
+      .subtitle {
+        font-size: clamp(8px, 2vw, 11px);
+      }
+
+      .header-date {
+        font-size: 9px;
+        letter-spacing: 0;
+      }
+
+      .local-clock {
+        padding: 5px 6px;
+        gap: 2px;
+      }
+
+      .local-clock-label {
+        font-size: 7px;
+        letter-spacing: 0;
+      }
+
+      #localClock {
+        font-size: 11px;
+      }
+
+      .panel {
+        width: min(100% - 10px, 960px);
+        margin-top: 10px;
+      }
+
+      .summary {
+        padding: 14px 12px 10px;
+      }
+
+      .table-wrap {
+        padding: 8px 8px 10px;
+      }
+
+      tbody td {
+        padding: 10px 5px;
+        font-size: 15px;
+      }
+
+      .team-badge {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .floating-home {
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        z-index: 99999;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 15px;
+        background: #b9e6f5;
+        color: #351724;
+        border: 2px solid #ffffff;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+        line-height: 1.2;
+      }
+
+      .floating-home:hover { background: #ffffff; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="header-brand">
+        <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers" onerror="this.style.display='none'">
+      </div>
+
+      <div class="header-center">
+        <div class="flag-row left" aria-label="National team flags">
+          <img class="flag-item" src="badges/wales.png" alt="Wales flag">
+          <img class="flag-item" src="badges/spain.png" alt="Spain flag">
+          <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
+        </div>
+
+        <div class="header-title">
+          <h1>ESQUINA PARK RANGERS</h1>
+          <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+          <div class="subtitle">TOP GOAL SCORERS</div>
+          <div class="header-date">5–6 NOVEMBER 2026</div>
+        </div>
+
+        <div class="flag-row right" aria-label="National team flags">
+          <img class="flag-item" src="badges/spain.png" alt="Spain flag">
+          <img class="flag-item" src="badges/england.png" alt="England flag">
+          <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
+        </div>
+      </div>
+
+      <div class="header-brand">
+        <img class="header-logo" src="badges/Rojales.png" alt="Rojales" onerror="this.style.display='none'">
+      </div>
+
+      <div class="local-clock">
+        <span class="local-clock-label">LOCAL TIME</span>
+        <span id="localClock">--:--:--</span>
+      </div>
+    </header>
+
+    <main class="panel">
+      <div class="summary">
+        <h2>TOP GOAL SCORERS</h2>
+        <p>Live ranking from the published tournament spreadsheet</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:12%">Rank</th>
+              <th style="width:52%">Player</th>
+              <th style="width:24%">Team</th>
+              <th style="width:12%">Goals</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="status" id="status">Loading top scorers...</div>
+      <div class="footer">ESQUINA PARK RANGERS · TOP GOAL SCORERS</div>
+    </main>
+  </div>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=727173544&single=true&output=csv";
+
+    const statusEl = document.getElementById("status");
+    const body = document.getElementById("tableBody");
+
+    function updateLocalClock() {
+      const clock = document.getElementById("localClock");
+      if (!clock) return;
+      clock.textContent = new Date().toLocaleTimeString("en-GB", {
+        timeZone: "Europe/Madrid",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>\"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function normalize(str) {
+      return String(str ?? "").trim().toLowerCase();
+    }
+
+    function toNumber(value) {
+      const cleaned = String(value ?? "").replace(/[^0-9.\-]/g, "");
+      const num = Number(cleaned);
+      return Number.isFinite(num) ? num : 0;
+    }
+
+    function badgeHtml(teamName) {
+      const name = String(teamName || "").trim();
+      if (!name) return "";
+
+      const cleaned = name.replace(/\s+/g, " ").trim();
+      const candidateBase = "badges/" + cleaned;
+      return `<img class="team-badge" src="${candidateBase}.png" alt="${escapeHtml(cleaned)} badge" loading="lazy" onerror="this.style.display='none'">`;
+    }
+
+    function findDataRows(rows) {
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i] || [];
+        const joined = row.map(cell => normalize(cell)).join(" |");
+        if (/(rank|position|player|name|team|goals?|scorer)/.test(joined)) {
+          return rows.slice(i + 1);
+        }
+      }
+      return rows.filter(row => row && row.some(cell => /[A-Za-zÀ-ÿ]/.test(String(cell || ""))));
+    }
+
+    function extractScorers(rows) {
+      const data = findDataRows(rows);
+      if (!data.length) return [];
+
+      const firstRow = rows.find(row => row.some(cell => /player|name|team|goals?|scorer/i.test(String(cell || "")))) || [];
+      const header = firstRow.map(cell => normalize(cell));
+
+      const rankIndex = header.findIndex(cell => /(rank|pos|position|#)/.test(cell));
+      const playerIndex = header.findIndex(cell => /(player|name|scorer|striker|full name)/.test(cell));
+      const teamIndex = header.findIndex(cell => /(team|club|side|country)/.test(cell));
+      const goalsIndex = header.findIndex(cell => /(goals?|g\b|gs|scored)/.test(cell));
+
+      return data
+        .map((row, idx) => {
+          const safe = Array.isArray(row) ? row : [];
+          const rank = safe[rankIndex] ?? safe[0] ?? idx + 1;
+          const player = safe[playerIndex] ?? safe.find(cell => /[A-Za-zÀ-ÿ]/.test(String(cell || "")) && !/^(rank|pos|position|team|club|goals?|g|#)$/.test(normalize(cell))) ?? "";
+          const team = safe[teamIndex] ?? safe.find((cell, index) => index !== (playerIndex >= 0 ? playerIndex : -1) && /[A-Za-zÀ-ÿ]/.test(String(cell || ""))) ?? "";
+          const goals = safe[goalsIndex] ?? safe[safe.length - 1] ?? "0";
+
+          const playerName = String(player || "").trim();
+          const teamName = String(team || "").trim();
+
+          if (!playerName && !teamName) return null;
+
+          return {
+            rank: toNumber(rank) || idx + 1,
+            player: playerName,
+            team: teamName,
+            goals: toNumber(goals)
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.goals - a.goals || a.rank - b.rank)
+        .slice(0, 12);
+    }
+
+    function renderTable(scorers) {
+      if (!scorers.length) {
+        body.innerHTML = '<tr><td colspan="4">No goal scorers found in the feed.</td></tr>';
+        statusEl.textContent = 'Feed loaded, but no scorers were found.';
+        return;
+      }
+
+      body.innerHTML = scorers.map(item => `
+        <tr>
+          <td class="rank">${escapeHtml(item.rank)}</td>
+          <td class="player">${escapeHtml(item.player)}</td>
+          <td>
+            <div class="team-chip">
+              ${badgeHtml(item.team)}
+              <span class="team-name">${escapeHtml(item.team)}</span>
+            </div>
+          </td>
+          <td class="goals">${escapeHtml(item.goals)}</td>
+        </tr>
+      `).join("");
+
+      const spanishTime = new Date().toLocaleTimeString("en-GB", {
+        timeZone: "Europe/Madrid",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+
+      statusEl.textContent = "Last updated " + spanishTime + " · Spanish local time";
+    }
+
+    async function loadScorers() {
+      try {
+        const response = await fetch(CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) throw new Error("Unable to retrieve spreadsheet.");
+
+        const csvText = await response.text();
+        const parsed = Papa.parse(csvText, { skipEmptyLines: false });
+        const scorers = extractScorers(parsed.data);
+        renderTable(scorers);
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent = "Unable to refresh top scorers. Retrying shortly...";
+      }
+    }
+
+    updateLocalClock();
+    setInterval(updateLocalClock, 1000);
+    loadScorers();
+    setInterval(loadScorers, 30000);
+  </script>
+
+  <a href="index.html" class="floating-home" aria-label="Back to Home">BACK</a>
+</body>
+</html>
