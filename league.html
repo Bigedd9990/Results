@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +16,7 @@
       --white: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -36,118 +33,59 @@
       overflow: hidden;
     }
 
-  
-/* HEADER: larger badges, tighter spacing */
-header {
-  background: var(--maroon);
-  color: white;
-  height: 110px;
-  padding: 6px 12px;
-  display: grid;
-  grid-template-columns: 99px minmax(0, 1fr) 99px auto;
-  align-items: center;
-  column-gap: 6px;
-  text-align: center;
-  border-bottom: 5px solid var(--light-blue);
-  position: relative;
-  box-sizing: border-box;
-}
+    /* HEADER */
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 99px minmax(0, 1fr) 99px auto;
+      align-items: center;
+      justify-content: center;
+      column-gap: 10px;
+      text-align: center;
+      border-bottom: 5px solid var(--light-blue);
+    }
 
-.header-logo {
-  width: 99px !important;
-  height: 99px !important;
-  object-fit: contain;
-  flex-shrink: 0;
-  justify-self: center;
-}
+    .header-logo {
+      display: block;
+      width: 99px;
+      height: 99px;
+      object-fit: contain;
+      justify-self: center;
+    }
 
-.header-title {
-  min-width: 0;
-  text-align: center;
-}
+    .header-title {
+      min-width: 0;
+      text-align: center;
+    }
 
-header h1 {
-  font-size: clamp(18px, 2.5vw, 34px);
-  margin: 0;
-  font-weight: 900;
-  line-height: 1.05;
-}
+    header h1 {
+      margin: 0;
+      font-size: clamp(18px, 2.5vw, 34px);
+      font-weight: 900;
+      line-height: 1.05;
+    }
 
-.subtitle {
-  margin-top: 3px;
-  color: var(--light-blue);
-  font-size: clamp(10px, 1.25vw, 16px);
-  font-weight: bold;
-  line-height: 1.05;
-}
+    .subtitle {
+      margin-top: 3px;
+      color: var(--light-blue);
+      font-size: clamp(10px, 1.25vw, 16px);
+      font-weight: bold;
+      line-height: 1.05;
+    }
 
-.header-date {
-  margin-top: 3px;
-  color: var(--light-blue);
-  font-size: clamp(9px, 1.1vw, 14px);
-  font-weight: 800;
-  letter-spacing: 1px;
-  line-height: 1.05;
-  white-space: nowrap;
-}
+    .header-date {
+      margin-top: 3px;
+      color: var(--light-blue);
+      font-size: clamp(9px, 1.1vw, 14px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1.05;
+      white-space: nowrap;
+    }
 
-/* MEDIUM SCREENS */
-@media (max-width: 900px) {
-  header {
-    gap: 5px;
-    padding: 8px 10px;
-  }
-
-  .header-logo {
-    width: 72px;
-    height: 72px;
-  }
-
-  header h1 {
-    font-size: clamp(15px, 2.5vw, 23px);
-  }
-
-  .subtitle {
-    font-size: clamp(9px, 1.5vw, 13px);
-    margin-top: 3px;
-  }
-
-  .header-date {
-    font-size: 10px;
-    letter-spacing: 0.5px;
-  }
-}
-
-/* MOBILE SCREENS */
-@media (max-width: 600px) {
-  header {
-    gap: 4px;
-    padding: 6px 5px;
-  }
-
-  .header-logo {
-    width: 44px;
-    height: 44px;
-  }
-
-  header h1 {
-    font-size: clamp(12px, 3.4vw, 18px);
-    line-height: 1.05;
-  }
-
-  .subtitle {
-    font-size: clamp(8px, 2.2vw, 11px);
-    margin-top: 3px;
-    line-height: 1.1;
-  }
-
-  .header-date {
-    font-size: 9px;
-    letter-spacing: 0;
-    margin-top: 3px;
-  }
-}
-    /* LIVE LOCAL CLOCK */
+    /* LOCAL CLOCK */
     .local-clock {
       display: flex;
       flex-direction: column;
@@ -160,7 +98,7 @@ header h1 {
       border-radius: 6px;
       font-weight: 900;
       white-space: nowrap;
-      flex-shrink: 0;
+      justify-self: end;
     }
 
     .local-clock-label {
@@ -213,13 +151,8 @@ header h1 {
       white-space: nowrap;
     }
 
-    tbody tr:nth-child(even) {
-      background: var(--pale-blue);
-    }
-
-    tbody tr:first-child td {
-      background: #fff5d8;
-    }
+    tbody tr:nth-child(even) { background: var(--pale-blue); }
+    tbody tr:first-child td { background: #fff5d8; }
 
     tbody td:nth-child(1) {
       color: var(--maroon);
@@ -268,11 +201,42 @@ header h1 {
       font-weight: 900;
     }
 
+    /* TABLET / MEDIUM SCREENS */
+    @media (max-width: 900px) {
+      header {
+        grid-template-columns: 72px minmax(0, 1fr) 72px auto;
+        column-gap: 6px;
+        padding: 8px 10px;
+      }
+
+      .header-logo {
+        width: 72px;
+        height: 72px;
+      }
+
+      header h1 { font-size: clamp(15px, 2.5vw, 23px); }
+
+      .subtitle {
+        font-size: clamp(9px, 1.5vw, 13px);
+        margin-top: 3px;
+      }
+
+      .header-date {
+        font-size: 10px;
+        letter-spacing: 0.5px;
+      }
+
+      .local-clock { padding: 6px 7px; }
+      .local-clock-label { font-size: 9px; }
+      #localClock { font-size: 15px; }
+    }
+
     /* MOBILE */
     @media (max-width: 650px) {
       header {
-        padding: 10px 6px;
-        gap: 7px;
+        grid-template-columns: 42px minmax(0, 1fr) 42px auto;
+        column-gap: 4px;
+        padding: 6px 5px;
       }
 
       .header-logo {
@@ -280,32 +244,36 @@ header h1 {
         height: 42px;
       }
 
-      h1 {
-        font-size: clamp(15px, 4vw, 22px);
+      header h1 {
+        font-size: clamp(12px, 3.4vw, 18px);
+        line-height: 1.05;
       }
 
       .subtitle {
-        font-size: 10px;
-        margin-top: 4px;
+        font-size: clamp(8px, 2.2vw, 11px);
+        margin-top: 3px;
+        line-height: 1.1;
+      }
+
+      .header-date {
+        font-size: 9px;
+        letter-spacing: 0;
+        margin-top: 3px;
       }
 
       .local-clock {
-        padding: 5px 6px;
+        padding: 5px 4px;
         gap: 2px;
       }
 
       .local-clock-label {
-        font-size: 8px;
-        letter-spacing: 0.5px;
+        font-size: 7px;
+        letter-spacing: 0;
       }
 
-      #localClock {
-        font-size: 13px;
-      }
+      #localClock { font-size: 11px; }
 
-      .table-wrap {
-        padding: 3px;
-      }
+      .table-wrap { padding: 3px; }
 
       thead th {
         padding: 9px 5px;
@@ -317,9 +285,7 @@ header h1 {
         font-size: 15px;
       }
 
-      tbody td:nth-child(3) {
-        min-width: 130px;
-      }
+      tbody td:nth-child(3) { min-width: 130px; }
 
       .team-badge {
         width: 30px;
@@ -332,18 +298,63 @@ header h1 {
         min-width: 38px;
       }
 
-      .footer {
-        font-size: 12px;
+      .footer { font-size: 12px; }
+    }
+
+    /* VERY NARROW PHONES: keep all four header items visible */
+    @media (max-width: 380px) {
+      header {
+        grid-template-columns: 34px minmax(0, 1fr) 34px auto;
+        column-gap: 3px;
+        padding: 5px 3px;
       }
+
+      .header-logo {
+        width: 34px;
+        height: 34px;
+      }
+
+      header h1 { font-size: 11px; }
+      .subtitle { font-size: 7px; }
+      .header-date { font-size: 7px; }
+      .local-clock { padding: 4px 3px; }
+      .local-clock-label { font-size: 6px; }
+      #localClock { font-size: 9px; }
+    }
+
+    /* MOBILE-ONLY FLOATING BACK BUTTON */
+    .floating-home { display: none; }
+
+    @media screen and (max-width: 600px) {
+      .floating-home {
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        z-index: 99999;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 15px;
+        background: #b9e6f5;
+        color: #351724;
+        border: 2px solid #ffffff;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+        line-height: 1.2;
+      }
+
+      .floating-home:hover { background: #ffffff; }
     }
   </style>
 </head>
 
 <body>
 <div class="page">
-
-  
-<header>
+  <header>
     <img class="header-logo"
          src="badges/Esquina Park Rangers.png"
          alt="Esquina Park Rangers"
@@ -365,8 +376,7 @@ header h1 {
       <span class="local-clock-label">LOCAL TIME</span>
       <span id="localClock">--:--:--</span>
     </div>
-</header>
-
+  </header>
 
   <div class="table-wrap">
     <table>
@@ -382,7 +392,6 @@ header h1 {
   <div class="status" id="status">
     Loading league standings...
   </div>
-
 </div>
 
 <script>
@@ -459,7 +468,6 @@ header h1 {
   }
 
   function renderTable(allRows) {
-    // Find the header row in the feed, if one exists.
     const headerIndex = allRows.findIndex(row =>
       row && row.some(cell =>
         /^(rank|team|pld|pts)$/i.test(String(cell || "").trim())
@@ -470,7 +478,6 @@ header h1 {
       ? allRows.slice(headerIndex + 1)
       : allRows;
 
-    // Keep rows with a numeric rank in the first column.
     rows = rows.filter(row =>
       row &&
       /^\d+$/.test(String(row[0] || "").trim())
@@ -492,8 +499,6 @@ header h1 {
     }
 
     body.innerHTML = rows.slice(0, 16).map(row => {
-      // Locate the team name in the row rather than assuming
-      // the blank badge column is always present.
       let teamIndex = row.findIndex(cell =>
         /[a-zA-ZÀ-ÿ]/.test(String(cell || "").trim()) &&
         !/^(rank|team|pld|pts|gf|ga|gd|w|d|l)$/i.test(
@@ -502,27 +507,21 @@ header h1 {
       );
 
       const team = teamIndex >= 0 ? String(row[teamIndex]).trim() : "";
-
-      // The seven stats follow the team name.
-      const stats = teamIndex >= 0
-  ? row.slice(teamIndex + 1).filter((value, index, arr) => {
-      return true;
-    })
-  : [];
+      const stats = teamIndex >= 0 ? row.slice(teamIndex + 1) : [];
 
       const values = [
-  row[0] || "",
-  "",
-  team,
-  stats[0] ?? "", // Pld
-  stats[1] ?? "", // W
-  stats[2] ?? "", // D
-  stats[3] ?? "", // L
-  stats[4] ?? "", // GF
-  stats[5] ?? "", // GA
-  stats[6] ?? "", // GD
-  stats[7] ?? ""  // Pts
-];
+        row[0] || "",
+        "",
+        team,
+        stats[0] ?? "",
+        stats[1] ?? "",
+        stats[2] ?? "",
+        stats[3] ?? "",
+        stats[4] ?? "",
+        stats[5] ?? "",
+        stats[6] ?? "",
+        stats[7] ?? ""
+      ];
 
       return "<tr>" + values.map((value, index) => {
         if (index === 1) {
@@ -577,51 +576,15 @@ header h1 {
     }
   }
 
-  // Start the clock once, independently of the standings refresh.
   updateLocalClock();
   setInterval(updateLocalClock, 1000);
 
-  // Load and refresh standings.
   loadStandings();
   setInterval(loadStandings, REFRESH_INTERVAL_MS);
 </script>
-<!-- Mobile-only Floating Back to Home Button -->
+
 <a href="index.html" class="floating-home" aria-label="Back to Home">
   🏠 BACK TO HOME
 </a>
-
-<style>
-  .floating-home {
-    display: none;
-  }
-
-  /* Show the button only on mobile-sized screens */
-  @media screen and (max-width: 600px) {
-    .floating-home {
-      position: fixed;
-      bottom: 12px;
-      left: 12px;
-      z-index: 99999;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 15px;
-      background: #b9e6f5;
-      color: #351724;
-      border: 2px solid #ffffff;
-      border-radius: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      text-decoration: none;
-      line-height: 1.2;
-    }
-
-    .floating-home:hover {
-      background: #ffffff;
-    }
-  }
-</style>
 </body>
 </html>
