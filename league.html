@@ -81,7 +81,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(4px, 0.8vw, 10px);
+      gap: clamp(6px, 0.8vw, 12px);
       min-width: 0;
       overflow: hidden;
       padding: 0 2px;
@@ -89,28 +89,33 @@
 
     .flag-item {
       display: block;
-      width: clamp(20px, 2vw, 30px);
-      height: auto;
-      border-radius: 4px;
+      width: clamp(26px, 2.2vw, 38px);
+      height: clamp(16px, 1.5vw, 22px);
+      aspect-ratio: 1.8 / 1;
+      border-radius: 3px;
       object-fit: cover;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
       transform-origin: center top;
-      animation: flag-wave 3s ease-in-out infinite alternate;
-      filter: saturate(1.05);
+      animation: flag-wave 2.4s ease-in-out infinite alternate;
+      filter: saturate(1.08) contrast(1.04);
+      background: rgba(255,255,255,0.04);
     }
 
-    .flag-item:nth-child(2n) { animation-delay: 0.3s; }
+    .flag-item:nth-child(2n) { animation-delay: 0.35s; }
     .flag-item:nth-child(3n) { animation-delay: 0.7s; }
 
     @keyframes flag-wave {
       0% {
-        transform: skewY(-1.4deg) rotate(-1.5deg) translateY(0) scaleY(1);
+        transform: skewY(-4deg) rotate(-2.5deg) translateX(-2px) translateY(0) scaleY(1) scaleX(1);
+      }
+      35% {
+        transform: skewY(1.5deg) rotate(1.7deg) translateX(3px) translateY(-1px) scaleY(1.05) scaleX(1.02);
       }
       50% {
-        transform: skewY(1.6deg) rotate(1.6deg) translateY(-1px) scaleY(1.02);
+        transform: skewY(3.5deg) rotate(2.8deg) translateX(5px) translateY(-2px) scaleY(1.08) scaleX(1.04);
       }
       100% {
-        transform: skewY(-1.2deg) rotate(-1.2deg) translateY(1px) scaleY(1);
+        transform: skewY(-3deg) rotate(-2deg) translateX(-4px) translateY(1px) scaleY(1) scaleX(1);
       }
     }
 
@@ -500,6 +505,7 @@
     <div class="header-center">
       <div class="flag-row" aria-label="National team flags">
         <img class="flag-item" src="badges/wales.png" alt="Wales flag">
+        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/spain.png" alt="Spain flag">
         <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
       </div>
