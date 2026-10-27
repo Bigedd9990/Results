@@ -9,8 +9,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
-    @import url('https://fonts.cdnfonts.com/css/radikal');
-
     :root {
       --maroon: #581b32;
       --light-blue: #8ed0e8;
@@ -25,7 +23,7 @@
       padding: 0;
       background: #f1f5f8;
       color: #222;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .page {
@@ -67,7 +65,7 @@
       font-size: clamp(18px, 2.5vw, 34px);
       font-weight: 900;
       line-height: 1.05;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .subtitle {
@@ -76,7 +74,7 @@
       font-size: clamp(10px, 1.25vw, 16px);
       font-weight: bold;
       line-height: 1.05;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .header-date {
@@ -87,9 +85,10 @@
       letter-spacing: 1px;
       line-height: 1.05;
       white-space: nowrap;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* LOCAL CLOCK */
     .local-clock {
       display: flex;
       flex-direction: column;
@@ -103,21 +102,22 @@
       font-weight: 900;
       white-space: nowrap;
       justify-self: end;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .local-clock-label {
       font-size: 10px;
       letter-spacing: 1px;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     #localClock {
       font-size: 18px;
       font-variant-numeric: tabular-nums;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* TABLE */
     .table-wrap {
       width: 100%;
       padding: 8px;
@@ -129,7 +129,7 @@
       border-collapse: collapse;
       table-layout: auto;
       font-size: clamp(16px, 1.8vw, 25px);
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     thead th {
@@ -140,7 +140,7 @@
       font-weight: 900;
       text-align: center;
       white-space: nowrap;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     thead th:nth-child(2),
@@ -157,7 +157,7 @@
       font-size: clamp(16px, 1.8vw, 25px);
       font-weight: 900;
       white-space: nowrap;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     tbody td:first-child {
@@ -175,7 +175,7 @@
       color: var(--maroon);
       font-size: 1.1em;
       font-weight: 900;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     tbody td:nth-child(3) {
@@ -184,7 +184,7 @@
       color: var(--maroon);
       font-weight: 900;
       white-space: normal;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .team-badge {
@@ -199,9 +199,10 @@
       color: var(--maroon);
       font-size: 1.15em;
       font-weight: 900;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* FOOTER AND STATUS */
     .footer {
       padding: 14px;
       text-align: center;
@@ -209,7 +210,7 @@
       color: white;
       font-size: 15px;
       font-weight: 900;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .status {
@@ -219,9 +220,10 @@
       padding: 10px;
       font-size: 13px;
       font-weight: 900;
-      font-family: 'Radikal', Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* TABLET / MEDIUM SCREENS */
     @media (max-width: 900px) {
       header {
         grid-template-columns: 72px minmax(0, 1fr) 72px auto;
@@ -251,6 +253,7 @@
       #localClock { font-size: 15px; }
     }
 
+    /* MOBILE */
     @media (max-width: 650px) {
       header {
         grid-template-columns: 42px minmax(0, 1fr) 42px auto;
@@ -320,6 +323,7 @@
       .footer { font-size: 12px; }
     }
 
+    /* VERY NARROW PHONES: keep all four header items visible */
     @media (max-width: 380px) {
       header {
         grid-template-columns: 34px minmax(0, 1fr) 34px auto;
@@ -340,6 +344,7 @@
       #localClock { font-size: 9px; }
     }
 
+    /* MOBILE-ONLY FLOATING BACK BUTTON */
     .floating-home { display: none; }
 
     @media screen and (max-width: 600px) {
@@ -357,7 +362,7 @@
         border: 2px solid #ffffff;
         border-radius: 30px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-        font-family: 'Radikal', Arial, Helvetica, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 13px;
         font-weight: 900;
         text-decoration: none;
@@ -367,77 +372,84 @@
       .floating-home:hover { background: #ffffff; }
     }
 
-    @media screen and (min-width: 901px) {
-      header {
-        background: linear-gradient(
-          180deg,
-          #a83232 0%,
-          #7b1111 45%,
-          #4b0808 100%
-        ) !important;
+/* BIG SCREEN HEADER IMPROVEMENTS */
+@media screen and (min-width: 901px) {
 
-        box-shadow:
-          0 4px 12px rgba(0, 0, 0, 0.5),
-          inset 0 2px 3px rgba(255, 255, 255, 0.25),
-          inset 0 -3px 5px rgba(0, 0, 0, 0.35) !important;
+  header {
+    background: linear-gradient(
+      180deg,
+      #a83232 0%,
+      #7b1111 45%,
+      #4b0808 100%
+    ) !important;
 
-        padding: 8px 16px !important;
-      }
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.25),
+      inset 0 -3px 5px rgba(0, 0, 0, 0.35) !important;
 
-      header img {
-        width: 116px !important;
-        height: 116px !important;
-        object-fit: contain;
-        filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
-      }
+    padding: 8px 16px !important;
+  }
 
-      header h1 {
-        font-size: clamp(28px, 2.7vw, 44px) !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
-      }
+  header img {
+    width: 116px !important;
+    height: 116px !important;
+    object-fit: contain;
 
-      header h2,
-      header h3,
-      header p {
-        font-size: clamp(13px, 1.35vw, 19px);
-      }
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
+  }
 
-      footer {
-        background: linear-gradient(
-          180deg,
-          #8e2020 0%,
-          #650d0d 55%,
-          #400606 100%
-        ) !important;
+  header h1 {
+    font-size: clamp(28px, 2.7vw, 44px) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+  }
 
-        box-shadow:
-          inset 0 2px 3px rgba(255, 255, 255, 0.18),
-          0 -3px 10px rgba(0, 0, 0, 0.35) !important;
+  header h2,
+  header h3,
+  header p {
+    font-size: clamp(13px, 1.35vw, 19px);
+  }
 
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
-      }
-    }
+  footer {
+    background: linear-gradient(
+      180deg,
+      #8e2020 0%,
+      #650d0d 55%,
+      #400606 100%
+    ) !important;
 
-    table {
-      border-collapse: separate;
-      border-spacing: 0 5px;
-    }
+    box-shadow:
+      inset 0 2px 3px rgba(255, 255, 255, 0.18),
+      0 -3px 10px rgba(0, 0, 0, 0.35) !important;
 
-    tbody tr td {
-      border-bottom: none;
-    }
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+  }
 
-    tbody tr td:first-child {
-      border-radius: 12px 0 0 12px;
-    }
+}
 
-    tbody tr td:last-child {
-      border-radius: 0 12px 12px 0;
-    }
+/* ROUNDED TEAM ROWS — preserve full table width */
+table {
+  border-collapse: separate;
+  border-spacing: 0 5px;
+}
 
-    tbody tr:first-child td {
-      background: #fff5d8;
-    }
+tbody tr td {
+  border-bottom: none;
+}
+
+tbody tr td:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+tbody tr td:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+/* Keep the first-place highlight */
+tbody tr:first-child td {
+  background: #fff5d8;
+}
+
   </style>
 </head>
 
