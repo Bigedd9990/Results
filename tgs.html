@@ -43,16 +43,29 @@
     }
 
     header {
-      background: var(--maroon);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #5a1233 0%, #6b1738 18%, #7b2445 41%, #4d1028 100%);
       color: white;
       padding: 12px 16px;
       display: grid;
-      grid-template-columns: 78px minmax(0, 1fr) 78px auto;
+      grid-template-columns: 88px minmax(0, 1fr) 88px 122px;
       align-items: center;
       justify-content: center;
-      column-gap: 8px;
+      column-gap: 10px;
       text-align: center;
-      border-bottom: 5px solid var(--light-blue);
+      border-bottom: 5px solid rgba(142, 208, 232, 0.95);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -2px 0 rgba(17,17,17,0.12), 0 12px 22px rgba(31, 10, 20, 0.22);
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 20%, rgba(255,255,255,0.0) 35%, rgba(255,255,255,0.12) 55%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.12) 100%);
+      pointer-events: none;
+      transform: translateX(-18%);
+      opacity: 0.95;
     }
 
     .header-brand {
@@ -60,6 +73,19 @@
       align-items: center;
       justify-content: center;
       min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-brand:first-child,
+    .header-brand:last-child {
+      padding: 4px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 18px rgba(12, 6, 10, 0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     .header-logo {
@@ -68,61 +94,17 @@
       height: 78px;
       object-fit: contain;
       justify-self: center;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      position: relative;
+      z-index: 1;
     }
 
     .header-center {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      align-items: center;
-      gap: 8px;
+      place-items: center;
       min-width: 0;
-    }
-
-    .flag-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(4px, 0.7vw, 9px);
-      min-width: 0;
-      overflow: hidden;
-      padding: 0 2px;
-    }
-
-    .flag-item {
-      display: block;
-      width: clamp(19px, 1.6vw, 29px);
-      height: clamp(12px, 1.1vw, 18px);
-      aspect-ratio: 1.8 / 1;
-      border-radius: 3px;
-      object-fit: cover;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
-      transform-origin: center top;
-      animation: flag-wave 2.4s ease-in-out infinite alternate;
-      filter: saturate(1.08) contrast(1.04);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .flag-row.left .flag-item {
-      box-shadow: 0 1px 4px rgba(124, 101, 49, 0.42), inset 0 0 0 1px rgba(255,255,255,0.15);
-      filter: saturate(1.18) contrast(1.05) brightness(1.02);
-      background: linear-gradient(180deg, var(--gold) 0%, var(--gold-strong) 100%);
-    }
-
-    .flag-row.right .flag-item {
-      box-shadow: 0 1px 4px rgba(163, 174, 188, 0.42), inset 0 0 0 1px rgba(255,255,255,0.2);
-      filter: saturate(0.95) contrast(1.04) brightness(1.05);
-      background: linear-gradient(180deg, var(--silver) 0%, var(--silver-strong) 100%);
-    }
-
-    .flag-item:nth-child(2n) { animation-delay: 0.35s; }
-    .flag-item:nth-child(3n) { animation-delay: 0.7s; }
-
-    @keyframes flag-wave {
-      0% { transform: skewY(-5deg) rotate(-3deg) translateX(-6px) translateY(0) scaleY(1.08) scaleX(1.2); }
-      32% { transform: skewY(2deg) rotate(2.5deg) translateX(4px) translateY(-2px) scaleY(1.12) scaleX(1.28); }
-      52% { transform: skewY(5deg) rotate(4deg) translateX(8px) translateY(-3px) scaleY(1.16) scaleX(1.3); }
-      100% { transform: skewY(-4deg) rotate(-2.3deg) translateX(-7px) translateY(1px) scaleY(1.05) scaleX(1.2); }
+      position: relative;
+      z-index: 1;
     }
 
     .header-title { min-width: 0; text-align: center; }
@@ -134,6 +116,7 @@
       line-height: 1.05;
       letter-spacing: 0.02em;
       font-family: 'Inter', Arial, Helvetica, sans-serif;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.22), 0 0 20px rgba(142,208,232,0.18);
     }
 
     .subtitle {
@@ -143,6 +126,7 @@
       font-weight: 700;
       line-height: 1.05;
       font-family: 'Inter', Arial, Helvetica, sans-serif;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.18);
     }
 
     .header-date {
@@ -154,22 +138,26 @@
       line-height: 1.05;
       white-space: nowrap;
       font-family: 'Inter', Arial, Helvetica, sans-serif;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.18);
     }
 
     .local-clock {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 3px;
-      background: var(--light-blue);
+      background: linear-gradient(180deg, rgba(142, 208, 232, 0.92) 0%, rgba(196, 231, 245, 0.9) 100%);
       color: var(--maroon);
       padding: 7px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 800;
       white-space: nowrap;
       justify-self: end;
       font-family: 'Inter', Arial, Helvetica, sans-serif;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 18px rgba(12, 6, 10, 0.18), 0 0 0 1px rgba(255,255,255,0.12);
     }
 
     .local-clock-label {
@@ -346,8 +334,8 @@
 
     @media (max-width: 700px) {
       header {
-        grid-template-columns: 52px minmax(0, 1fr) 52px auto;
-        column-gap: 4px;
+        grid-template-columns: 60px minmax(0, 1fr) 52px 92px;
+        column-gap: 5px;
         padding: 6px 5px;
       }
 
@@ -360,11 +348,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0;
-      }
-
-      .flag-row {
-        display: none;
       }
 
       header h1 {
@@ -453,23 +436,11 @@
       </div>
 
       <div class="header-center">
-        <div class="flag-row left" aria-label="National team flags">
-          <img class="flag-item" src="badges/wales.png" alt="Wales flag">
-          <img class="flag-item" src="badges/spain.png" alt="Spain flag">
-          <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
-        </div>
-
         <div class="header-title">
           <h1>ESQUINA PARK RANGERS</h1>
           <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
           <div class="subtitle">TOP GOAL SCORERS</div>
           <div class="header-date">5–6 NOVEMBER 2026</div>
-        </div>
-
-        <div class="flag-row right" aria-label="National team flags">
-          <img class="flag-item" src="badges/spain.png" alt="Spain flag">
-          <img class="flag-item" src="badges/england.png" alt="England flag">
-          <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
         </div>
       </div>
 
