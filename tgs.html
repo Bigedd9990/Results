@@ -504,9 +504,11 @@
   </div>
 
   <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=727173544&single=true&output=csv";
-    const DATA_START_ROW = 7; // A8
-    const DATA_END_ROW = 11; // A12
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
+    const DATA_START_ROW = 17; // row 18 in 1-based indexing is index 17 in zero-based array
+    const DATA_END_ROW = 21;   // row 22 in 1-based indexing is index 21
+    const START_COL = 10;      // K -> 10 (0-based)
+    const END_COL = 13;        // N -> 13 (0-based)
 
     const statusEl = document.getElementById("status");
     const body = document.getElementById("tableBody");
@@ -549,8 +551,12 @@
     }
 
     function extractScorers(rows) {
-      const rawRows = rows.slice(DATA_START_ROW, DATA_END_ROW + 1)
-        .map(row => Array.isArray(row) ? row.slice(0, 4) : [])
+      const rawRows = rows
+        .slice(DATA_START_ROW, DATA_END_ROW + 1)
+        .map(row => {
+          const cells = Array.isArray(row) ? row : [];
+          return Array.from({ length: END_COL - START_COL + 1 }, (_, i) => cells[START_COL + i] ?? "");
+        })
         .filter(row => row.some(cell => String(cell ?? "").trim() !== ""));
 
       return rawRows
