@@ -505,10 +505,10 @@
 
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
-    const DATA_START_ROW = 17; // row 18 in 1-based indexing is index 17 in zero-based array
-    const DATA_END_ROW = 21;   // row 22 in 1-based indexing is index 21
-    const START_COL = 10;      // K -> 10 (0-based)
-    const END_COL = 13;        // N -> 13 (0-based)
+    const DATA_START_ROW = 17; // row 18 (1-based) = index 17
+    const DATA_END_ROW = 21;   // row 22 (1-based) = index 21
+    const START_COL = 10;      // K = 10th column (0-based)
+    const END_COL = 13;        // N = 13th column (0-based)
 
     const statusEl = document.getElementById("status");
     const body = document.getElementById("tableBody");
@@ -551,32 +551,29 @@
     }
 
     function extractScorers(rows) {
-      const rawRows = rows
-        .slice(DATA_START_ROW, DATA_END_ROW + 1)
-        .map(row => {
-          const cells = Array.isArray(row) ? row : [];
-          return Array.from({ length: END_COL - START_COL + 1 }, (_, i) => cells[START_COL + i] ?? "");
-        })
-        .filter(row => row.some(cell => String(cell ?? "").trim() !== ""));
+      const targetRows = rows.slice(DATA_START_ROW, DATA_END_ROW + 1);
+      const result = [];
 
-      return rawRows
-        .map((row, index) => {
-          const rank = row[0] ?? String(index + 1);
-          const player = row[1] ?? "";
-          const team = row[2] ?? "";
-          const goals = row[3] ?? "0";
+      for (const row of targetRows) {
+        const cells = Array.isArray(row) ? row : [];
+        const rank = cells[START_COL] ?? "";
+        const player = cells[START_COL + 1] ?? "";
+        const team = cells[START_COL + 2] ?? "";
+        const goals = cells[START_COL + 3] ?? "0";
 
-          if (!player && !team && !goals) return null;
+        if (!String(player).trim() && !String(team).trim() && !String(goals).trim()) {
+          continue;
+        }
 
-          return {
-            rank: toNumber(rank) || index + 1,
-            player: String(player).trim(),
-            team: String(team).trim(),
-            goals: toNumber(goals)
-          };
-        })
-        .filter(Boolean)
-        .sort((a, b) => b.goals - a.goals || a.rank - b.rank);
+        result.push({
+          rank: toNumber(rank) || result.length + 1,
+          player: String(player).trim(),
+          team: String(team).trim(),
+          goals: toNumber(goals)
+        });
+      }
+
+      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank);
     }
 
     function renderTable(scorers) {
