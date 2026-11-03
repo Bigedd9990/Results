@@ -1,0 +1,19 @@
+{
+  "id": "org.esquinaparkrangers.clubapp",
+  "name": "Esquina Park Rangers Club App",
+  "short_name": "EPR Club",
+  "description": "Fixtures, results, events and club information for Esquina Park Rangers.",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6f8",
+  "theme_color": "#351724",
+  "icons": [
+    {
+      "src": "../badges/Esquina%20Park%20Rangers.png",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
