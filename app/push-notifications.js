@@ -3,8 +3,8 @@
  * Add the public OneSignal App ID from the OneSignal dashboard below.
  * Never put the OneSignal REST API key or any other secret in this file.
  */
-const ONESIGNAL_APP_ID = 'PASTE_PUBLIC_ONESIGNAL_APP_ID_HERE';
-const SETUP_PLACEHOLDER = 'PASTE_PUBLIC_ONESIGNAL_APP_ID_HERE';
+const ONESIGNAL_APP_ID = e06a1c92-a384-45af-bde9-dd18ee81aaf5;
+const SETUP_PLACEHOLDER = e06a1c92-a384-45af-bde9-dd18ee81aaf5;
 
 function addNotificationPanel() {
   const clubScreen = document.getElementById('screen-club');
