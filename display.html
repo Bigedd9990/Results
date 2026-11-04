@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tournament Big Screen</title>
+  <style>
+    html, body, iframe {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border: 0;
+    }
+
+    body {
+      overflow: hidden;
+      background: #351724;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="screen" title="Tournament results"></iframe>
+
+  <script>
+    const screens = [
+      { page: "league.html", duration: 30_000 },
+      { page: "day1.html", duration: 15_000 },
+      { page: "day2.html", duration: 15_000 },
+      { page: "tgs.html", duration: 15_000 }
+    ];
+
+    const frame = document.getElementById("screen");
+    let current = 0;
+
+    function showScreen(index) {
+      current = index;
+      frame.src = screens[current].page;
+
+      // Schedule the next page independently of reloads within the frame.
+      window.setTimeout(
+        () => showScreen((current + 1) % screens.length),
+        screens[current].duration
+      );
+    }
+
+    showScreen(0);
+  </script>
+</body>
+</html>
