@@ -329,9 +329,6 @@ footer {
 const CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTeEkmGfdMyY5ILwraF8-Axuzx8-U5IAgNO9NYzd9ua-ogBiwaMMKKAq7zpK2lBseMnJ4WAC-AQ1Glv/pub?gid=1887191572&single=true&output=csv";
 
-const FIRST_SHEET_ROW = 65;
-const LAST_SHEET_ROW = 124;
-
 const boardScroll = document.getElementById("boardScroll");
 const statusEl = document.getElementById("status");
 
@@ -527,15 +524,23 @@ async function loadResults() {
     const csvText=await response.text();
     const allRows=parseCSV(csvText);
 
-    /*
-      Sheet rows 65–124 inclusive.
-      CSV row 1 corresponds to sheet row 1.
-      Array indexes 64–123 select the required rows.
-    */
+    // Find the Day 2 section, then keep valid fixture rows until the next section.
+    const day2MarkerIndex=allRows.findIndex(row =>
+      row.some(cell => /^day\s*2$/i.test(String(cell || "").trim()))
+    );
+
+    if (day2MarkerIndex===-1) {
+      throw new Error("Could not find the Day 2 section in the schedule.");
+    }
+
     const fixtures=allRows
-      .slice(FIRST_SHEET_ROW-1,LAST_SHEET_ROW)
-      .map(row=>row.slice(0,7))
-      .filter(row=>row.some(value=>value!==""));
+      .slice(day2MarkerIndex+1)
+      .filter(row =>
+        [1,2,3].includes(Number(row[1])) &&
+        String(row[3] || "").trim() &&
+        String(row[6] || "").trim()
+      )
+      .map(row => row.slice(0,7));
 
     const pitches={1:[],2:[],3:[]};
 
@@ -612,6 +617,6 @@ setInterval(loadResults,30000);
       background: #ffffff;
     }
   }
-</style> 
+</style>
 </body>
 </html>
