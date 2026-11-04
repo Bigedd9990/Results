@@ -57,17 +57,24 @@
     const frame = document.getElementById("screen");
     const transitionMs = 700;
     let current = 0;
-    let timer;
+    let transitionTimer;
+    let rotationTimer;
 
     function showScreen(index) {
       current = index;
+      window.clearTimeout(transitionTimer);
+      window.clearTimeout(rotationTimer);
+
+      // Ignore any subsequent iframe reloads (for example, page-level refreshes).
+      frame.onload = null;
       frame.style.opacity = "0";
 
-      // Wait for the fade-out before loading the next page, then fade it in.
-      window.setTimeout(() => {
+      // Fade out before loading the next page, then start its display interval once loaded.
+      transitionTimer = window.setTimeout(() => {
         frame.onload = () => {
+          frame.onload = null;
           frame.style.opacity = "1";
-          timer = window.setTimeout(
+          rotationTimer = window.setTimeout(
             () => showScreen((current + 1) % screens.length),
             screens[current].duration
           );
