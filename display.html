@@ -16,6 +16,18 @@
       overflow: hidden;
       background: #351724;
     }
+
+    iframe {
+      display: block;
+      opacity: 0;
+      transition: opacity 700ms ease-in-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      iframe {
+        transition: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -43,17 +55,25 @@
         : [league, day1, day2, scorers];
 
     const frame = document.getElementById("screen");
+    const transitionMs = 700;
     let current = 0;
+    let timer;
 
     function showScreen(index) {
       current = index;
-      frame.src = screens[current].page;
+      frame.style.opacity = "0";
 
-      // Schedule the next page independently of reloads within the frame.
-      window.setTimeout(
-        () => showScreen((current + 1) % screens.length),
-        screens[current].duration
-      );
+      // Wait for the fade-out before loading the next page, then fade it in.
+      window.setTimeout(() => {
+        frame.onload = () => {
+          frame.style.opacity = "1";
+          timer = window.setTimeout(
+            () => showScreen((current + 1) % screens.length),
+            screens[current].duration
+          );
+        };
+        frame.src = screens[current].page;
+      }, transitionMs);
     }
 
     showScreen(0);
