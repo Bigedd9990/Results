@@ -63,7 +63,7 @@
       day: "2-digit"
     }).format(new Date());
 
-    const league = { page: "league.html", duration: 30_000 };
+    const league = { page: "league.html", duration: 60_000 };
     const day1 = { page: "day1.html", duration: 15_000 };
     const day2 = { page: "day2.html", duration: 15_000 };
     const scorers = { page: "tgs.html", duration: 15_000 };
@@ -93,11 +93,9 @@
       progressBar.style.transform = "scaleX(0)";
       progressTrack.setAttribute("aria-valuenow", "0");
 
-      // Ignore any subsequent iframe reloads (for example, page-level refreshes).
       frame.onload = null;
       frame.style.opacity = "0";
 
-      // Fade out before loading the next page, then start its display interval once loaded.
       transitionTimer = window.setTimeout(() => {
         frame.onload = () => {
           frame.onload = null;
