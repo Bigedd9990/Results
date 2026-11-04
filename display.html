@@ -22,12 +22,25 @@
   <iframe id="screen" title="Tournament results"></iframe>
 
   <script>
-    const screens = [
-      { page: "league.html", duration: 30_000 },
-      { page: "day1.html", duration: 15_000 },
-      { page: "day2.html", duration: 15_000 },
-      { page: "tgs.html", duration: 15_000 }
-    ];
+    const madridDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Madrid",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(new Date());
+
+    const league = { page: "league.html", duration: 30_000 };
+    const day1 = { page: "day1.html", duration: 15_000 };
+    const day2 = { page: "day2.html", duration: 15_000 };
+    const scorers = { page: "tgs.html", duration: 15_000 };
+
+    // On each tournament day, show only that day's fixtures page.
+    // Outside the tournament dates, show all pages as a preview.
+    const screens = madridDate === "2026-11-05"
+      ? [league, day1, scorers]
+      : madridDate === "2026-11-06"
+        ? [league, day2, scorers]
+        : [league, day1, day2, scorers];
 
     const frame = document.getElementById("screen");
     let current = 0;
