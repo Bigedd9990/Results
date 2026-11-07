@@ -88,7 +88,12 @@
 
     .table-wrap { overflow-x: auto; padding: 12px; }
 
-    table { width: 100%; border-collapse: collapse; min-width: 440px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 440px;
+      table-layout: fixed;
+    }
     th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); }
     th {
       color: #fff;
@@ -136,6 +141,96 @@
       .table-wrap { padding: 8px; }
       th, td { padding: 11px 9px; }
       .notice { padding: 18px; }
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
+
+    @media print {
+      @page {
+        margin: 10mm 12mm;
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .site-header {
+        padding: 16px 12px;
+        border-bottom-width: 3px;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .brand {
+        max-width: none;
+      }
+
+      .brand h1 {
+        font-size: 22pt;
+      }
+
+      .brand p {
+        font-size: 10pt;
+      }
+
+      .container {
+        width: 100%;
+        max-width: none;
+        margin: 10mm 0 0;
+      }
+
+      .panel,
+      .notice {
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .panel-heading h2 {
+        font-size: 24pt;
+      }
+
+      .panel-heading p {
+        font-size: 10pt;
+      }
+
+      .table-wrap {
+        padding: 8px 0;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 11pt;
+      }
+
+      th, td {
+        padding: 7px 6px;
+      }
+
+      .notice {
+        margin-top: 10mm;
+        padding: 12pt;
+        page-break-inside: avoid;
+      }
+
+      .notice h2 {
+        font-size: 18pt;
+      }
+
+      .notice p {
+        font-size: 11pt;
+      }
+
+      .status,
+      .back-link {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -188,8 +283,8 @@
 
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
-    const DATA_START_ROW = 29; // Row 30 in the sheet (zero-based index).
-    const DATA_END_ROW = 91; // End-exclusive: includes row 91.
+    const DATA_START_ROW = 29;
+    const DATA_END_ROW = 91;
     const rowsEl = document.getElementById("scorerRows");
     const statusEl = document.getElementById("status");
 
