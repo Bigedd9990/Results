@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Official final goal scorer records for the Esquina International Walking Football Cup.">
+  <meta name="theme-color" content="#581b32">
+  <title>Official Goal Scorers | Esquina International Walking Football Cup</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --maroon: #581b32;
+      --maroon-deep: #351724;
+      --blue: #b9e6f5;
+      --ink: #26313a;
+      --muted: #596873;
+      --surface: #fff;
+      --page: #f1f5f8;
+      --line: #dce5eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    .site-header {
+      padding: 28px 20px;
+      color: white;
+      text-align: center;
+      background: linear-gradient(135deg, #71364b, var(--maroon-deep));
+      border-bottom: 5px solid var(--blue);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .brand img {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+    }
+
+    .brand-copy { text-align: left; }
+    .brand h1 { margin: 0; font-size: clamp(20px, 4vw, 32px); line-height: 1.15; }
+    .brand p { margin: 6px 0 0; color: var(--blue); font-weight: 700; }
+
+    .container {
+      width: min(940px, calc(100% - 28px));
+      margin: 26px auto 40px;
+    }
+
+    .panel {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(18, 10, 16, 0.1);
+    }
+
+    .panel-heading {
+      padding: 22px 18px;
+      text-align: center;
+      background: #f8fbfd;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--maroon);
+      font-size: clamp(24px, 5vw, 36px);
+      letter-spacing: 0.03em;
+    }
+
+    .panel-heading p { margin: 6px 0 0; color: var(--muted); font-weight: 700; }
+
+    .table-wrap { overflow-x: auto; padding: 12px; }
+
+    table { width: 100%; border-collapse: collapse; min-width: 440px; }
+    th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); }
+    th {
+      color: #fff;
+      background: var(--maroon);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    th:first-child, td.rank, th:last-child, td.goals { text-align: center; }
+    td { font-size: 17px; font-weight: 700; }
+    tbody tr:nth-child(even) { background: #f2f8fb; }
+    td.rank, td.goals { color: var(--maroon); font-weight: 900; }
+    td.goals { font-size: 20px; }
+
+    .status { padding: 12px; color: var(--muted); text-align: center; font-size: 14px; }
+    .notice {
+      margin-top: 20px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--maroon);
+      border-radius: 12px;
+    }
+    .notice h2 { margin: 0 0 12px; color: var(--maroon); font-size: 20px; }
+    .notice p { margin: 0 0 12px; }
+    .notice p:last-child { margin-bottom: 0; }
+    .official-title { margin-top: 16px !important; color: var(--maroon); font-weight: 800; }
+
+    .back-link {
+      display: inline-block;
+      margin: 18px 0 0;
+      color: var(--maroon);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    @media (max-width: 520px) {
+      .site-header { padding: 20px 14px; }
+      .brand { gap: 12px; }
+      .brand img { width: 58px; height: 58px; }
+      .brand p { font-size: 13px; }
+      .container { margin-top: 16px; }
+      .table-wrap { padding: 8px; }
+      th, td { padding: 11px 9px; }
+      .notice { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers club badge">
+      <div class="brand-copy">
+        <h1>ESQUINA PARK RANGERS</h1>
+        <p>INTERNATIONAL WALKING FOOTBALL CUP · 5–6 NOVEMBER 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel" aria-labelledby="leaderboard-title">
+      <div class="panel-heading">
+        <h2 id="leaderboard-title">OFFICIAL GOAL SCORERS</h2>
+        <p>FINAL TOURNAMENT LEADERBOARD</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" style="width: 14%">Rank</th>
+              <th scope="col">Player</th>
+              <th scope="col">Team</th>
+              <th scope="col" style="width: 16%">Goals</th>
+            </tr>
+          </thead>
+          <tbody id="scorerRows">
+            <tr><td colspan="4" class="status">Loading official goal scorer records…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite">Loading records…</div>
+    </section>
+
+    <section class="notice" aria-labelledby="notice-title">
+      <h2 id="notice-title">IMPORTANT NOTICE – GOAL SCORER RECORDS</h2>
+      <p>This leaderboard has been compiled using information supplied to the official tournament scoring team.</p>
+      <p>Every effort has been made to ensure the accuracy of the records received. However, the organisers cannot accept responsibility for any goals that have not been reported to the official scoring team by the participating teams.</p>
+      <p>If teams did not notify the official scorers of individual goal scorers during their matches, those goals will naturally not appear in this listing.</p>
+      <p>Thank you to all participating teams for helping us make the tournament a success!</p>
+      <p class="official-title">Esquina International Walking Football Cup – Official Tournament Statistics</p>
+    </section>
+
+    <a class="back-link" href="index.html">← Tournament home</a>
+  </main>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
+    const DATA_START_ROW = 17; // Row 18 in the published sheet; continue to the end for the full list.
+    const START_COL = 10; // K: rank, L: player, M: team, N: goals.
+    const rowsEl = document.getElementById("scorerRows");
+    const statusEl = document.getElementById("status");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    function numericValue(value) {
+      const text = String(value ?? "").trim();
+      if (!text || !/^-?\d+(?:\.\d+)?$/.test(text)) return null;
+      const number = Number(text);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function getScorers(rows) {
+      return rows.slice(DATA_START_ROW)
+        .map(row => {
+          const cells = Array.isArray(row) ? row : [];
+          const player = String(cells[START_COL + 1] ?? "").trim();
+          const team = String(cells[START_COL + 2] ?? "").trim();
+          const goals = numericValue(cells[START_COL + 3]);
+          const rank = numericValue(cells[START_COL]);
+          return { player, team, goals, rank };
+        })
+        .filter(scorer => scorer.player && scorer.team && scorer.goals !== null && scorer.goals > 0)
+        .sort((a, b) => b.goals - a.goals || (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER) || a.player.localeCompare(b.player));
+    }
+
+    async function loadScorers() {
+      try {
+        const response = await fetch(CSV_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error("The published spreadsheet could not be loaded.");
+        const parsed = Papa.parse(await response.text(), { skipEmptyLines: false });
+        const scorers = getScorers(parsed.data);
+
+        if (!scorers.length) {
+          rowsEl.innerHTML = '<tr><td colspan="4" class="status">No reported goal scorers are available.</td></tr>';
+          statusEl.textContent = "No goal scorer records were found in the published sheet.";
+          return;
+        }
+
+        let previousGoals = null;
+        let currentRank = 0;
+        rowsEl.innerHTML = scorers.map((scorer, index) => {
+          if (scorer.goals !== previousGoals) currentRank = index + 1;
+          previousGoals = scorer.goals;
+          return `<tr>
+            <td class="rank">${currentRank}</td>
+            <td>${escapeHtml(scorer.player)}</td>
+            <td>${escapeHtml(scorer.team)}</td>
+            <td class="goals">${escapeHtml(scorer.goals)}</td>
+          </tr>`;
+        }).join("");
+        statusEl.textContent = `${scorers.length} reported scorer${scorers.length === 1 ? "" : "s"} · Final tournament records`;
+      } catch (error) {
+        console.error(error);
+        rowsEl.innerHTML = '<tr><td colspan="4" class="status">Unable to load goal scorer records. Please try again later.</td></tr>';
+        statusEl.textContent = "The published records could not be loaded.";
+      }
+    }
+
+    loadScorers();
+  </script>
+</body>
+</html>
