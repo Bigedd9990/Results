@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Esquina Park Rangers | International Walking Football Cup</title>
-  <meta name="description" content="Live league table, fixtures, results and official goal scorer records for the Esquina Park Rangers International Walking Football Cup in Rojales, 5–6 November 2026.">
+  <meta name="description" content="Final standings, fixtures, results and official goal scorer records for the Esquina Park Rangers International Walking Football Cup in Rojales, 5–6 November 2026.">
   <meta name="theme-color" content="#572638">
   <style>
     * { box-sizing: border-box; }
@@ -70,7 +70,19 @@
       color: #b9e6f5;
       font-size: 16px;
       font-weight: bold;
-      margin: 5px 0 30px;
+      margin: 5px 0 18px;
+    }
+
+    .tournament-status {
+      margin: 0 0 28px;
+      padding: 12px 16px;
+      border: 2px solid #b9e6f5;
+      border-radius: 12px;
+      background: rgba(185, 230, 245, 0.12);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.5;
     }
 
     .buttons {
@@ -153,19 +165,24 @@
       WALKING FOOTBALL CUP
     </h2>
 
-    <p class="subtitle">Welcome to the tournament!</p>
+    <p class="subtitle">Thank you to everyone who took part!</p>
 
     <p class="date">
       📍 Rojales, Spain<br>
       5–6 November 2026
     </p>
 
-    <nav class="buttons" aria-label="Tournament information">
+    <p class="tournament-status" role="status">
+      TOURNAMENT ENDED<br>
+      View the final standings and official tournament records below.
+    </p>
+
+    <nav class="buttons" aria-label="Final tournament information">
       <a class="main-button" href="league.html">
         <span class="button-icon">🏆</span>
         <span class="button-copy">
-          LIVE LEAGUE TABLE
-          <small>View the latest standings</small>
+          FINAL STANDINGS
+          <small>View the completed league table</small>
         </span>
       </a>
 
@@ -173,7 +190,7 @@
         <span class="button-icon">⚽</span>
         <span class="button-copy">
           FIXTURES &amp; RESULTS
-          <small>View matches for either day</small>
+          <small>Review the tournament matches</small>
         </span>
       </a>
 
@@ -182,14 +199,6 @@
         <span class="button-copy">
           OFFICIAL GOAL SCORERS
           <small>View the final tournament leaderboard</small>
-        </span>
-      </a>
-
-      <a class="main-button secondary" href="tgs.html">
-        <span class="button-icon">📊</span>
-        <span class="button-copy">
-          LIVE TOP 5 SCORERS
-          <small>View the live leading scorers</small>
         </span>
       </a>
     </nav>
