@@ -140,13 +140,25 @@
     .official-title { margin-top: 16px !important; color: var(--maroon); font-weight: 800; }
 
     .back-link {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin: 18px 0 0;
-      color: var(--maroon);
+      padding: 11px 20px;
+      color: #fff;
+      background: var(--maroon);
+      border: 2px solid var(--maroon);
+      border-radius: 8px;
       font-weight: 700;
       text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
-    .back-link:hover { text-decoration: underline; }
+    .back-link:hover {
+      color: var(--maroon);
+      background: #fff;
+      text-decoration: none;
+    }
+    .back-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 
     @media (max-width: 520px) {
       .site-header { padding: 20px 14px; }
@@ -237,13 +249,13 @@
     <section class="notice" aria-labelledby="notice-title">
       <h2 id="notice-title">IMPORTANT NOTICE – GOAL SCORER RECORDS</h2>
       <p>This leaderboard has been compiled using information supplied to the official tournament scoring team.</p>
-      <p>Every effort has been made to ensure the accuracy of the records received. However, the organisers cannot accept responsibility for any goals that have not been reported to the official scoring team by the participating teams.</p>
+      <p>Every effort has been made to ensure the accuracy of the records received. However, the organisers cannot accept responsibility for any goals that have not been reported to the official scoring team.</p>
       <p>If teams did not notify the official scorers of individual goal scorers during their matches, those goals will naturally not appear in this listing.</p>
       <p>Thank you to all participating teams for helping us make the tournament a success!</p>
       <p class="official-title">Esquina International Walking Football Cup – Official Tournament Statistics</p>
     </section>
 
-    <a class="back-link" href="index.html">← Tournament home</a>
+    <a class="back-link" href="index.html">← Return to Home</a>
   </main>
 
   <script>
@@ -270,7 +282,7 @@
       const team = String(teamName ?? "").trim().replace(/\s+/g, " ");
       if (!team) return "";
       const encodedName = encodeURIComponent(team);
-      return `<img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg'}else{this.style.display='none'}">`;
+      return `<img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg';}else{this.style.display='none';}">`;
     }
 
     function getScorers(rows) {
