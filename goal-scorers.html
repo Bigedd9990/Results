@@ -109,6 +109,22 @@
     td.rank, td.goals { color: var(--maroon); font-weight: 900; }
     td.goals { font-size: 20px; }
 
+    .team-cell {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+    .team-badge {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .team-name { overflow-wrap: anywhere; }
+
     .status { padding: 12px; color: var(--muted); text-align: center; font-size: 14px; }
     .notice {
       margin-top: 20px;
@@ -140,6 +156,8 @@
       .container { margin-top: 16px; }
       .table-wrap { padding: 8px; }
       th, td { padding: 11px 9px; }
+      .team-badge { width: 28px; height: 28px; flex-basis: 28px; }
+      .team-cell { gap: 6px; }
       .notice { padding: 18px; }
     }
 
@@ -149,15 +167,8 @@
     }
 
     @media print {
-      @page {
-        margin: 10mm 12mm;
-      }
-
-      body {
-        background: #fff;
-        color: #000;
-      }
-
+      @page { margin: 10mm 12mm; }
+      body { background: #fff; color: #000; }
       .site-header {
         padding: 16px 12px;
         border-bottom-width: 3px;
@@ -165,72 +176,26 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-
-      .brand {
-        max-width: none;
-      }
-
-      .brand h1 {
-        font-size: 22pt;
-      }
-
-      .brand p {
-        font-size: 10pt;
-      }
-
-      .container {
-        width: 100%;
-        max-width: none;
-        margin: 10mm 0 0;
-      }
-
-      .panel,
-      .notice {
+      .brand { max-width: none; }
+      .brand h1 { font-size: 22pt; }
+      .brand p { font-size: 10pt; }
+      .container { width: 100%; max-width: none; margin: 10mm 0 0; }
+      .panel, .notice {
         border-radius: 0;
         box-shadow: none;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-
-      .panel-heading h2 {
-        font-size: 24pt;
-      }
-
-      .panel-heading p {
-        font-size: 10pt;
-      }
-
-      .table-wrap {
-        padding: 8px 0;
-      }
-
-      table {
-        min-width: 0;
-        font-size: 11pt;
-      }
-
-      th, td {
-        padding: 7px 6px;
-      }
-
-      .notice {
-        margin-top: 10mm;
-        padding: 12pt;
-        page-break-inside: avoid;
-      }
-
-      .notice h2 {
-        font-size: 18pt;
-      }
-
-      .notice p {
-        font-size: 11pt;
-      }
-
-      .status,
-      .back-link {
-        display: none !important;
-      }
+      .panel-heading h2 { font-size: 24pt; }
+      .panel-heading p { font-size: 10pt; }
+      .table-wrap { padding: 8px 0; }
+      table { min-width: 0; font-size: 11pt; }
+      th, td { padding: 7px 6px; }
+      .team-badge { width: 28px; height: 28px; flex-basis: 28px; }
+      .notice { margin-top: 10mm; padding: 12pt; page-break-inside: avoid; }
+      .notice h2 { font-size: 18pt; }
+      .notice p { font-size: 11pt; }
+      .status, .back-link { display: none !important; }
     }
   </style>
 </head>
@@ -301,6 +266,13 @@
       return Number.isFinite(number) ? number : null;
     }
 
+    function teamBadgeHtml(teamName) {
+      const team = String(teamName ?? "").trim().replace(/\s+/g, " ");
+      if (!team) return "";
+      const encodedName = encodeURIComponent(team);
+      return `<img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg'}else{this.style.display='none'}">`;
+    }
+
     function getScorers(rows) {
       return rows.slice(DATA_START_ROW, DATA_END_ROW)
         .map(row => {
@@ -336,7 +308,7 @@
           return `<tr>
             <td class="rank">${currentRank}</td>
             <td>${escapeHtml(scorer.player)}</td>
-            <td>${escapeHtml(scorer.team)}</td>
+            <td><div class="team-cell">${teamBadgeHtml(scorer.team)}<span class="team-name">${escapeHtml(scorer.team)}</span></div></td>
             <td class="goals">${escapeHtml(scorer.goals)}</td>
           </tr>`;
         }).join("");
