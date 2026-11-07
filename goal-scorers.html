@@ -188,8 +188,8 @@
 
   <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
-    const DATA_START_ROW = 17; // Row 18 in the published sheet; continue to the end for the full list.
-    const START_COL = 10; // K: rank, L: player, M: team, N: goals.
+    const DATA_START_ROW = 29; // Row 30 in the sheet (zero-based index).
+    const DATA_END_ROW = 91; // End-exclusive: includes row 91.
     const rowsEl = document.getElementById("scorerRows");
     const statusEl = document.getElementById("status");
 
@@ -207,14 +207,14 @@
     }
 
     function getScorers(rows) {
-      return rows.slice(DATA_START_ROW)
+      return rows.slice(DATA_START_ROW, DATA_END_ROW)
         .map(row => {
           const cells = Array.isArray(row) ? row : [];
-          const player = String(cells[START_COL + 1] ?? "").trim();
-          const team = String(cells[START_COL + 2] ?? "").trim();
-          const goals = numericValue(cells[START_COL + 3]);
-          const rank = numericValue(cells[START_COL]);
-          return { player, team, goals, rank };
+          const rank = numericValue(cells[0]);
+          const player = String(cells[1] ?? "").trim();
+          const team = String(cells[2] ?? "").trim();
+          const goals = numericValue(cells[3]);
+          return { rank, player, team, goals };
         })
         .filter(scorer => scorer.player && scorer.team && scorer.goals !== null && scorer.goals > 0)
         .sort((a, b) => b.goals - a.goals || (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER) || a.player.localeCompare(b.player));
@@ -228,8 +228,8 @@
         const scorers = getScorers(parsed.data);
 
         if (!scorers.length) {
-          rowsEl.innerHTML = '<tr><td colspan="4" class="status">No reported goal scorers are available.</td></tr>';
-          statusEl.textContent = "No goal scorer records were found in the published sheet.";
+          rowsEl.innerHTML = '<tr><td colspan="4" class="status">No reported goal scorers are available in cells A30:D91.</td></tr>';
+          statusEl.textContent = "No goal scorer records were found in the selected sheet range.";
           return;
         }
 
