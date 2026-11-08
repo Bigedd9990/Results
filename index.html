@@ -98,6 +98,10 @@
       border: 2px solid rgba(255, 255, 255, 0.8);
       border-radius: 14px;
       background: rgba(255, 255, 255, 0.1);
+      display: grid;
+      grid-template-rows: 185px auto auto;
+      justify-items: center;
+      align-items: center;
     }
 
     .podium-card.winner {
@@ -109,7 +113,7 @@
       display: block;
       width: 123px;
       height: 123px;
-      margin: 0 auto 10px;
+      margin: 0 auto;
       object-fit: contain;
     }
 
@@ -205,6 +209,7 @@
       .container { padding: 22px 14px; }
       .main-button { font-size: 18px; padding: 15px; }
       .podium { gap: 8px; }
+      .podium-card { grid-template-rows: 144px auto auto; }
       .podium-team { font-size: 13px; }
       .podium-card img { width: 96px; height: 96px; }
       .podium-card.winner img { width: 144px; height: 144px; }
