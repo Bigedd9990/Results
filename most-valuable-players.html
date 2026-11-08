@@ -18,6 +18,8 @@
       --surface: #fff;
       --page: #f1f5f8;
       --line: #dce5eb;
+      --gold: #d6a52c;
+      --gold-light: #fff3c4;
     }
 
     * { box-sizing: border-box; }
@@ -128,21 +130,83 @@
       text-align: center;
     }
 
+    .tournament-panel {
+      border: 2px solid var(--gold);
+      background: linear-gradient(145deg, #fffdf6, #fff7dc 55%, #fff);
+    }
+
+    .tournament-panel .panel-heading {
+      background: linear-gradient(120deg, #fff0b3, #fffaf0 65%, #fff3ce);
+      border-bottom-color: #efdb9c;
+    }
+
+    .tournament-panel .panel-heading h2 {
+      color: #72500b;
+      text-shadow: 0 1px 0 #fff;
+    }
+
+    .tournament-panel .panel-heading h2::before,
+    .tournament-panel .panel-heading h2::after {
+      content: "✦";
+      margin: 0 12px;
+      color: var(--gold);
+      font-size: 0.78em;
+      vertical-align: 0.12em;
+    }
+
     .award-placeholder {
-      padding: 30px 20px;
+      position: relative;
+      overflow: hidden;
+      padding: 30px 20px 34px;
       text-align: center;
+      background:
+        radial-gradient(circle at 8% 18%, rgba(214, 165, 44, 0.13) 0 3px, transparent 4px),
+        radial-gradient(circle at 92% 78%, rgba(214, 165, 44, 0.16) 0 4px, transparent 5px);
     }
 
     .award-placeholder strong {
       display: block;
-      margin-bottom: 6px;
-      color: var(--maroon);
-      font-size: 20px;
+      margin-bottom: 8px;
+      color: #8a6413;
+      font-size: 14px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
 
     .award-placeholder p { margin: 0; color: var(--muted); }
-    .award-winner { color: var(--maroon); font-size: 24px; font-weight: 900; }
-    .award-votes { margin-top: 6px !important; font-weight: 700; }
+
+    .award-winner {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto 8px;
+      padding: 7px 22px;
+      color: var(--maroon);
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 900;
+      line-height: 1.2;
+      text-wrap: balance;
+      text-shadow: 0 2px 0 rgba(214, 165, 44, 0.2);
+    }
+
+    .award-winner::before {
+      content: "🏆";
+      display: block;
+      margin: 0 auto 9px;
+      font-size: 42px;
+      line-height: 1;
+      filter: drop-shadow(0 3px 2px rgba(53, 23, 36, 0.18));
+    }
+
+    .award-votes {
+      display: inline-block;
+      margin-top: 6px !important;
+      padding: 7px 16px;
+      color: #684907 !important;
+      background: var(--gold-light);
+      border: 1px solid #e7ce7d;
+      border-radius: 999px;
+      font-weight: 800;
+    }
 
     .back-link {
       display: inline-flex;
@@ -171,6 +235,9 @@
       th, td { padding: 11px 9px; }
       .team-cell { gap: 6px; }
       .team-badge { width: 28px; height: 28px; flex-basis: 28px; }
+      .tournament-panel .panel-heading h2::before,
+      .tournament-panel .panel-heading h2::after { margin: 0 5px; }
+      .award-winner { padding-inline: 8px; }
     }
 
     @media print {
@@ -204,7 +271,7 @@
   </header>
 
   <main class="container">
-    <section class="panel" aria-labelledby="tournament-player-title">
+    <section class="panel tournament-panel" aria-labelledby="tournament-player-title">
       <div class="panel-heading">
         <h2 id="tournament-player-title">PLAYER OF THE TOURNAMENT</h2>
         <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
@@ -281,7 +348,8 @@
       const team = String(teamName ?? "").trim().replace(/\s+/g, " ");
       if (!team || team === "-") return "-";
       const encodedName = encodeURIComponent(team);
-      return `<div class="team-cell"><img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg'}else{this.hidden=true}"><span class="team-name">${escapeHtml(team)}</span></div>`;
+      const escapedTeam = escapeHtml(team);
+      return `<div class="team-cell"><img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg'}else{this.hidden=true}"><span class="team-name">${escapedTeam}</span></div>`;
     }
 
     function renderVoteTotals(votes) {
