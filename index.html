@@ -74,7 +74,7 @@
     }
 
     .tournament-status {
-      margin: 0 0 28px;
+      margin: 0 0 22px;
       padding: 12px 16px;
       border: 2px solid #b9e6f5;
       border-radius: 12px;
@@ -83,6 +83,52 @@
       font-size: 16px;
       font-weight: 800;
       line-height: 1.5;
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 28px;
+    }
+
+    .podium-card {
+      min-width: 0;
+      padding: 16px 10px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .podium-card.winner {
+      border-color: #f4d36a;
+      background: rgba(244, 211, 106, 0.14);
+    }
+
+    .podium-card img {
+      display: block;
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 10px;
+      object-fit: contain;
+    }
+
+    .podium-place {
+      display: block;
+      margin-bottom: 5px;
+      color: #b9e6f5;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.7px;
+    }
+
+    .winner .podium-place { color: #f4d36a; }
+
+    .podium-team {
+      display: block;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.25;
     }
 
     .buttons {
@@ -153,6 +199,8 @@
     @media (max-width: 360px) {
       .container { padding: 22px 14px; }
       .main-button { font-size: 18px; padding: 15px; }
+      .podium { gap: 8px; }
+      .podium-team { font-size: 13px; }
     }
   </style>
 </head>
@@ -181,6 +229,19 @@
       TOURNAMENT ENDED<br>
       View the final standings and official tournament records below.
     </p>
+
+    <section class="podium" aria-label="Tournament winners and runners-up">
+      <div class="podium-card winner">
+        <img src="badges/Marbella.png" alt="Marbella team badge">
+        <span class="podium-place">🏆 WINNERS</span>
+        <span class="podium-team">Marbella</span>
+      </div>
+      <div class="podium-card">
+        <img src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers team badge">
+        <span class="podium-place">🥈 RUNNERS-UP</span>
+        <span class="podium-team">Esquina Park Rangers</span>
+      </div>
+    </section>
 
     <nav class="buttons" aria-label="Final tournament information">
       <a class="main-button" href="league.html">
