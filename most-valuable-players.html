@@ -86,7 +86,7 @@
 
     table {
       width: 100%;
-      min-width: 620px;
+      min-width: 420px;
       border-collapse: collapse;
     }
 
@@ -101,6 +101,8 @@
     }
     td { font-size: 16px; }
     tbody tr:nth-child(even) { background: #f2f8fb; }
+    .rank, .votes { color: var(--maroon); font-weight: 900; }
+    .votes { text-align: center; }
 
     .status, .empty-state {
       padding: 24px 20px;
@@ -187,9 +189,28 @@
         <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
       </div>
       <div class="award-placeholder" id="tournamentAward" role="status" aria-live="polite">
-        <strong>Player of the Tournament</strong>
-        <div class="award-winner">Tony Rimmer</div>
-        <p class="award-votes">8 referee votes</p>
+        <strong>Loading referee votes…</strong>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="vote-table-title">
+      <div class="panel-heading">
+        <h2 id="vote-table-title">REFEREE VOTE TOTALS</h2>
+        <p>ALL PLAYERS RANKED FROM MOST VOTES TO FEWEST</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" style="width: 18%">Rank</th>
+              <th scope="col">Player</th>
+              <th scope="col" style="width: 24%; text-align: center">Votes</th>
+            </tr>
+          </thead>
+          <tbody id="voteRows">
+            <tr><td class="status" colspan="3">Loading referee vote totals…</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -218,7 +239,9 @@
     const END_DATA_ROW = 121; // Exclusive CSV index: includes sheet row 121
     const mvpHead = document.getElementById("mvpHead");
     const mvpRows = document.getElementById("mvpRows");
+    const voteRows = document.getElementById("voteRows");
     const statusEl = document.getElementById("status");
+    const awardEl = document.getElementById("tournamentAward");
 
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -237,6 +260,27 @@
 
     function isNoMvp(value) {
       return /^(?:none recorded|none|no mvp|not recorded|n\/a|na|-)$/i.test(String(value ?? "").trim());
+    }
+
+    function renderVoteTotals(votes) {
+      const ranked = [...votes.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+      if (!ranked.length) {
+        voteRows.innerHTML = '<tr><td class="empty-state" colspan="3">No referee MVP votes have been recorded.</td></tr>';
+        awardEl.innerHTML = '<strong>No Player of the Tournament votes recorded</strong><p>No player MVP selections were found in the spreadsheet.</p>';
+        return;
+      }
+
+      voteRows.innerHTML = ranked.map((player, index) => `<tr>
+        <td class="rank">${index + 1}</td>
+        <td>${escapeHtml(player.name)}</td>
+        <td class="votes">${player.count}</td>
+      </tr>`).join("");
+
+      const highestVotes = ranked[0].count;
+      const winners = ranked.filter(player => player.count === highestVotes);
+      awardEl.innerHTML = `<strong>${winners.length > 1 ? "Joint Player of the Tournament" : "Player of the Tournament"}</strong>
+        <div class="award-winner">${winners.map(player => escapeHtml(player.name)).join(" &amp; ")}</div>
+        <p class="award-votes">${highestVotes} referee vote${highestVotes === 1 ? "" : "s"}${winners.length > 1 ? " each · tied" : ""}</p>`;
     }
 
     async function loadAwards() {
@@ -262,9 +306,21 @@
         if (!data.length) {
           mvpRows.innerHTML = '<tr><td class="empty-state" colspan="5">No match records were found in spreadsheet rows 2–121.</td></tr>';
           statusEl.textContent = "No match records found.";
+          renderVoteTotals(new Map());
           return;
         }
 
+        const votes = new Map();
+        data.forEach(row => {
+          const player = String(row[mvpIndex] ?? "").trim().replace(/\s+/g, " ");
+          if (!player || isNoMvp(player)) return;
+          const key = player.toLocaleLowerCase();
+          const existing = votes.get(key);
+          if (existing) existing.count += 1;
+          else votes.set(key, { name: player, count: 1 });
+        });
+
+        renderVoteTotals(votes);
         mvpRows.innerHTML = data.map(row => {
           const cells = headers.map((_, index) => {
             const value = String(row[index] ?? "").trim();
@@ -279,7 +335,9 @@
         console.error(error);
         mvpHead.innerHTML = '<th scope="col">Match records</th>';
         mvpRows.innerHTML = '<tr><td class="empty-state">Unable to load match MVP records. Please try again later.</td></tr>';
+        voteRows.innerHTML = '<tr><td class="empty-state" colspan="3">Unable to load referee vote totals.</td></tr>';
         statusEl.textContent = "The published referee records could not be loaded.";
+        awardEl.innerHTML = '<strong>Player of the Tournament is unavailable</strong><p>Referee vote records could not be loaded.</p>';
       }
     }
 
