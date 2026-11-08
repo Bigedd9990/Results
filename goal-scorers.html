@@ -8,6 +8,8 @@
   <title>Official Goal Scorers | Esquina International Walking Football Cup</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700;800;900&display=swap');
+
     :root {
       color-scheme: light;
       --maroon: #581b32;
@@ -26,8 +28,12 @@
       margin: 0;
       background: var(--page);
       color: var(--ink);
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
       line-height: 1.5;
+    }
+
+    body, body *, h1, h2, h3, h4, h5, h6, p, span, a, button, th, td, div, li, label {
+      font-family: 'Lora', Georgia, serif !important;
     }
 
     .site-header {
@@ -257,82 +263,5 @@
 
     <a class="back-link" href="index.html">← Return to Home</a>
   </main>
-
-  <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
-    const DATA_START_ROW = 29;
-    const DATA_END_ROW = 214;
-    const rowsEl = document.getElementById("scorerRows");
-    const statusEl = document.getElementById("status");
-
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      })[char]);
-    }
-
-    function numericValue(value) {
-      const text = String(value ?? "").trim();
-      if (!text || !/^-?\d+(?:\.\d+)?$/.test(text)) return null;
-      const number = Number(text);
-      return Number.isFinite(number) ? number : null;
-    }
-
-    function teamBadgeHtml(teamName) {
-      const team = String(teamName ?? "").trim().replace(/\s+/g, " ");
-      if (!team) return "";
-      const encodedName = encodeURIComponent(team);
-      return `<img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg';}else{this.style.display='none';}">`;
-    }
-
-    function getScorers(rows) {
-      return rows.slice(DATA_START_ROW, DATA_END_ROW)
-        .map(row => {
-          const cells = Array.isArray(row) ? row : [];
-          const rank = numericValue(cells[0]);
-          const player = String(cells[1] ?? "").trim();
-          const team = String(cells[2] ?? "").trim();
-          const goals = numericValue(cells[3]);
-          return { rank, player, team, goals };
-        })
-        .filter(scorer => scorer.player && scorer.team && scorer.goals !== null && scorer.goals > 0)
-        .sort((a, b) => b.goals - a.goals || (a.rank ?? Number.MAX_SAFE_INTEGER) - (b.rank ?? Number.MAX_SAFE_INTEGER) || a.player.localeCompare(b.player));
-    }
-
-    async function loadScorers() {
-      try {
-        const response = await fetch(CSV_URL, { cache: "no-store" });
-        if (!response.ok) throw new Error("The published spreadsheet could not be loaded.");
-        const parsed = Papa.parse(await response.text(), { skipEmptyLines: false });
-        const scorers = getScorers(parsed.data);
-
-        if (!scorers.length) {
-          rowsEl.innerHTML = '<tr><td colspan="4" class="status">No reported goal scorers are available in cells A30:D91.</td></tr>';
-          statusEl.textContent = "No goal scorer records were found in the selected sheet range.";
-          return;
-        }
-
-        let previousGoals = null;
-        let currentRank = 0;
-        rowsEl.innerHTML = scorers.map((scorer, index) => {
-          if (scorer.goals !== previousGoals) currentRank = index + 1;
-          previousGoals = scorer.goals;
-          return `<tr>
-            <td class="rank">${currentRank}</td>
-            <td>${escapeHtml(scorer.player)}</td>
-            <td><div class="team-cell">${teamBadgeHtml(scorer.team)}<span class="team-name">${escapeHtml(scorer.team)}</span></div></td>
-            <td class="goals">${escapeHtml(scorer.goals)}</td>
-          </tr>`;
-        }).join("");
-        statusEl.textContent = `${scorers.length} reported scorer${scorers.length === 1 ? "" : "s"} · Final tournament records`;
-      } catch (error) {
-        console.error(error);
-        rowsEl.innerHTML = '<tr><td colspan="4" class="status">Unable to load goal scorer records. Please try again later.</td></tr>';
-        statusEl.textContent = "The published records could not be loaded.";
-      }
-    }
-
-    loadScorers();
-  </script>
 </body>
 </html>

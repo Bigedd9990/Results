@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700;800;900&display=swap');
 
     :root {
       --maroon: #581b32;
@@ -33,7 +33,11 @@
       padding: 0;
       background: #f1f5f8;
       color: #222;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    body, body *, h1, h2, h3, h4, h5, h6, p, span, a, button, th, td, div, li, label {
+      font-family: 'Lora', Georgia, serif !important;
     }
 
     .page {
@@ -145,7 +149,7 @@
       font-weight: 900;
       line-height: 1.05;
       letter-spacing: 0.02em;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .subtitle {
@@ -154,7 +158,7 @@
       font-size: clamp(10px, 1.25vw, 16px);
       font-weight: 700;
       line-height: 1.05;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .header-date {
@@ -165,7 +169,7 @@
       letter-spacing: 1px;
       line-height: 1.05;
       white-space: nowrap;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .local-clock {
@@ -181,19 +185,19 @@
       font-weight: 800;
       white-space: nowrap;
       justify-self: end;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .local-clock-label {
       font-size: 10px;
       letter-spacing: 1px;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     #localClock {
       font-size: 18px;
       font-variant-numeric: tabular-nums;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .table-wrap {
@@ -208,7 +212,7 @@
       border-spacing: 0 6px;
       table-layout: auto;
       font-size: clamp(16px, 1.8vw, 25px);
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     thead th {
@@ -219,7 +223,7 @@
       font-weight: 800;
       text-align: center;
       white-space: nowrap;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     thead th:nth-child(2),
@@ -246,7 +250,7 @@
       font-size: clamp(16px, 1.8vw, 25px);
       font-weight: 800;
       white-space: nowrap;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
       background: var(--row-band);
     }
 
@@ -262,7 +266,7 @@
       color: var(--maroon);
       font-size: 1.1em;
       font-weight: 900;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     tbody td:nth-child(3) {
@@ -271,7 +275,7 @@
       color: var(--maroon);
       font-weight: 800;
       white-space: normal;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     tbody tr td:first-child {
@@ -295,7 +299,7 @@
       color: var(--maroon);
       font-size: 1.15em;
       font-weight: 900;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .footer {
@@ -305,7 +309,7 @@
       color: white;
       font-size: 15px;
       font-weight: 800;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     .status {
@@ -315,7 +319,7 @@
       padding: 10px;
       font-size: 13px;
       font-weight: 800;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
     }
 
     @media (max-width: 900px) {
@@ -472,7 +476,7 @@
         border: 2px solid #ffffff;
         border-radius: 30px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-family: 'Lora', Georgia, serif;
         font-size: 13px;
         font-weight: 900;
         text-decoration: none;
@@ -498,306 +502,82 @@
 
       header h1 {
         font-size: clamp(28px, 2.7vw, 44px) !important;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.65);
-      }
-
-      footer {
-        background: linear-gradient(180deg, #8e2020 0%, #650d0d 55%, #400606 100%) !important;
-        box-shadow: inset 0 2px 3px rgba(255,255,255,0.18), 0 -3px 10px rgba(0,0,0,0.35) !important;
-        text-shadow: 0 1px 3px rgba(0,0,0,0.65);
-      }
-    }
-
-    /* Landscape TV layout: fit the full standings table in a 1080p or larger display. */
-    @media screen and (min-width: 1200px) and (min-height: 700px) {
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .page {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 100vh;
-        height: 100dvh;
-        min-height: 0;
-      }
-
-      header {
-        flex: 0 0 auto;
-        grid-template-columns: 78px minmax(0, 1fr) 78px auto;
-        column-gap: 8px;
-        padding: 6px 16px !important;
-      }
-
-      header img {
-        width: 76px !important;
-        height: 76px !important;
-      }
-
-      header h1 {
-        font-size: clamp(28px, 2.2vw, 40px) !important;
-      }
-
-      .subtitle {
-        font-size: clamp(12px, 1vw, 16px);
-      }
-
-      .header-date {
-        font-size: 12px;
-      }
-
-      .local-clock {
-        padding: 5px 8px;
-      }
-
-      #localClock {
-        font-size: 16px;
-      }
-
-      .table-wrap {
-        flex: 1 1 auto;
-        min-height: 0;
-        padding: 4px 8px;
-        overflow: auto;
-      }
-
-      table {
-        border-spacing: 0 2px;
-        font-size: clamp(16px, 1.25vw, 22px);
-      }
-
-      thead th {
-        padding: 6px 6px;
-        font-size: clamp(14px, 1.1vw, 19px);
-      }
-
-      tbody td {
-        padding: 4px 6px;
-        font-size: clamp(16px, 1.25vw, 22px);
-        line-height: 1.1;
-      }
-
-      tbody td:nth-child(3) {
-        min-width: 150px;
-      }
-
-      .team-badge {
-        width: 32px;
-        height: 32px;
-      }
-
-      .footer {
-        flex: 0 0 auto;
-        padding: 7px 10px;
-        font-size: 13px;
-      }
-
-      .status {
-        flex: 0 0 auto;
-        padding: 5px 8px;
-        font-size: 11px;
       }
     }
   </style>
 </head>
 
 <body>
-<div class="page">
-  <header>
-    <div class="header-brand">
-      <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers" onerror="this.style.display='none'">
-    </div>
-
-    <div class="header-center">
-      <div class="flag-row left" aria-label="National team flags">
-        <img class="flag-item" src="badges/wales.png" alt="Wales flag">
-        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
-        <img class="flag-item" src="badges/catalonia.png" alt="Catalonia flag">
+  <div class="page">
+    <header>
+      <div class="header-brand">
+        <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers logo">
       </div>
 
-      <div class="header-title">
-        <h1>ESQUINA PARK RANGERS</h1>
-        <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-        <div class="subtitle">LEAGUE STANDINGS</div>
-        <div class="header-date">5–6 NOVEMBER 2026</div>
+      <div class="header-center">
+        <div class="flag-row left" aria-hidden="true">
+          <img class="flag-item" src="badges/spain.png" alt="">
+          <img class="flag-item" src="badges/england.png" alt="">
+          <img class="flag-item" src="badges/wales.png" alt="">
+        </div>
+
+        <div class="header-title">
+          <h1>ESQUINA PARK RANGERS</h1>
+          <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
+          <div class="header-date">5–6 NOVEMBER 2026</div>
+        </div>
+
+        <div class="flag-row right" aria-hidden="true">
+          <img class="flag-item" src="badges/spain.png" alt="">
+          <img class="flag-item" src="badges/england.png" alt="">
+          <img class="flag-item" src="badges/wales.png" alt="">
+        </div>
       </div>
 
-      <div class="flag-row right" aria-label="National team flags">
-        <img class="flag-item" src="badges/spain.png" alt="Spain flag">
-        <img class="flag-item" src="badges/england.png" alt="England flag">
-        <img class="flag-item" src="badges/argentina.png" alt="Argentina flag">
+      <div class="local-clock" aria-live="polite">
+        <div class="local-clock-label">LOCAL TIME</div>
+        <div id="localClock">--:--</div>
       </div>
+    </header>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Played</th>
+            <th>GD</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body">
+          <tr><td colspan="5" class="status">Loading league table…</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="header-brand">
-      <img class="header-logo" src="badges/Rojales.png" alt="Rojales" onerror="this.style.display='none'">
-    </div>
-
-    <div class="local-clock">
-      <span class="local-clock-label">LOCAL TIME</span>
-      <span id="localClock">--:--:--</span>
-    </div>
-  </header>
-
-  <div class="table-wrap">
-    <table>
-      <thead id="tableHead"></thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+    <div class="status" id="status">Loading standings…</div>
+    <div class="footer">Official Final Standings</div>
   </div>
 
-  <div class="footer">ESQUINA PARK RANGERS · LIVE TOURNAMENT STANDINGS</div>
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS2GfTYy5rrxOFvD5qDWeeVr0d1W7C7XZK0k8i4Pzj9naS8JiGkI0zCqks1QNU7xQh9Jd1c8sVnGrK/pub?gid=0&single=true&output=csv";
 
-  <div class="status" id="status">Loading league standings...</div>
-</div>
-
-<script>
-  const CSV_URL = "https://script.google.com/macros/s/AKfycbxQQB-Fi9liFMcjkULvSWaboQBZ9OTBqrmcxORx0MJU69lJsKfguEBFAoxhMc6B6LJBRA/exec";
-  const REFRESH_INTERVAL_MS = 15000;
-  const HEADINGS = ["Rank", "", "Team", "Pld", "W", "D", "L", "GF", "GA", "GD", "Pts"];
-
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>\"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[char]);
-  }
-
-  function badgeHtml(teamName) {
-    if (!teamName) return "";
-
-    const candidates = ["png", "jpg", "jpeg", "webp"].map(
-      ext => "badges/" + String(teamName).trim() + "." + ext
-    );
-
-    return `<img class="team-badge"
-      src="${candidates[0]}"
-      data-candidates='${JSON.stringify(candidates)}'
-      data-try-index="0"
-      alt="${escapeHtml(teamName)} badge"
-      onerror="tryNextBadge(this)">`;
-  }
-
-  function tryNextBadge(img) {
-    const candidates = JSON.parse(img.getAttribute("data-candidates") || "[]");
-    const current = Number(img.dataset.tryIndex || 0) + 1;
-
-    if (current < candidates.length) {
-      img.dataset.tryIndex = current;
-      img.src = candidates[current];
-    } else {
-      img.style.display = "none";
-    }
-  }
-
-  function updateLocalClock() {
-    const clock = document.getElementById("localClock");
-    if (!clock) return;
-
-    clock.textContent = new Date().toLocaleTimeString("en-GB", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false
-    });
-  }
-
-  function renderTable(allRows) {
-    const headerIndex = allRows.findIndex(row =>
-      row && row.some(cell => /^(rank|team|pld|pts)$/i.test(String(cell || "").trim()))
-    );
-
-    let rows = headerIndex >= 0 ? allRows.slice(headerIndex + 1) : allRows;
-    rows = rows.filter(row => row && /^\d+$/.test(String(row[0] || "").trim()));
-
-    const head = document.getElementById("tableHead");
-    const body = document.getElementById("tableBody");
-
-    head.innerHTML = "<tr>" + HEADINGS.map(h => `<th>${escapeHtml(h)}</th>`).join("") + "</tr>";
-
-    if (!rows.length) {
-      body.innerHTML = '<tr><td colspan="11">No standings rows found. Check the feed format.</td></tr>';
-      document.getElementById("status").textContent = "Feed loaded, but no ranked teams were found.";
-      return;
+    function updateClock() {
+      const el = document.getElementById('localClock');
+      if (!el) return;
+      const now = new Date();
+      el.textContent = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Madrid',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).format(now);
     }
 
-    body.innerHTML = rows.slice(0, 16).map(row => {
-      let teamIndex = row.findIndex(cell =>
-        /[a-zA-ZÀ-ÿ]/.test(String(cell || "").trim()) &&
-        !/^(rank|team|pld|pts|gf|ga|gd|w|d|l)$/i.test(String(cell || "").trim())
-      );
-
-      const team = teamIndex >= 0 ? String(row[teamIndex]).trim() : "";
-      const stats = teamIndex >= 0 ? row.slice(teamIndex + 1) : [];
-
-      const values = [
-        row[0] || "",
-        "",
-        team,
-        stats[0] ?? "",
-        stats[1] ?? "",
-        stats[2] ?? "",
-        stats[3] ?? "",
-        stats[4] ?? "",
-        stats[5] ?? "",
-        stats[6] ?? "",
-        stats[7] ?? ""
-      ];
-
-      return "<tr>" + values.map((value, index) => {
-        if (index === 1) {
-          return `<td>${badgeHtml(team)}</td>`;
-        }
-
-        const className = index === 10 ? ' class="points"' : "";
-        return `<td${className}>${escapeHtml(value)}</td>`;
-      }).join("") + "</tr>";
-    }).join("");
-
-    const spanishTime = new Date().toLocaleTimeString("en-GB", {
-      timeZone: "Europe/Madrid",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false
-    });
-
-    document.getElementById("status").textContent = "Last updated " + spanishTime + " · Spanish local time";
-  }
-
-  async function loadStandings() {
-    const status = document.getElementById("status");
-
-    try {
-      const url = CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
-      const response = await fetch(url, { cache: "no-store" });
-
-      if (!response.ok) throw new Error("Unable to retrieve the spreadsheet.");
-
-      const text = await response.text();
-      const parsed = Papa.parse(text, { skipEmptyLines: false });
-      renderTable(parsed.data);
-    } catch (error) {
-      console.error("Standings error:", error);
-      status.textContent = "Unable to refresh standings. Retrying shortly...";
-    }
-  }
-
-  updateLocalClock();
-  setInterval(updateLocalClock, 1000);
-
-  loadStandings();
-  setInterval(loadStandings, REFRESH_INTERVAL_MS);
-</script>
-
-<a href="index.html" class="floating-home" aria-label="Back to Home">BACK</a>
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
 </body>
 </html>

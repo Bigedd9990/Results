@@ -7,7 +7,7 @@
   <title>Esquina Park Rangers - Top Goal Scorers</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700;800;900&display=swap');
 
     :root {
       --maroon: #581b32;
@@ -32,7 +32,11 @@
       padding: 0;
       background: #f1f5f8;
       color: #222;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    body, body *, h1, h2, h3, h4, h5, h6, p, span, a, button, th, td, div, li, label {
+      font-family: 'Lora', Georgia, serif !important;
     }
 
     .page {
@@ -42,176 +46,162 @@
       overflow: hidden;
     }
 
-    
-header {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    background: linear-gradient(
+    header {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      background: linear-gradient(
         135deg,
         #71364b 0%,
         #71364b 25%,
         #512638 65%,
         #351724 100%
-    );
-    color: #ffffff;
-    padding: 12px 16px;
-    display: grid;
-    grid-template-columns: 90px minmax(0, 1fr) 90px 118px;
-    align-items: center;
-    column-gap: 10px;
-    text-align: center;
-    border-bottom: 4px solid #b9e6f5;
-    box-shadow:
+      );
+      color: #ffffff;
+      padding: 12px 16px;
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr) 90px 118px;
+      align-items: center;
+      column-gap: 10px;
+      text-align: center;
+      border-bottom: 4px solid #b9e6f5;
+      box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.22),
         inset 0 -3px 0 rgba(0,0,0,0.18),
         0 12px 22px rgba(31,10,20,0.25);
-}
+    }
 
-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: linear-gradient(
         120deg,
         rgba(255,255,255,0.18) 0%,
         rgba(255,255,255,0.05) 25%,
         transparent 45%,
         rgba(255,255,255,0.10) 65%,
         transparent 80%
-    );
-}
+      );
+    }
 
-.header-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-    padding: 5px;
-    position: relative;
-    border: 1px solid rgba(255,255,255,0.22);
-    border-radius: 17px;
-    background: rgba(255,255,255,0.07);
-    box-shadow:
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      padding: 5px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 17px;
+      background: rgba(255,255,255,0.07);
+      box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.18),
         0 5px 12px rgba(0,0,0,0.20);
-}
+    }
 
-.header-brand:first-child {
-    justify-self: start;
-}
+    .header-brand:first-child {
+      justify-self: start;
+    }
 
-.header-brand:last-child {
-    justify-self: center;
-    margin-left: 0;
-}
+    .header-brand:last-child {
+      justify-self: center;
+      margin-left: 0;
+    }
 
-.header-logo {
-    display: block;
-    width: 78px;
-    height: 78px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 7px rgba(0,0,0,0.30));
-    position: relative;
-    z-index: 1;
-}
+    .header-logo {
+      display: block;
+      width: 78px;
+      height: 78px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 7px rgba(0,0,0,0.30));
+      position: relative;
+      z-index: 1;
+    }
 
-.header-brand:last-child .header-logo {
-    width: 78px;
-    height: 78px;
-    filter: drop-shadow(0 4px 7px rgba(0,0,0,0.30));
-}
+    .header-brand:last-child .header-logo {
+      width: 78px;
+      height: 78px;
+      filter: drop-shadow(0 4px 7px rgba(0,0,0,0.30));
+    }
 
-.header-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-    position: relative;
-    z-index: 1;
-}
+    .header-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+    }
 
-.header-title {
-    width: 100%;
-    text-align: center;
-}
+    .header-title {
+      width: 100%;
+      text-align: center;
+    }
 
-header h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: clamp(20px, 2.2vw, 36px);
-    font-weight: 900;
-    line-height: 1.05;
-    text-shadow: 0 2px 3px rgba(0,0,0,0.35);
-}
+    header h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(20px, 2.2vw, 36px);
+      font-weight: 900;
+      line-height: 1.05;
+      text-shadow: 0 2px 3px rgba(0,0,0,0.35);
+    }
 
-.subtitle {
-    margin-top: 3px;
-    color: #b9e6f5;
-    font-size: clamp(11px, 1.15vw, 16px);
-    font-weight: 900;
-    line-height: 1.1;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-}
+    .subtitle {
+      margin-top: 3px;
+      color: #b9e6f5;
+      font-size: clamp(11px, 1.15vw, 16px);
+      font-weight: 900;
+      line-height: 1.1;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
 
-.header-date {
-    margin-top: 3px;
-    color: #b9e6f5;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-}
+    .header-date {
+      margin-top: 3px;
+      color: #b9e6f5;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
 
-.local-clock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    min-width: 0;
-    padding: 8px 7px;
-    position: relative;
-    z-index: 1;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-}
-
-.local-clock-label {
-    color: #b9e6f5;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-
-#localClock {
-    color: #351724;
-    background: #b9e6f5;
-    border: 1px solid rgba(255,255,255,0.75);
-    border-radius: 9px;
-    padding: 5px 8px;
-    font-size: 17px;
-    font-weight: 900;
-    white-space: nowrap;
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.8),
-        0 3px 7px rgba(0,0,0,0.20);
-}
-
+    .local-clock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-width: 0;
+      padding: 8px 7px;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
 
     .local-clock-label {
+      color: #b9e6f5;
       font-size: 10px;
+      font-weight: 900;
       letter-spacing: 1px;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
     }
 
     #localClock {
-      font-size: 18px;
-      font-variant-numeric: tabular-nums;
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      color: #351724;
+      background: #b9e6f5;
+      border: 1px solid rgba(255,255,255,0.75);
+      border-radius: 9px;
+      padding: 5px 8px;
+      font-size: 17px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        0 3px 7px rgba(0,0,0,0.20);
     }
 
     .panel {
@@ -479,253 +469,57 @@ header h1 {
 
       .floating-home:hover { background: #ffffff; }
     }
-  
-/* 55-INCH TV DISPLAY */
-@media screen and (min-width: 1200px) {
-  .page {
-    min-height: 100vh;
-  }
-
-  .panel {
-    width: 96%;
-    max-width: none;
-    margin: 10px auto 0;
-    border-radius: 14px;
-  }
-
-  .summary {
-    padding: 10px 14px 8px;
-  }
-
-  .summary h2 {
-    font-size: clamp(30px, 2.6vw, 48px);
-  }
-
-  .summary p {
-    margin-top: 4px;
-    font-size: 18px;
-  }
-
-  .table-wrap {
-    padding: 6px 14px 8px;
-    overflow: visible;
-  }
-
-  table {
-    border-spacing: 0 8px;
-    font-size: clamp(24px, 2vw, 36px);
-  }
-
-  thead th {
-    padding: 14px 12px;
-    font-size: clamp(22px, 1.6vw, 30px);
-  }
-
-  tbody td {
-    padding: 16px 12px;
-    font-size: clamp(24px, 2vw, 36px);
-  }
-
-  .team-badge {
-    width: 48px;
-    height: 48px;
-  }
-
-  .team-chip {
-    gap: 12px;
-  }
-
-  .footer {
-    padding: 8px;
-    font-size: 18px;
-  }
-
-  .status {
-    padding: 6px;
-    font-size: 15px;
-  }
-}
-  
   </style>
 </head>
-
 <body>
   <div class="page">
     <header>
       <div class="header-brand">
-        <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers" onerror="this.style.display='none'">
+        <img class="header-logo" src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers badge">
       </div>
 
       <div class="header-center">
         <div class="header-title">
           <h1>ESQUINA PARK RANGERS</h1>
           <div class="subtitle">INTERNATIONAL WALKING FOOTBALL CUP</div>
-          <div class="subtitle">TOP GOAL SCORERS</div>
           <div class="header-date">5–6 NOVEMBER 2026</div>
         </div>
       </div>
 
-      <div class="header-brand">
-        <img class="header-logo" src="badges/Rojales.png" alt="Rojales" onerror="this.style.display='none'">
+      <div class="local-clock">
+        <div class="local-clock-label">LOCAL TIME</div>
+        <div id="localClock">--:--</div>
       </div>
 
-      <div class="local-clock">
-        <span class="local-clock-label">LOCAL TIME</span>
-        <span id="localClock">--:--:--</span>
+      <div class="header-brand">
+        <img class="header-logo" src="badges/Rojales.png" alt="Rojales badge">
       </div>
     </header>
 
-    <main class="panel">
+    <div class="panel">
       <div class="summary">
-        <h2>TOP GOAL SCORERS</h2>
-        <p>LIVE RANKING</p>
+        <h2>OFFICIAL GOAL SCORERS</h2>
+        <p>Final tournament leaderboard</p>
       </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th style="width:12%">Rank</th>
-              <th style="width:52%">Player</th>
-              <th style="width:24%">Team</th>
-              <th style="width:12%">Goals</th>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Team</th>
+              <th>Goals</th>
             </tr>
           </thead>
-          <tbody id="tableBody"></tbody>
+          <tbody id="goalRows">
+            <tr><td colspan="4" class="status">Loading records…</td></tr>
+          </tbody>
         </table>
       </div>
+    </div>
 
-      <div class="status" id="status">Loading top scorers...</div>
-      <div class="footer">ESQUINA PARK RANGERS · TOP GOAL SCORERS · ONLY TOP 5 SHOWN</div>
-    </main>
+    <div class="footer">International Walking Football Cup</div>
   </div>
-
-  <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7zTI8tEeKdGH8KwbL7UZSm5qD2mYGZmEzTGISK3XVUhCgPHMPpxwVaji_j_5kqxei00SLZy0L-niw/pub?gid=0&single=true&output=csv";
-    const DATA_START_ROW = 17; // row 18 (1-based) = index 17
-    const DATA_END_ROW = 21;   // row 22 (1-based) = index 21
-    const START_COL = 10;      // K = 10th column (0-based)
-    const END_COL = 13;        // N = 13th column (0-based)
-
-    const statusEl = document.getElementById("status");
-    const body = document.getElementById("tableBody");
-
-    function updateLocalClock() {
-      const clock = document.getElementById("localClock");
-      if (!clock) return;
-      clock.textContent = new Date().toLocaleTimeString("en-GB", {
-        timeZone: "Europe/Madrid",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-      });
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? "").replace(/[&<>\"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
-
-    function toNumber(value) {
-      const cleaned = String(value ?? "").replace(/[^0-9.\-]/g, "");
-      const num = Number(cleaned);
-      return Number.isFinite(num) ? num : 0;
-    }
-
-    function badgeHtml(teamName) {
-      const name = String(teamName || "").trim();
-      if (!name) return "";
-
-      const cleaned = name.replace(/\s+/g, " ").trim();
-      const candidateBase = "badges/" + cleaned;
-      return `<img class="team-badge" src="${candidateBase}.png" alt="${escapeHtml(cleaned)} badge" loading="lazy" onerror="this.style.display='none'">`;
-    }
-
-    function extractScorers(rows) {
-      const targetRows = rows.slice(DATA_START_ROW, DATA_END_ROW + 1);
-      const result = [];
-
-      for (const row of targetRows) {
-        const cells = Array.isArray(row) ? row : [];
-        const rank = cells[START_COL] ?? "";
-        const player = cells[START_COL + 1] ?? "";
-        const team = cells[START_COL + 2] ?? "";
-        const goals = cells[START_COL + 3] ?? "0";
-
-        if (!String(player).trim() && !String(team).trim() && !String(goals).trim()) {
-          continue;
-        }
-
-        result.push({
-          rank: toNumber(rank) || result.length + 1,
-          player: String(player).trim(),
-          team: String(team).trim(),
-          goals: toNumber(goals)
-        });
-      }
-
-      return result.sort((a, b) => b.goals - a.goals || a.rank - b.rank);
-    }
-
-    function renderTable(scorers) {
-      if (!scorers.length) {
-        body.innerHTML = '<tr><td colspan="4">No goal scorers found in the feed.</td></tr>';
-        statusEl.textContent = 'Feed loaded, but no scorers were found.';
-        return;
-      }
-
-      body.innerHTML = scorers.map(item => `
-        <tr>
-          <td class="rank">${escapeHtml(item.rank)}</td>
-          <td class="player">${escapeHtml(item.player)}</td>
-          <td>
-            <div class="team-chip">
-              ${badgeHtml(item.team)}
-              <span class="team-name">${escapeHtml(item.team)}</span>
-            </div>
-          </td>
-          <td class="goals">${escapeHtml(item.goals)}</td>
-        </tr>
-      `).join("");
-
-      const spanishTime = new Date().toLocaleTimeString("en-GB", {
-        timeZone: "Europe/Madrid",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-      });
-
-      statusEl.textContent = "Last updated " + spanishTime + " · Spanish local time";
-    }
-
-    async function loadScorers() {
-      try {
-        const response = await fetch(CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "t=" + Date.now(), { cache: "no-store" });
-        if (!response.ok) throw new Error("Unable to retrieve spreadsheet.");
-
-        const csvText = await response.text();
-        const parsed = Papa.parse(csvText, { skipEmptyLines: false });
-        const scorers = extractScorers(parsed.data);
-        renderTable(scorers);
-      } catch (error) {
-        console.error(error);
-        statusEl.textContent = "Unable to refresh top scorers. Retrying shortly...";
-      }
-    }
-
-    updateLocalClock();
-    setInterval(updateLocalClock, 1000);
-    loadScorers();
-    setInterval(loadScorers, 30000);
-  </script>
-
-  <a href="index.html" class="floating-home" aria-label="Back to Home">BACK</a>
 </body>
 </html>
