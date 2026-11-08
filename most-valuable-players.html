@@ -197,6 +197,18 @@
       filter: drop-shadow(0 3px 2px rgba(53, 23, 36, 0.18));
     }
 
+    .award-team {
+      display: flex;
+      justify-content: center;
+      margin: 2px auto 10px;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+      text-shadow: none;
+    }
+
+    .award-team .team-cell { justify-content: center; }
+
     .award-votes {
       display: inline-block;
       margin-top: 6px !important;
@@ -370,7 +382,7 @@
       const highestVotes = ranked[0].count;
       const winners = ranked.filter(player => player.count === highestVotes);
       awardEl.innerHTML = `<strong>${winners.length > 1 ? "Joint Player of the Tournament" : "Player of the Tournament"}</strong>
-        <div class="award-winner">${winners.map(player => escapeHtml(player.name)).join(" &amp; ")}</div>
+        ${winners.map(player => `<div class="award-winner">${escapeHtml(player.name)}<div class="award-team">${teamCellHtml(player.team)}</div></div>`).join("")}
         <p class="award-votes">${highestVotes} referee vote${highestVotes === 1 ? "" : "s"}${winners.length > 1 ? " each · tied" : ""}</p>`;
     }
 
