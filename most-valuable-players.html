@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Most valuable players for each match at the Esquina International Walking Football Cup.">
+  <meta name="theme-color" content="#581b32">
+  <title>Most Valuable Players | Esquina International Walking Football Cup</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --maroon: #581b32;
+      --maroon-deep: #351724;
+      --blue: #b9e6f5;
+      --ink: #26313a;
+      --muted: #596873;
+      --surface: #fff;
+      --page: #f1f5f8;
+      --line: #dce5eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    .site-header {
+      padding: 28px 20px;
+      color: white;
+      text-align: center;
+      background: linear-gradient(135deg, #71364b, var(--maroon-deep));
+      border-bottom: 5px solid var(--blue);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .brand img {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+    }
+
+    .brand-copy { text-align: left; }
+    .brand h1 { margin: 0; font-size: clamp(20px, 4vw, 32px); line-height: 1.15; }
+    .brand p { margin: 6px 0 0; color: var(--blue); font-weight: 700; }
+
+    .container {
+      width: min(940px, calc(100% - 28px));
+      margin: 26px auto 40px;
+    }
+
+    .panel {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(18, 10, 16, 0.1);
+    }
+
+    .panel-heading {
+      padding: 22px 18px;
+      text-align: center;
+      background: #f8fbfd;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--maroon);
+      font-size: clamp(24px, 5vw, 36px);
+      letter-spacing: 0.03em;
+    }
+
+    .panel-heading p { margin: 6px 0 0; color: var(--muted); font-weight: 700; }
+
+    .table-wrap { overflow-x: auto; padding: 12px; }
+
+    table {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+    }
+
+    th, td { padding: 13px 15px; border-bottom: 1px solid var(--line); }
+    th {
+      color: #fff;
+      background: var(--maroon);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    td { font-size: 16px; }
+    tbody tr:nth-child(even) { background: #f2f8fb; }
+
+    .empty-state {
+      padding: 34px 20px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--maroon);
+      font-size: 18px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 18px 0 0;
+      padding: 11px 20px;
+      color: #fff;
+      background: var(--maroon);
+      border: 2px solid var(--maroon);
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .back-link:hover { color: var(--maroon); background: #fff; }
+    .back-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+    @media (max-width: 520px) {
+      .site-header { padding: 20px 14px; }
+      .brand { gap: 12px; }
+      .brand img { width: 58px; height: 58px; }
+      .brand p { font-size: 13px; }
+      .container { margin-top: 16px; }
+      .table-wrap { padding: 8px; }
+      th, td { padding: 11px 9px; }
+    }
+
+    @media print {
+      @page { margin: 10mm 12mm; }
+      body { background: #fff; color: #000; }
+      .site-header {
+        padding: 16px 12px;
+        border-bottom-width: 3px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .brand h1 { font-size: 22pt; }
+      .container { width: 100%; max-width: none; margin: 10mm 0 0; }
+      .panel { border-radius: 0; box-shadow: none; }
+      table { min-width: 0; }
+      th, td { padding: 7px 6px; }
+      .back-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="badges/Esquina Park Rangers.png" alt="Esquina Park Rangers club badge">
+      <div class="brand-copy">
+        <h1>ESQUINA PARK RANGERS</h1>
+        <p>INTERNATIONAL WALKING FOOTBALL CUP · 5–6 NOVEMBER 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel" aria-labelledby="mvp-title">
+      <div class="panel-heading">
+        <h2 id="mvp-title">MOST VALUABLE PLAYERS</h2>
+        <p>MATCH AWARDS SELECTED BY THE REFEREE</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Match</th>
+              <th scope="col">Referee</th>
+              <th scope="col">Most Valuable Player</th>
+              <th scope="col">Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="empty-state" colspan="4">
+                <strong>MVP records will appear here</strong>
+                Match and referee statistics have not been connected yet. The page is ready for the data source and records.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <a class="back-link" href="index.html">← Return to Home</a>
+  </main>
+</body>
+</html>
