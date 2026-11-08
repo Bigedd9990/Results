@@ -181,6 +181,18 @@
   </header>
 
   <main class="container">
+    <section class="panel" aria-labelledby="tournament-player-title">
+      <div class="panel-heading">
+        <h2 id="tournament-player-title">PLAYER OF THE TOURNAMENT</h2>
+        <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
+      </div>
+      <div class="award-placeholder" id="tournamentAward" role="status" aria-live="polite">
+        <strong>Player of the Tournament</strong>
+        <div class="award-winner">Tony Rimmer</div>
+        <p class="award-votes">8 referee votes</p>
+      </div>
+    </section>
+
     <section class="panel" aria-labelledby="mvp-title">
       <div class="panel-heading">
         <h2 id="mvp-title">MOST VALUABLE PLAYERS</h2>
@@ -197,17 +209,6 @@
       <div class="status" id="status" role="status" aria-live="polite">Loading referee records…</div>
     </section>
 
-    <section class="panel" aria-labelledby="tournament-player-title">
-      <div class="panel-heading">
-        <h2 id="tournament-player-title">PLAYER OF THE TOURNAMENT</h2>
-        <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
-      </div>
-      <div class="award-placeholder" id="tournamentAward" role="status" aria-live="polite">
-        <strong>Loading referee votes…</strong>
-        <p>The award will be determined from the recorded match MVP selections.</p>
-      </div>
-    </section>
-
     <a class="back-link" href="index.html">← Return to Home</a>
   </main>
 
@@ -218,7 +219,6 @@
     const mvpHead = document.getElementById("mvpHead");
     const mvpRows = document.getElementById("mvpRows");
     const statusEl = document.getElementById("status");
-    const awardEl = document.getElementById("tournamentAward");
 
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -239,20 +239,6 @@
       return /^(?:none recorded|none|no mvp|not recorded|n\/a|na|-)$/i.test(String(value ?? "").trim());
     }
 
-    function renderAward(votes) {
-      const ranked = [...votes.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-      if (!ranked.length) {
-        awardEl.innerHTML = '<strong>No referee MVP votes recorded</strong><p>There are no recorded player selections to determine the tournament award.</p>';
-        return;
-      }
-
-      const highestVoteCount = ranked[0][1];
-      const winners = ranked.filter(([, count]) => count === highestVoteCount).map(([player]) => player);
-      awardEl.innerHTML = `<strong>${winners.length > 1 ? "Joint award" : "Player of the Tournament"}</strong>
-        <div class="award-winner">${winners.map(escapeHtml).join(" &amp; ")}</div>
-        <p class="award-votes">${highestVoteCount} referee vote${highestVoteCount === 1 ? "" : "s"}${winners.length > 1 ? " each · tied" : ""}</p>`;
-    }
-
     async function loadAwards() {
       try {
         const response = await fetch(CSV_URL, { cache: "no-store" });
@@ -269,7 +255,6 @@
         });
         mvpHead.innerHTML = displayHeaders.map(header => `<th scope="col">${escapeHtml(header)}</th>`).join("");
 
-        const voteCounts = new Map();
         const data = rows.slice(FIRST_DATA_ROW, END_DATA_ROW)
           .map(row => Array.isArray(row) ? row.slice(0, 5) : [])
           .filter(row => row.some(cell => String(cell ?? "").trim()));
@@ -277,17 +262,8 @@
         if (!data.length) {
           mvpRows.innerHTML = '<tr><td class="empty-state" colspan="5">No match records were found in spreadsheet rows 2–121.</td></tr>';
           statusEl.textContent = "No match records found.";
-          renderAward(voteCounts);
           return;
         }
-
-        data.forEach(row => {
-          const player = String(row[mvpIndex] ?? "").trim();
-          if (player && !isNoMvp(player)) {
-            const key = player.replace(/\s+/g, " ");
-            voteCounts.set(key, (voteCounts.get(key) || 0) + 1);
-          }
-        });
 
         mvpRows.innerHTML = data.map(row => {
           const cells = headers.map((_, index) => {
@@ -299,13 +275,11 @@
         }).join("");
 
         statusEl.textContent = `${data.length} match record${data.length === 1 ? "" : "s"} · Spreadsheet rows 2–121`;
-        renderAward(voteCounts);
       } catch (error) {
         console.error(error);
         mvpHead.innerHTML = '<th scope="col">Match records</th>';
         mvpRows.innerHTML = '<tr><td class="empty-state">Unable to load match MVP records. Please try again later.</td></tr>';
         statusEl.textContent = "The published referee records could not be loaded.";
-        awardEl.innerHTML = '<strong>Player of the Tournament is not available</strong><p>Referee vote records could not be loaded.</p>';
       }
     }
 
