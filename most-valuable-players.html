@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Most valuable players for each match and the Player of the Tournament at the Esquina International Walking Football Cup.">
+  <meta name="description" content="Referee-selected match MVPs and Player of the Tournament for the Esquina International Walking Football Cup.">
   <meta name="theme-color" content="#581b32">
-  <title>Most Valuable Players &amp; Player of the Tournament | Esquina International Walking Football Cup</title>
+  <title>Player Awards | Esquina International Walking Football Cup</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     :root {
       color-scheme: light;
@@ -46,12 +47,7 @@
       margin: 0 auto;
     }
 
-    .brand img {
-      width: 76px;
-      height: 76px;
-      object-fit: contain;
-    }
-
+    .brand img { width: 76px; height: 76px; object-fit: contain; }
     .brand-copy { text-align: left; }
     .brand h1 { margin: 0; font-size: clamp(20px, 4vw, 32px); line-height: 1.15; }
     .brand p { margin: 6px 0 0; color: var(--blue); font-weight: 700; }
@@ -86,7 +82,6 @@
     }
 
     .panel-heading p { margin: 6px 0 0; color: var(--muted); font-weight: 700; }
-
     .table-wrap { overflow-x: auto; padding: 12px; }
 
     table {
@@ -107,17 +102,10 @@
     td { font-size: 16px; }
     tbody tr:nth-child(even) { background: #f2f8fb; }
 
-    .empty-state {
-      padding: 34px 20px;
+    .status, .empty-state {
+      padding: 24px 20px;
       color: var(--muted);
       text-align: center;
-    }
-
-    .empty-state strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--maroon);
-      font-size: 18px;
     }
 
     .award-placeholder {
@@ -133,6 +121,8 @@
     }
 
     .award-placeholder p { margin: 0; color: var(--muted); }
+    .award-winner { color: var(--maroon); font-size: 24px; font-weight: 900; }
+    .award-votes { margin-top: 6px !important; font-weight: 700; }
 
     .back-link {
       display: inline-flex;
@@ -198,24 +188,13 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th scope="col">Match</th>
-              <th scope="col">Referee</th>
-              <th scope="col">Most Valuable Player</th>
-              <th scope="col">Team</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="empty-state" colspan="4">
-                <strong>MVP records will appear here</strong>
-                Match and referee statistics have not been connected yet. The page is ready for the data source and records.
-              </td>
-            </tr>
+          <thead><tr id="mvpHead"></tr></thead>
+          <tbody id="mvpRows">
+            <tr><td class="status" colspan="5">Loading match MVP records…</td></tr>
           </tbody>
         </table>
       </div>
+      <div class="status" id="status" role="status" aria-live="polite">Loading referee records…</div>
     </section>
 
     <section class="panel" aria-labelledby="tournament-player-title">
@@ -223,13 +202,114 @@
         <h2 id="tournament-player-title">PLAYER OF THE TOURNAMENT</h2>
         <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
       </div>
-      <div class="award-placeholder">
-        <strong>Winner will be announced here</strong>
-        <p>Referee votes have not been connected yet. The tournament award will be added when the vote statistics are available.</p>
+      <div class="award-placeholder" id="tournamentAward" role="status" aria-live="polite">
+        <strong>Loading referee votes…</strong>
+        <p>The award will be determined from the recorded match MVP selections.</p>
       </div>
     </section>
 
     <a class="back-link" href="index.html">← Return to Home</a>
   </main>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNim0UvkeVPSXiPrPGuBn-E1Jwm1K8plRJ70H3UgUnbabiBUzsLOce0icZ6PPvvFR5PysrsQ1v_F2I/pub?gid=0&single=true&output=csv";
+    const FIRST_DATA_ROW = 1; // Sheet row 2 (CSV row index 1)
+    const END_DATA_ROW = 121; // Exclusive CSV index: includes sheet row 121
+    const mvpHead = document.getElementById("mvpHead");
+    const mvpRows = document.getElementById("mvpRows");
+    const statusEl = document.getElementById("status");
+    const awardEl = document.getElementById("tournamentAward");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    function normalized(value) {
+      return String(value ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    }
+
+    function findColumn(headers, pattern, fallback) {
+      const index = headers.findIndex(header => pattern.test(normalized(header)));
+      return index >= 0 ? index : fallback;
+    }
+
+    function isNoMvp(value) {
+      return /^(?:none recorded|none|no mvp|not recorded|n\/a|na|-)$/i.test(String(value ?? "").trim());
+    }
+
+    function renderAward(votes) {
+      const ranked = [...votes.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      if (!ranked.length) {
+        awardEl.innerHTML = '<strong>No referee MVP votes recorded</strong><p>There are no recorded player selections to determine the tournament award.</p>';
+        return;
+      }
+
+      const highestVoteCount = ranked[0][1];
+      const winners = ranked.filter(([, count]) => count === highestVoteCount).map(([player]) => player);
+      awardEl.innerHTML = `<strong>${winners.length > 1 ? "Joint award" : "Player of the Tournament"}</strong>
+        <div class="award-winner">${winners.map(escapeHtml).join(" &amp; ")}</div>
+        <p class="award-votes">${highestVoteCount} referee vote${highestVoteCount === 1 ? "" : "s"}${winners.length > 1 ? " each · tied" : ""}</p>`;
+    }
+
+    async function loadAwards() {
+      try {
+        const response = await fetch(CSV_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error("The published spreadsheet could not be loaded.");
+        const parsed = Papa.parse(await response.text(), { skipEmptyLines: false });
+        const rows = parsed.data;
+        const headers = (rows[0] || []).slice(0, 5).map((value, index) => String(value ?? "").trim() || `Column ${index + 1}`);
+        if (headers.length < 5) throw new Error("The spreadsheet does not contain all five expected columns.");
+
+        const mvpIndex = findColumn(headers, /\b(mvp|most valuable|player)\b/, 4);
+        const displayHeaders = headers.map((header, index) => {
+          if (index === mvpIndex && /^(?:column\s*\d+)$/i.test(header)) return "Most Valuable Player";
+          return header;
+        });
+        mvpHead.innerHTML = displayHeaders.map(header => `<th scope="col">${escapeHtml(header)}</th>`).join("");
+
+        const voteCounts = new Map();
+        const data = rows.slice(FIRST_DATA_ROW, END_DATA_ROW)
+          .map(row => Array.isArray(row) ? row.slice(0, 5) : [])
+          .filter(row => row.some(cell => String(cell ?? "").trim()));
+
+        if (!data.length) {
+          mvpRows.innerHTML = '<tr><td class="empty-state" colspan="5">No match records were found in spreadsheet rows 2–121.</td></tr>';
+          statusEl.textContent = "No match records found.";
+          renderAward(voteCounts);
+          return;
+        }
+
+        data.forEach(row => {
+          const player = String(row[mvpIndex] ?? "").trim();
+          if (player && !isNoMvp(player)) {
+            const key = player.replace(/\s+/g, " ");
+            voteCounts.set(key, (voteCounts.get(key) || 0) + 1);
+          }
+        });
+
+        mvpRows.innerHTML = data.map(row => {
+          const cells = headers.map((_, index) => {
+            const value = String(row[index] ?? "").trim();
+            if (index === mvpIndex && isNoMvp(value)) return "No MVP recorded";
+            return value || "—";
+          });
+          return `<tr>${cells.map(value => `<td>${escapeHtml(value)}</td>`).join("")}</tr>`;
+        }).join("");
+
+        statusEl.textContent = `${data.length} match record${data.length === 1 ? "" : "s"} · Spreadsheet rows 2–121`;
+        renderAward(voteCounts);
+      } catch (error) {
+        console.error(error);
+        mvpHead.innerHTML = '<th scope="col">Match records</th>';
+        mvpRows.innerHTML = '<tr><td class="empty-state">Unable to load match MVP records. Please try again later.</td></tr>';
+        statusEl.textContent = "The published referee records could not be loaded.";
+        awardEl.innerHTML = '<strong>Player of the Tournament is not available</strong><p>Referee vote records could not be loaded.</p>';
+      }
+    }
+
+    loadAwards();
+  </script>
 </body>
 </html>
