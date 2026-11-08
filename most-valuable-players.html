@@ -8,8 +8,6 @@
   <title>Player Awards | Esquina International Walking Football Cup</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700;800;900&display=swap');
-
     :root {
       color-scheme: light;
       --maroon: #581b32;
@@ -30,12 +28,8 @@
       margin: 0;
       background: var(--page);
       color: var(--ink);
-      font-family: 'Lora', Georgia, serif;
+      font-family: Arial, Helvetica, sans-serif;
       line-height: 1.5;
-    }
-
-    body, body *, h1, h2, h3, h4, h5, h6, p, span, a, button, th, td, div, li, label {
-      font-family: 'Lora', Georgia, serif !important;
     }
 
     .site-header {
@@ -339,5 +333,121 @@
 
     <a class="back-link" href="index.html">← Return to Home</a>
   </main>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNim0UvkeVPSXiPrPGuBn-E1Jwm1K8plRJ70H3UgUnbabiBUzsLOce0icZ6PPvvFR5PysrsQ1v_F2I/pub?gid=0&single=true&output=csv";
+    const FIRST_DATA_ROW = 1; // Sheet row 2 (CSV row index 1)
+    const END_DATA_ROW = 121; // Exclusive CSV index: includes sheet row 121
+    const MVP_COLUMN = 4; // Column E
+    const TEAM_COLUMN = 5; // Column F
+    const mvpHead = document.getElementById("mvpHead");
+    const mvpRows = document.getElementById("mvpRows");
+    const voteRows = document.getElementById("voteRows");
+    const statusEl = document.getElementById("status");
+    const awardEl = document.getElementById("tournamentAward");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      })[char]);
+    }
+
+    function isNoMvp(value) {
+      return /^(?:none recorded|none|no mvp|not recorded|n\/a|na|-)$/i.test(String(value ?? "").trim());
+    }
+
+    function teamCellHtml(teamName) {
+      const team = String(teamName ?? "").trim().replace(/\s+/g, " ");
+      if (!team || team === "-") return "-";
+      const encodedName = encodeURIComponent(team);
+      const escapedTeam = escapeHtml(team);
+      return `<div class="team-cell"><img class="team-badge" src="badges/${encodedName}.png" alt="" aria-hidden="true" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='jpg';this.src='badges/${encodedName}.jpg'}else{this.hidden=true}"><span class="team-name">${escapedTeam}</span></div>`;
+    }
+
+    function renderVoteTotals(votes) {
+      const ranked = [...votes.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+      if (!ranked.length) {
+        voteRows.innerHTML = '<tr><td class="empty-state" colspan="4">No referee MVP votes have been recorded.</td></tr>';
+        awardEl.innerHTML = '<strong>No Player of the Tournament votes recorded</strong><p>No player MVP selections were found in the spreadsheet.</p>';
+        return;
+      }
+
+      voteRows.innerHTML = ranked.map((player, index) => `<tr>
+        <td class="rank">${index + 1}</td>
+        <td>${escapeHtml(player.name)}</td>
+        <td>${teamCellHtml(player.team)}</td>
+        <td class="votes">${player.count}</td>
+      </tr>`).join("");
+
+      const highestVotes = ranked[0].count;
+      const winners = ranked.filter(player => player.count === highestVotes);
+      awardEl.innerHTML = `<strong>${winners.length > 1 ? "Joint Player of the Tournament" : "Player of the Tournament"}</strong>
+        ${winners.map(player => `<div class="award-winner">${escapeHtml(player.name)}<div class="award-team">${teamCellHtml(player.team)}</div></div>`).join("")}
+        <p class="award-votes">${highestVotes} referee vote${highestVotes === 1 ? "" : "s"}${winners.length > 1 ? " each · tied" : ""}</p>`;
+    }
+
+    async function loadAwards() {
+      try {
+        const response = await fetch(CSV_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error("The published spreadsheet could not be loaded.");
+        const parsed = Papa.parse(await response.text(), { skipEmptyLines: false });
+        const rows = parsed.data;
+        const headers = (rows[0] || []).slice(0, 6).map((value, index) => String(value ?? "").trim() || `Column ${index + 1}`);
+        while (headers.length < 6) headers.push(`Column ${headers.length + 1}`);
+        if (!headers[TEAM_COLUMN] || /^column\s*6$/i.test(headers[TEAM_COLUMN])) headers[TEAM_COLUMN] = "Team";
+        if (!headers[MVP_COLUMN] || /^column\s*5$/i.test(headers[MVP_COLUMN])) headers[MVP_COLUMN] = "Most Valuable Player";
+
+        mvpHead.innerHTML = headers.map(header => `<th scope="col">${escapeHtml(header)}</th>`).join("");
+
+        const data = rows.slice(FIRST_DATA_ROW, END_DATA_ROW)
+          .map(row => Array.isArray(row) ? row.slice(0, 6) : [])
+          .filter(row => row.some(cell => String(cell ?? "").trim()));
+
+        if (!data.length) {
+          mvpRows.innerHTML = '<tr><td class="empty-state" colspan="6">No match records were found in spreadsheet rows 2–121.</td></tr>';
+          statusEl.textContent = "No match records found.";
+          renderVoteTotals(new Map());
+          return;
+        }
+
+        const votes = new Map();
+        data.forEach(row => {
+          const player = String(row[MVP_COLUMN] ?? "").trim().replace(/\s+/g, " ");
+          if (!player || isNoMvp(player)) return;
+          const key = player.toLocaleLowerCase();
+          const team = String(row[TEAM_COLUMN] ?? "").trim().replace(/\s+/g, " ") || "-";
+          const existing = votes.get(key);
+          if (existing) {
+            existing.count += 1;
+            if (existing.team === "-" && team !== "-") existing.team = team;
+          } else {
+            votes.set(key, { name: player, team, count: 1 });
+          }
+        });
+
+        renderVoteTotals(votes);
+        mvpRows.innerHTML = data.map(row => {
+          const cells = headers.map((_, index) => {
+            const value = String(row[index] ?? "").trim();
+            if (index === MVP_COLUMN && isNoMvp(value)) return escapeHtml("No MVP recorded");
+            if (index === TEAM_COLUMN) return teamCellHtml(value || "-");
+            return escapeHtml(value || "—");
+          });
+          return `<tr>${cells.map(value => `<td>${value}</td>`).join("")}</tr>`;
+        }).join("");
+
+        statusEl.textContent = `${data.length} match record${data.length === 1 ? "" : "s"} · Spreadsheet rows 2–121`;
+      } catch (error) {
+        console.error(error);
+        mvpHead.innerHTML = '<th scope="col">Match records</th>';
+        mvpRows.innerHTML = '<tr><td class="empty-state">Unable to load match MVP records. Please try again later.</td></tr>';
+        voteRows.innerHTML = '<tr><td class="empty-state" colspan="4">Unable to load referee vote totals.</td></tr>';
+        statusEl.textContent = "The published referee records could not be loaded.";
+        awardEl.innerHTML = '<strong>Player of the Tournament is unavailable</strong><p>Referee vote records could not be loaded.</p>';
+      }
+    }
+
+    loadAwards();
+  </script>
 </body>
 </html>
