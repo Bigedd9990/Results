@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Most valuable players for each match at the Esquina International Walking Football Cup.">
+  <meta name="description" content="Most valuable players for each match and the Player of the Tournament at the Esquina International Walking Football Cup.">
   <meta name="theme-color" content="#581b32">
-  <title>Most Valuable Players | Esquina International Walking Football Cup</title>
+  <title>Most Valuable Players &amp; Player of the Tournament | Esquina International Walking Football Cup</title>
   <style>
     :root {
       color-scheme: light;
@@ -69,6 +69,8 @@
       box-shadow: 0 10px 28px rgba(18, 10, 16, 0.1);
     }
 
+    .panel + .panel { margin-top: 20px; }
+
     .panel-heading {
       padding: 22px 18px;
       text-align: center;
@@ -118,6 +120,20 @@
       font-size: 18px;
     }
 
+    .award-placeholder {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .award-placeholder strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--maroon);
+      font-size: 20px;
+    }
+
+    .award-placeholder p { margin: 0; color: var(--muted); }
+
     .back-link {
       display: inline-flex;
       align-items: center;
@@ -156,7 +172,7 @@
       }
       .brand h1 { font-size: 22pt; }
       .container { width: 100%; max-width: none; margin: 10mm 0 0; }
-      .panel { border-radius: 0; box-shadow: none; }
+      .panel { border-radius: 0; box-shadow: none; page-break-inside: avoid; }
       table { min-width: 0; }
       th, td { padding: 7px 6px; }
       .back-link { display: none; }
@@ -199,6 +215,17 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="tournament-player-title">
+      <div class="panel-heading">
+        <h2 id="tournament-player-title">PLAYER OF THE TOURNAMENT</h2>
+        <p>AWARDED TO THE PLAYER WITH THE MOST REFEREE VOTES</p>
+      </div>
+      <div class="award-placeholder">
+        <strong>Winner will be announced here</strong>
+        <p>Referee votes have not been connected yet. The tournament award will be added when the vote statistics are available.</p>
       </div>
     </section>
 
